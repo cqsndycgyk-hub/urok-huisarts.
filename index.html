@@ -1,0 +1,3266 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дзвінок до сімейної лікарської практики — мініурок нідерландської мови</title>
+<style>
+/* ==========================================================================
+   ДИЗАЙН-ТОКЕНИ
+   Усі кольори, шрифти й відступи зведені в змінні. Щоб перефарбувати
+   весь курс — достатньо змінити значення тут, решта CSS їх використовує.
+   ========================================================================== */
+:root{
+  /* --- Кольори --- */
+  --color-bg:            #FAF7F0; /* кремовий фон сторінки, "аркуш зошита" */
+  --color-bg-card:       #FFFFFF; /* картки секцій */
+  --color-bg-soft:       #F2EDE2; /* м'який фоновий блок (приклади, підказки) */
+  --color-ink:           #1B2A4A; /* основний текст, чорнильно-синій */
+  --color-ink-soft:      #4A5778; /* другорядний текст */
+  --color-muted:         #8B8579; /* третинний текст, підписи */
+  --color-accent:        #C9683C; /* терракотовий — основні дії, CTA */
+  --color-accent-dark:   #A8512C; /* hover/active для accent */
+  --color-accent-soft:   #F3DCC9; /* світлий фон для accent-елементів */
+  --color-success:       #6F8F73; /* шавлієво-зелений — правильно/прогрес */
+  --color-success-soft:  #DCE6DD;
+  --color-error:         #B5544A; /* приглушений терракотово-червоний — помилка */
+  --color-error-soft:    #F1DCD9;
+  --color-border:        #E4DCC9; /* тонкі лінії-розділювачі */
+
+  /* --- Типографіка --- */
+  --font-display: Georgia, "Times New Roman", "Noto Serif", serif;
+  --font-body:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:    "SF Mono", "Consolas", "Menlo", monospace;
+
+  /* --- Відступи / радіуси --- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-soft: 0 2px 14px rgba(27, 42, 74, 0.06);
+  --shadow-lift: 0 10px 30px rgba(27, 42, 74, 0.12);
+  --transition: 220ms cubic-bezier(.4,0,.2,1);
+}
+
+/* ==========================================================================
+   БАЗОВІ СТИЛІ
+   ========================================================================== */
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+
+body{
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,h2,h3{
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0 0 .4em 0;
+  color: var(--color-ink);
+}
+
+.lesson-wrapper{
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 28px 80px;
+}
+
+/* Стандартна "картка" секції — використовується для майже всього контенту */
+.section-card{
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 36px 40px;
+  margin-top: 28px;
+  box-shadow: var(--shadow-soft);
+}
+
+.section-eyebrow{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.section-title{ font-size: 26px; }
+.section-sub{ color: var(--color-ink-soft); font-size: 16px; margin-bottom: 0; }
+
+/* ==========================================================================
+   1. HEADER — назва уроку, підзаголовок, індикатор прогресу
+   ========================================================================== */
+.lesson-header{
+  background: linear-gradient(135deg, var(--color-ink) 0%, #25395E 100%);
+  color: #FAF7F0;
+  padding: 48px 40px 36px;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.lesson-header-inner{
+  max-width: 920px;
+  margin: 0 auto;
+}
+.lesson-header .eyebrow{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .65;
+  display: block;
+  margin-bottom: 14px;
+}
+.lesson-header h1{
+  color: #FAF7F0;
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+.lesson-header .subtitle{
+  color: #C9D2E4;
+  font-size: 17px;
+  margin-bottom: 28px;
+  max-width: 560px;
+}
+
+/* Прогрес-бар */
+.progress-track{
+  height: 8px;
+  background: rgba(255,255,255,.14);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+.progress-fill{
+  height: 100%;
+  width: 0%;
+  background: var(--color-accent);
+  border-radius: 99px;
+  transition: width 600ms cubic-bezier(.4,0,.2,1);
+}
+.progress-label{
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #C9D2E4;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   2. ВІТАННЯ
+   ========================================================================== */
+.welcome-card{
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.welcome-icon{
+  width: 56px; height: 56px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+}
+.welcome-text p{ margin: 0; color: var(--color-ink-soft); }
+.welcome-text strong{ color: var(--color-ink); }
+
+/* ==========================================================================
+   3. ВІДЕО
+   ========================================================================== */
+.video-frame{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--color-ink);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-frame video{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-placeholder{
+  color: #C9D2E4;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: .04em;
+}
+.video-placeholder .play-icon{
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.3);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+  font-size: 22px;
+  transition: var(--transition);
+}
+.video-frame:hover .play-icon{ background: rgba(255,255,255,.18); transform: scale(1.05); }
+
+/* ==========================================================================
+   4. МЕТА УРОКУ
+   ========================================================================== */
+.goals-list{ list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 12px; }
+.goals-list li{
+  display: flex; gap: 12px;
+  align-items: flex-start;
+  color: var(--color-ink-soft);
+  font-size: 15.5px;
+}
+.goals-list li::before{
+  content: "✓";
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  background: var(--color-success-soft);
+  color: var(--color-success);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   5. СХЕМА СИТУАЦІЇ — "маршрут" діалогу, сигнатурний елемент шаблону
+   ========================================================================== */
+.route-map{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 24px;
+  position: relative;
+}
+.route-step{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 92px;
+  position: relative;
+}
+.route-step .dot{
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--color-bg-soft);
+  border: 2px solid var(--color-border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-ink-soft);
+  transition: var(--transition);
+  z-index: 1;
+}
+.route-step .label{
+  font-size: 13px;
+  text-align: center;
+  color: var(--color-ink-soft);
+  max-width: 100px;
+}
+.route-step.is-active .dot{
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+  transform: scale(1.12);
+}
+.route-step.is-active .label{ color: var(--color-ink); font-weight: 600; }
+.route-line{
+  flex: 1;
+  height: 2px;
+  background: var(--color-border);
+  min-width: 18px;
+  margin-bottom: 28px;
+}
+
+/* ==========================================================================
+   6. ОСНОВНИЙ ДІАЛОГ
+   ========================================================================== */
+.dialogue-list{ display: flex; flex-direction: column; gap: 14px; margin-top: 22px; }
+.dialogue-line{
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.dialogue-line .speaker{
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+.dialogue-line.role-a .speaker{ background: var(--color-ink); }
+.dialogue-line.role-b .speaker{ background: var(--color-accent); }
+.dialogue-bubble{
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  flex: 1;
+}
+.dialogue-line.role-b .dialogue-bubble{ background: var(--color-accent-soft); }
+.dialogue-nl{ font-size: 16px; color: var(--color-ink); }
+.dialogue-translation{
+  font-size: 14px;
+  color: var(--color-ink-soft);
+  margin-top: 6px;
+  display: none;
+  font-style: italic;
+}
+.dialogue-translation.is-visible{ display: block; }
+.sound-btn{
+  background: none; border: none; cursor: pointer;
+  color: var(--color-accent);
+  font-size: 15px;
+  margin-left: 4px;
+  padding: 10px;
+  min-width: 38px;
+  min-height: 38px;
+  vertical-align: middle;
+  transition: var(--transition);
+}
+.sound-btn:hover{ transform: scale(1.2); }
+
+/* ==========================================================================
+   7. КНОПКА "Показати переклад" + загальні стилі кнопок
+   ========================================================================== */
+.btn{
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 99px;
+  padding: 14px 30px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary{ background: var(--color-accent); color: #fff; }
+.btn-primary:hover{ background: var(--color-accent-dark); transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+.btn-primary:active{ transform: translateY(0); }
+
+.btn-secondary{ background: var(--color-bg-soft); color: var(--color-ink); }
+.btn-secondary:hover{ background: var(--color-border); }
+
+.btn-outline{ background: transparent; color: var(--color-accent); border: 1.5px solid var(--color-accent); }
+.btn-outline:hover{ background: var(--color-accent-soft); }
+
+.btn:disabled{ opacity: .45; cursor: not-allowed; transform: none !important; }
+
+.btn-row{ display: flex; gap: 14px; flex-wrap: wrap; margin-top: 20px; }
+
+/* ==========================================================================
+   8. ЛЕКСИКА — картки слів
+   ========================================================================== */
+.vocab-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+.vocab-card{
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid transparent;
+  perspective: 800px;
+}
+.vocab-card:hover{ border-color: var(--color-accent); transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+.vocab-word{ font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--color-ink); }
+.vocab-translation{
+  font-size: 14px;
+  color: var(--color-accent);
+  margin-top: 4px;
+  font-weight: 600;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: var(--transition);
+}
+.vocab-card.is-open .vocab-translation{ max-height: 40px; opacity: 1; margin-top: 8px; }
+.vocab-example{
+  font-size: 13.5px;
+  color: var(--color-ink-soft);
+  margin-top: 8px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: var(--transition);
+  font-style: italic;
+}
+.vocab-card.is-open .vocab-example{ max-height: 60px; opacity: 1; margin-top: 8px; }
+.vocab-card-top{ display: flex; justify-content: space-between; align-items: flex-start; }
+
+/* ==========================================================================
+   9. КОРИСНІ ФРАЗИ
+   ========================================================================== */
+.phrase-list{ display: grid; gap: 10px; margin-top: 20px; }
+.phrase-item{
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  gap: 16px;
+}
+.phrase-nl{ font-weight: 600; color: var(--color-ink); }
+.phrase-ua{ color: var(--color-ink-soft); font-size: 14px; text-align: right; }
+
+/* ==========================================================================
+   10. ІНТЕРАКТИВНІ ВПРАВИ
+   ========================================================================== */
+.exercise-block{
+  border-top: 1px solid var(--color-border);
+  padding-top: 28px;
+  margin-top: 28px;
+}
+.exercise-block:first-of-type{ border-top: none; padding-top: 0; margin-top: 22px; }
+.exercise-instruction{ color: var(--color-ink-soft); font-size: 14.5px; margin-bottom: 16px; }
+
+/* --- Вибір відповіді --- */
+.choice-options{ display: grid; gap: 10px; }
+.choice-option{
+  text-align: left;
+  background: var(--color-bg-soft);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-size: 15px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--color-ink);
+}
+.choice-option:hover{ border-color: var(--color-accent); }
+.choice-option.is-correct{ background: var(--color-success-soft); border-color: var(--color-success); }
+.choice-option.is-wrong{ background: var(--color-error-soft); border-color: var(--color-error); }
+.choice-option:disabled{ cursor: default; }
+
+/* --- Drag & drop --- */
+.dnd-area{ display: flex; gap: 28px; flex-wrap: wrap; margin-top: 6px; }
+.dnd-pool{ display: flex; gap: 10px; flex-wrap: wrap; flex: 1; min-width: 220px; }
+.dnd-chip{
+  background: var(--color-accent-soft);
+  border: 1.5px solid var(--color-accent);
+  color: var(--color-accent-dark);
+  border-radius: 99px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  transition: var(--transition);
+}
+.dnd-chip:active{ cursor: grabbing; }
+.dnd-chip.is-placed{ opacity: .35; pointer-events: none; }
+.dnd-chip.is-selected{ background: var(--color-accent); color: #fff; transform: scale(1.05); }
+.dnd-targets{ display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 220px; }
+.dnd-target{
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 14.5px;
+  color: var(--color-ink-soft);
+  min-height: 24px;
+  transition: var(--transition);
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer;
+}
+.dnd-target.drag-over{ border-color: var(--color-accent); background: var(--color-accent-soft); }
+.dnd-target.is-filled{ border-style: solid; border-color: var(--color-success); color: var(--color-ink); cursor: default; }
+
+/* --- Складання речення --- */
+.sentence-builder{ display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; min-height: 50px; padding: 12px; background: var(--color-bg-soft); border-radius: var(--radius-sm); }
+.word-bank{ display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.word-tile{
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 9px 14px;
+  font-size: 14.5px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.word-tile:hover{ border-color: var(--color-accent); }
+.word-tile.is-used{ opacity: .3; pointer-events: none; }
+
+/* --- Встав пропущене слово --- */
+.fill-blank-text{ font-size: 16px; line-height: 1.9; }
+.translate-task{ padding: 14px 0; border-bottom: 1px solid var(--color-border); }
+.translate-task:last-child{ border-bottom: none; }
+.translate-task .fill-blank-text{ margin-bottom: 8px; }
+.translate-task .exercise-feedback{ margin-top: 8px; min-height: 18px; font-size: 13.5px; }
+.blank-input{
+  border: none;
+  border-bottom: 2px solid var(--color-accent);
+  background: var(--color-accent-soft);
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 4px 8px;
+  width: 130px;
+  text-align: center;
+  border-radius: 4px 4px 0 0;
+}
+.blank-input:focus{ outline: none; border-bottom-color: var(--color-accent-dark); }
+
+.exercise-feedback{
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 20px;
+}
+.exercise-feedback.is-correct{ color: var(--color-success); }
+.exercise-feedback.is-wrong{ color: var(--color-error); }
+
+/* ==========================================================================
+   11. ТРЕНАЖЕР — випадкові сценарії
+   ========================================================================== */
+.simulator-scenario{
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  margin-top: 20px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+}
+.simulator-scenario p{ margin: 0; font-size: 16px; }
+.simulator-scenario.is-empty{ color: var(--color-muted); font-style: italic; }
+.simulator-answer{
+  margin-top: 14px;
+  padding: 16px 20px;
+  background: var(--color-success-soft);
+  border-radius: var(--radius-sm);
+  display: none;
+  font-size: 14.5px;
+}
+.simulator-answer.is-visible{ display: block; }
+
+.simulator-voice-row{ display: flex; flex-direction: column; gap: 12px; }
+#recordAnswerBtn.is-recording{ background: var(--color-error-soft); border-color: var(--color-error); color: var(--color-error); }
+.simulator-voice-result{
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-size: 14.5px;
+  min-height: 22px;
+  display: none;
+}
+.simulator-voice-result.is-visible{ display: block; }
+.simulator-voice-result .heard{ color: var(--color-ink); font-style: italic; }
+.simulator-voice-result .verdict{ display: block; margin-top: 6px; font-weight: 600; }
+.simulator-voice-result .verdict.is-correct{ color: var(--color-success); }
+.simulator-voice-result .verdict.is-partial{ color: var(--color-accent-dark); }
+
+/* ==========================================================================
+   12. РОЛЬОВА ГРА
+   ========================================================================== */
+.roleplay-card{
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  margin-top: 18px;
+}
+.roleplay-roles{ display: flex; gap: 20px; flex-wrap: wrap; margin-top: 14px; }
+.role-tag{
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 14px;
+  flex: 1;
+  min-width: 200px;
+}
+.role-tag strong{ display: block; color: var(--color-accent); margin-bottom: 4px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+
+/* ==========================================================================
+   13. ДОМАШНЄ ЗАВДАННЯ
+   ========================================================================== */
+.homework-list{ list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 14px; }
+.homework-list li{
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+}
+.homework-list .num{
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   14. МІНІ-ТЕСТ
+   ========================================================================== */
+.quiz-progress{ font-family: var(--font-mono); font-size: 13px; color: var(--color-muted); margin-bottom: 14px; }
+.quiz-question{ font-size: 17px; margin-bottom: 16px; }
+
+/* ==========================================================================
+   15. РЕЗУЛЬТАТ
+   ========================================================================== */
+.result-card{ text-align: center; padding: 48px 40px; }
+.result-score{
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+}
+.result-percent{ font-size: 18px; color: var(--color-ink-soft); margin-top: 6px; }
+.result-bar-wrap{
+  max-width: 360px;
+  margin: 28px auto 0;
+}
+.result-bar-track{
+  height: 12px;
+  background: var(--color-bg-soft);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.result-bar-fill{
+  height: 100%;
+  width: 0%;
+  background: var(--color-success);
+  border-radius: 99px;
+  transition: width 900ms cubic-bezier(.4,0,.2,1);
+}
+.result-message{ margin-top: 20px; color: var(--color-ink-soft); font-size: 15px; }
+
+/* ==========================================================================
+   АНІМАЦІЇ ПОЯВИ СЕКЦІЙ ПРИ СКРОЛІ
+   ========================================================================== */
+.section-card, .lesson-header{
+  opacity: 0;
+  transform: translateY(14px);
+}
+.section-card.is-visible, .lesson-header.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 600ms cubic-bezier(.4,0,.2,1), transform 600ms cubic-bezier(.4,0,.2,1);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+  html{ scroll-behavior: auto; }
+}
+
+/* Видиме keyboard-фокус для доступності */
+a:focus-visible, button:focus-visible, input:focus-visible, .vocab-card:focus-visible, .choice-option:focus-visible{
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   АДАПТАЦІЯ ДЛЯ НОУТБУКА / МЕНШИХ ЕКРАНІВ
+   ========================================================================== */
+/* Планшети в портретній орієнтації (наприклад iPad 768px, Android-планшети ~800px) —
+   трохи зменшуємо відступи, щоб контент не виглядав затиснутим, але ще не
+   переходимо в повністю мобільний режим (кнопки/картки лишаються в рядок). */
+@media (max-width: 900px) and (min-width: 761px){
+  .lesson-wrapper{ padding: 0 20px 70px; }
+  .section-card{ padding: 30px 28px; }
+}
+
+@media (max-width: 760px){
+  .lesson-wrapper{ padding: 0 16px 60px; }
+  .lesson-header{ padding: 36px 20px 28px; }
+  .lesson-header h1{ font-size: 28px; }
+  .section-card{ padding: 26px 22px; }
+  .dnd-area{ flex-direction: column; }
+  .result-score{ font-size: 48px; }
+}
+
+/* ==========================================================================
+   v4 — ДОДАНІ СТИЛІ: основний маршрут / додаткова практика
+   ========================================================================== */
+.note-box{
+  background: var(--color-accent-soft);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 18px;
+  font-size: 14.5px;
+  color: var(--color-ink);
+}
+.note-box.is-safety{ background: var(--color-error-soft); border-left-color: var(--color-error); }
+.note-box strong{ display:block; margin-bottom:4px; }
+
+.task-counter{ font-family: var(--font-mono); font-size: 13px; color: var(--color-muted); margin-bottom: 10px; }
+.exercise-explanation{
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--color-ink-soft);
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  display: none;
+}
+.exercise-explanation.is-visible{ display: block; }
+.block-done{
+  margin-top: 14px;
+  display: none;
+  font-weight: 600;
+  color: var(--color-success);
+}
+.block-done.is-visible{ display: block; }
+
+/* Розділювач між основним уроком і додатковою практикою */
+.extra-divider{
+  margin-top: 48px;
+  text-align: center;
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 16px;
+}
+.extra-divider::before, .extra-divider::after{ content:""; flex:1; height:1px; background: var(--color-border); }
+.section-card.is-extra{ border-style: dashed; }
+.section-card.is-extra .section-eyebrow{ color: var(--color-muted); }
+
+/* «Говоріть самі» — чекліст і зразок */
+.speak-card{ background: var(--color-bg-soft); border-radius: var(--radius-md); padding: 20px 22px; margin-top: 16px; }
+.speak-card h3{ font-size: 17px; margin-bottom: 6px; }
+.speak-task{ color: var(--color-ink-soft); font-size: 15px; margin: 0 0 12px; }
+.speak-sample{ display:none; background: var(--color-bg-card); border-radius: var(--radius-sm); padding: 14px 16px; font-size: 14.5px; margin-top: 10px; }
+.speak-sample.is-visible{ display:block; }
+.speak-sample .ua{ color: var(--color-ink-soft); font-style: italic; margin-top: 6px; font-size: 13.5px; }
+.checklist{ list-style:none; padding:0; margin: 12px 0 0; display:grid; gap:8px; }
+.checklist label{ display:flex; gap:10px; align-items:flex-start; font-size: 14.5px; cursor:pointer; }
+.checklist input{ margin-top: 4px; width: 18px; height: 18px; accent-color: var(--color-success); }
+
+/* Підсумок */
+.summary-list{ list-style:none; padding:0; margin:18px 0 0; display:grid; gap:12px; }
+.summary-list li{ display:flex; gap:12px; align-items:flex-start; font-size:15.5px; color: var(--color-ink); }
+.summary-list li::before{ content:"✓"; flex-shrink:0; width:24px; height:24px; background: var(--color-success-soft); color: var(--color-success); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:bold; }
+.cheat-sheet{
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  margin-top: 16px;
+  font-size: 15.5px;
+  line-height: 1.9;
+}
+.cheat-sheet .blank{ display:inline-block; min-width: 110px; border-bottom: 1.5px solid var(--color-accent); }
+
+/* Голосове меню */
+.menu-line{ font-family: var(--font-mono); font-size: 13.5px; }
+
+/* Вузькі екрани: фрази в колонку, схема без ліній */
+@media (max-width: 480px){
+  .phrase-item{ flex-direction: column; align-items: flex-start; gap: 4px; }
+  .phrase-ua{ text-align: left; }
+  .route-line{ display: none; }
+  .route-map{ gap: 12px 6px; justify-content: flex-start; }
+  .route-step{ min-width: 0; flex: 0 0 31%; }
+  .route-step .label{ font-size: 12px; max-width: none; }
+  .btn{ padding: 12px 20px; font-size: 14px; }
+  .blank-input{ max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="lesson-header" data-animate>
+  <div class="lesson-header-inner">
+    <span class="eyebrow">Нідерландська мова · Рівень A1–A2 · Мініурок · ≈ 30 хвилин</span>
+    <h1 id="lessonTitle">Дзвінок до сімейної лікарської практики</h1>
+    <p class="subtitle" id="lessonSubtitle">Після цього уроку ви самі подзвоните до huisartsenpraktijk: назветеся, опишете симптоми — свої або дитини — і запишетеся на прийом.</p>
+    <div class="progress-track" aria-label="Прогрес уроку">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label">
+      <span id="progressStepLabel">Виконано 0 з 7 завдань</span>
+      <span id="progressPercentLabel">0%</span>
+    </div>
+  </div>
+</header>
+
+<main class="lesson-wrapper">
+
+  <!-- 1. ВІТАННЯ -->
+  <section class="section-card" data-animate>
+    <div class="welcome-card">
+      <div class="welcome-icon">👋</div>
+      <div class="welcome-text">
+        <p><strong>Вітаємо на уроці «Дзвінок до сімейної лікарської практики»!</strong></p>
+        <p>Дзвінок до huisartsenpraktijk лякає багатьох: швидка мова, незнайомі слова, і відповідати треба одразу. Цей урок розбирає дзвінок по кроках: що скаже асистентка, що відповісти вам і як описати симптоми.</p>
+      </div>
+    </div>
+    <div class="note-box">
+      <strong>Як проходити урок</strong>
+      Ідіть зверху вниз — це займе близько 30 хвилин. Основний урок закінчується розділом «Підсумок»; усе, що нижче, — додаткова практика за бажанням. Смуга прогресу вгорі рахує виконані завдання (їх 7), а не прогорнуті екрани. Для озвучки й голосових вправ потрібен звук і мікрофон; якщо мікрофон недоступний, кожну вправу можна зробити текстом.
+    </div>
+    <div class="note-box is-safety">
+      <strong>Важливо про безпеку</strong>
+      Цей урок — про звичайний дзвінок до практики в робочий час. При гострому болю в грудях, сильній задишці, втраті свідомості чи сильній кровотечі телефонуйте <strong style="display:inline">112</strong>. Увечері, вночі та у вихідні для термінових питань працює huisartsenpost.
+    </div>
+  </section>
+
+  <!-- 2. МЕТА -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Мета уроку</span>
+    <h2 class="section-title">Чого ви навчитесь</h2>
+    
+    
+    <ul class="goals-list" id="goalsList">
+      <li>Розуміти на слух 5 стандартних питань асистентки (doktersassistente) і голосове меню практики</li>
+      <li>Назвати своє ім'я, дату народження і сказати, для кого прийом — для себе чи для дитини</li>
+      <li>Описати симптом і відколи він триває одним простим реченням</li>
+      <li>Підтвердити час прийому, а якщо не зрозуміли — перепитати</li>
+    </ul>
+    <div class="note-box">
+      <strong>Як ви зрозумієте, що засвоїли матеріал</strong>
+      Наприкінці ви пройдете дві рольові гри без підказки (щонайменше 3 з 4 реплік «зараховано»), скажете вголос три власні дзвінки за чеклістом і дасте ≥ 8 правильних відповідей з 10 у тесті.
+    </div>
+  </section>
+
+  <!-- 3. СХЕМА -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Схема ситуації</span>
+    <h2 class="section-title">Як розвивається розмова</h2>
+    <p class="section-sub">Натисніть на крок, щоб побачити приклад фрази. Ця схема однакова майже для будь-якого дзвінка до практики.</p>
+    <div class="route-map" id="routeMap">
+      <!-- Кожен .route-step — один крок діалогу. Порядок задає логіку розмови. -->
+      <div class="route-step is-active" data-step-text="Goedemorgen, huisartsenpraktijk De Linde, u spreekt met Anouk. — Доброго ранку, лікарська практика «Де Лінде», з вами говорить Анук.">
+        <div class="dot">1</div>
+        <div class="label">Привітання</div>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-step" data-step-text="Ik wil graag een afspraak maken. — Я хотіла б записатися на прийом.">
+        <div class="dot">2</div>
+        <div class="label">Запит</div>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-step" data-step-text="Mag ik uw naam en geboortedatum, voor de identificatie? — Можу я попросити ваше ім'я та дату народження, для ідентифікації? / Mijn naam is Olena Pavlenko, geboren op 14 maart 1989. — Мене звати Олена Павленко, дата народження — 14 березня 1989.">
+        <div class="dot">3</div>
+        <div class="label">Ідентифікація</div>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-step" data-step-text="Wat zijn uw klachten precies? — Які саме у вас симптоми?">
+        <div class="dot">4</div>
+        <div class="label">Запитання</div>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-step" data-step-text="Ik heb al drie dagen hoofdpijn en ik heb ook koorts. — У мене вже три дні болить голова, і також у мене температура.">
+        <div class="dot">5</div>
+        <div class="label">Відповідь</div>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-step" data-step-text="Hoe hoog is de koorts precies? — Яка саме температура? / Ja, het was 38,5 graden vanmorgen. — Так, зранку було 38,5.">
+        <div class="dot">6</div>
+        <div class="label">Уточнення</div>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-step" data-step-text="Ik kan u inplannen voor morgenochtend om 10 uur. Dank u wel, tot morgen! — Я можу записати вас на завтра вранці на 10:00. Дякую, до завтра!">
+        <div class="dot">7</div>
+        <div class="label">Завершення</div>
+      </div>
+    </div>
+    <div class="simulator-answer" id="routeStepPreview" style="margin-top:18px;"></div>
+  </section>
+
+  <!-- 4. ДІАЛОГ-ЕТАЛОН -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Діалог</span>
+    <h2 class="section-title">Прослухайте типовий дзвінок</h2>
+    <p class="section-sub">Діалог 1: записатися на прийом через головний біль і температуру.</p>
+    
+    <div class="dialogue-list" id="coreDialogueList"></div>
+    <div class="btn-row">
+      <button class="btn btn-outline" id="coreDialogueToggleBtn">Показати переклад</button>
+    </div>
+    <div class="note-box">
+      <strong>Як працювати з діалогом</strong>
+      1) Прослухайте кожну репліку (🔊) без перекладу і спробуйте зрозуміти. 2) Увімкніть переклад і перевірте себе. 3) Прослухайте репліки B ще раз і повторіть їх уголос. Ще 29 діалогів на інші ситуації — у додатковій практиці внизу.
+    </div>
+  </section>
+
+  <!-- 5. ЛЕКСИКА -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Лексика</span>
+    <h2 class="section-title">15 слів, без яких не обійтися</h2>
+    <p class="section-sub">Натисніть на картку, щоб побачити переклад і приклад. 🔊 — прослухати. Зверніть увагу: біль завжди через «hebben» — ik heb hoofdpijn / keelpijn / buikpijn / oorpijn.</p>
+    <div class="vocab-grid"><div class="vocab-card" tabindex="0" role="button" data-speak="de huisarts">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de huisarts</span>
+          <button class="sound-btn" data-speak="de huisarts" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">сімейний лікар</div>
+        <div class="vocab-example">Ik bel mijn huisarts. — Я телефоную своєму сімейному лікарю.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de assistente">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de assistente</span>
+          <button class="sound-btn" data-speak="de assistente" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">асистентка (медсестра-реєстратор)</div>
+        <div class="vocab-example">De assistente neemt op. — Асистентка бере слухавку.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de afspraak">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de afspraak</span>
+          <button class="sound-btn" data-speak="de afspraak" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">прийом, домовленість</div>
+        <div class="vocab-example">Ik wil een afspraak maken. — Я хочу записатися на прийом.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de klacht">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de klacht</span>
+          <button class="sound-btn" data-speak="de klacht" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">скарга, симптом</div>
+        <div class="vocab-example">Wat zijn uw klachten? — Які у вас скарги?</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de koorts">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de koorts</span>
+          <button class="sound-btn" data-speak="de koorts" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">висока температура, жар</div>
+        <div class="vocab-example">Ik heb koorts. — У мене температура. <em>(вимова: «кортс»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de pijn">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de pijn</span>
+          <button class="sound-btn" data-speak="de pijn" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">біль</div>
+        <div class="vocab-example">Ik heb pijn in mijn buik. — У мене болить живіт. <em>(вимова: «пейн»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="hoesten">
+        <div class="vocab-card-top">
+          <span class="vocab-word">hoesten</span>
+          <button class="sound-btn" data-speak="hoesten" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">кашляти</div>
+        <div class="vocab-example">Mijn kind hoest al twee dagen. — Моя дитина кашляє вже два дні. <em>(вимова: «хустен»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de keelpijn">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de keelpijn</span>
+          <button class="sound-btn" data-speak="de keelpijn" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">біль у горлі</div>
+        <div class="vocab-example">Ik heb keelpijn sinds gisteren. — У мене болить горло від учора.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de huisartsenpost">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de huisartsenpost</span>
+          <button class="sound-btn" data-speak="de huisartsenpost" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">пункт невідкладної допомоги (ввечері/вночі/у вихідні)</div>
+        <div class="vocab-example">'s Avonds belt u de huisartsenpost. — Увечері ви телефонуєте на пункт невідкладної допомоги.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="terugbellen">
+        <div class="vocab-card-top">
+          <span class="vocab-word">terugbellen</span>
+          <button class="sound-btn" data-speak="terugbellen" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">зателефонувати назад</div>
+        <div class="vocab-example">De huisarts belt u later terug. — Лікар зателефонує вам пізніше.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="het recept">
+        <div class="vocab-card-top">
+          <span class="vocab-word">het recept</span>
+          <button class="sound-btn" data-speak="het recept" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">рецепт (на ліки)</div>
+        <div class="vocab-example">Ik heb een nieuw recept nodig. — Мені потрібен новий рецепт.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de geboortedatum">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de geboortedatum</span>
+          <button class="sound-btn" data-speak="de geboortedatum" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">дата народження</div>
+        <div class="vocab-example">Wat is uw geboortedatum? — Яка ваша дата народження?</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="verkouden">
+        <div class="vocab-card-top">
+          <span class="vocab-word">verkouden</span>
+          <button class="sound-btn" data-speak="verkouden" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">простуджений, з нежитем</div>
+        <div class="vocab-example">Ik ben verkouden. — У мене нежить/простуда. <em>(вимова: «феркауден»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="dringend">
+        <div class="vocab-card-top">
+          <span class="vocab-word">dringend</span>
+          <button class="sound-btn" data-speak="dringend" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">термінове, невідкладне</div>
+        <div class="vocab-example">Het is heel dringend. — Це дуже термінове. <em>(вимова: «дрінхент»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="wachten">
+        <div class="vocab-card-top">
+          <span class="vocab-word">wachten</span>
+          <button class="sound-btn" data-speak="wachten" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">чекати</div>
+        <div class="vocab-example">Kunt u even wachten? — Можете трохи зачекати? <em>(вимова: «вахтен»)</em></div>
+      </div></div>
+  </section>
+
+  <!-- 6. ФРАЗИ -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Корисні фрази</span>
+    <h2 class="section-title">8 фраз для вас</h2>
+    <p class="section-sub">Прослухайте кожну фразу і повторіть уголос двічі.</p>
+    <div class="phrase-list"><div class="phrase-item"><span class="phrase-nl">Ik wil graag een afspraak maken.<button class="sound-btn" data-speak="Ik wil graag een afspraak maken." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Я хотіла б записатися на прийом.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Het is voor mijzelf / voor mijn kind.<button class="sound-btn" data-speak="Het is voor mijzelf / voor mijn kind." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Це для мене самої / для моєї дитини.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Ik heb al twee dagen klachten.<button class="sound-btn" data-speak="Ik heb al twee dagen klachten." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">У мене вже два дні симптоми.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Kunt u dat herhalen, alstublieft?<button class="sound-btn" data-speak="Kunt u dat herhalen, alstublieft?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Можете повторити, будь ласка?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Kunt u iets langzamer praten?<button class="sound-btn" data-speak="Kunt u iets langzamer praten?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Можете говорити трохи повільніше?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Komt deze tijd u uit?<button class="sound-btn" data-speak="Komt deze tijd u uit?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Цей час вам підходить?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Dank u wel, tot ziens.<button class="sound-btn" data-speak="Dank u wel, tot ziens." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Дякую, до побачення.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Ik spreek niet zo goed Nederlands.<button class="sound-btn" data-speak="Ik spreek niet zo goed Nederlands." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Я не дуже добре говорю нідерландською.</span></div></div>
+  </section>
+
+  <!-- 7. АСИСТЕНТКА + МЕНЮ -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Що ви почуєте</span>
+    <h2 class="section-title">Голосове меню і 5 питань асистентки</h2>
+    
+    
+    <h3 style="font-size:17px; margin-top:6px;">Спочатку — автовідповідач</h3>
+    <p class="exercise-instruction">Майже кожна практика починає з голосового меню. Слухайте число після «toets» і натискайте його на телефоні.</p>
+    <div class="phrase-list"><div class="phrase-item"><span class="phrase-nl">Welkom bij huisartsenpraktijk De Linde.<button class="sound-btn" data-speak="Welkom bij huisartsenpraktijk De Linde." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Вітаємо в лікарській практиці «Де Лінде».</span></div>
+<div class="phrase-item"><span class="phrase-nl">Voor spoed, toets 1.<button class="sound-btn" data-speak="Voor spoed, toets 1." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Для невідкладних випадків натисніть 1.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Voor het maken van een afspraak, toets 2.<button class="sound-btn" data-speak="Voor het maken van een afspraak, toets 2." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Щоб записатися на прийом, натисніть 2.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Er zijn nog twee wachtenden voor u.<button class="sound-btn" data-speak="Er zijn nog twee wachtenden voor u." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Перед вами ще двоє в черзі.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Ik wil graag een terugbelverzoek.<button class="sound-btn" data-speak="Ik wil graag een terugbelverzoek." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Я хотіла б, щоб мені передзвонили. <em>(ви — асистентці, якщо лінія зайнята)</em></span></div></div>
+    <h3 style="font-size:17px; margin-top:28px;">Потім — асистентка</h3>
+    <p class="exercise-instruction">Це тріаж: асистентка з'ясовує, наскільки терміново потрібен лікар. Упізнавайте ці питання на слух — відповіді на них ви вже знаєте.</p>
+    <div class="phrase-list"><div class="phrase-item"><span class="phrase-nl">Is het voor uzelf of voor iemand anders?<button class="sound-btn" data-speak="Is het voor uzelf of voor iemand anders?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Це для вас самих чи для когось іншого?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Sinds wanneer heeft u deze klachten?<button class="sound-btn" data-speak="Sinds wanneer heeft u deze klachten?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Відколи у вас ці симптоми?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Gebruikt u medicijnen?<button class="sound-btn" data-speak="Gebruikt u medicijnen?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Ви приймаєте якісь ліки?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Heeft u koorts gemeten?<button class="sound-btn" data-speak="Heeft u koorts gemeten?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Ви вимірювали температуру?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Kunt u morgen om... uur komen?<button class="sound-btn" data-speak="Kunt u morgen om... uur komen?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Чи можете прийти завтра на... годину?</span></div></div>
+  </section>
+
+  <!-- 8. ВПРАВИ -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Вправи</span>
+    <h2 class="section-title">Закріпимо матеріал</h2>
+    
+    
+    <div class="exercise-block">
+      <h3 style="font-size:17px;">1. Виберіть правильну відповідь</h3>
+      <p class="exercise-instruction">5 завдань. Після відповіді ви побачите пояснення — читайте його навіть якщо відповіли правильно.</p>
+      <div class="task-counter" id="coreChoiceCounter"></div>
+      <p class="quiz-question" id="coreChoiceInstruction" style="font-size:16px;"></p>
+      <div class="choice-options" id="coreChoiceOptions"></div>
+      <div class="exercise-feedback" id="coreChoiceFeedback"></div>
+      <div class="exercise-explanation" id="coreChoiceExplanation"></div>
+      <div class="block-done" id="coreChoiceDone"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="coreChoiceNextBtn">Наступне</button>
+      </div>
+    </div>
+    <div class="exercise-block">
+      <h3 style="font-size:17px;">2. З'єднайте слово з перекладом</h3>
+      <p class="exercise-instruction">Натисніть на слово, потім на правильний переклад (працює і мишкою, і дотиком).</p>
+      <div class="dnd-area" id="coreDndArea"></div>
+      <div class="exercise-feedback" id="coreDndFeedback"></div>
+      <div class="block-done" id="coreDndDone"></div>
+      
+    </div>
+    <div class="exercise-block">
+      <h3 style="font-size:17px;">3. Складіть речення</h3>
+      <p class="exercise-instruction">Натискайте слова в правильному порядку. Натиснувши слово в реченні, ви повернете його назад. Якщо речення зібране неправильно — побачите правильний порядок і зможете зібрати ще раз.</p>
+      <div class="task-counter" id="coreSentenceCounter"></div>
+      <p class="exercise-instruction" id="coreSentenceInstruction" style="color:var(--color-ink); font-size:16px;"></p>
+      <div class="sentence-builder" id="coreSentenceBuilder" aria-live="polite"></div>
+      <div class="word-bank" id="coreSentenceBank"></div>
+      <div class="exercise-feedback" id="coreSentenceFeedback"></div>
+      <div class="block-done" id="coreSentenceDone"></div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="coreSentenceResetBtn">Зібрати ще раз</button>
+        <button class="btn btn-primary" id="coreSentenceNextBtn">Наступне</button>
+      </div>
+    </div>
+    <div class="exercise-block">
+      <h3 style="font-size:17px;">4. Перекладіть українською → нідерландською</h3>
+      <p class="exercise-instruction">Скажіть переклад уголос (кнопка з мікрофоном) або напишіть його в поле й натисніть «Перевірити». Якщо є кілька правильних варіантів — ми їх зарахуємо і покажемо.</p>
+      <div class="task-counter" id="coreTranslateCounter"></div>
+      <p class="fill-blank-text" id="coreTranslateText"></p>
+      <div class="simulator-voice-row" id="coreTranslateVoiceRow" style="margin-bottom:14px;">
+        <button class="btn btn-outline" id="coreTranslateRecordBtn">🎤 Сказати відповідь</button>
+      </div>
+      <input type="text" class="blank-input" id="coreTranslateInput" style="width:100%; max-width:420px;" placeholder="…або напишіть нідерландською" autocomplete="off" autocapitalize="sentences">
+      <div class="exercise-feedback" id="coreTranslateFeedback"></div>
+      <div class="exercise-explanation" id="coreTranslateExplanation"></div>
+      <div class="block-done" id="coreTranslateDone"></div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="coreTranslateCheckBtn">Перевірити</button>
+        <button class="btn btn-primary" id="coreTranslateNextBtn">Наступне</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. РОЛЬОВА ГРА -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Рольова гра</span>
+    <h2 class="section-title">Зателефонуйте до практики</h2>
+    
+    
+    <p class="section-sub">Дві ситуації. Асистентка говорить свою репліку (🔊) — ви відповідаєте вголос у мікрофон. Спершу спробуйте без підказки; якщо не виходить двічі — відкрийте підказку, повторіть за зразком і йдіть далі. Ще 8 ситуацій — у додатковій практиці.</p>
+    <div class="roleplay-card">
+      <div class="btn-row" id="coreRoleplayPicker" style="margin-top:0;"></div>
+      <div style="margin-top:20px;">
+        <p class="exercise-instruction" id="coreRoleplayCounter"></p>
+        <div class="dialogue-line role-a">
+          <div class="speaker">A</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="coreRoleplayAssistantLine"></div></div>
+        </div>
+        <div class="dialogue-line role-b">
+          <div class="speaker">B</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="coreRoleplayUserHint"></div></div>
+        </div>
+        <div class="simulator-voice-row" id="coreRoleplayVoiceRow" style="margin-top:16px;">
+          <button class="btn btn-outline" id="coreRoleplayRecordBtn">🎤 Сказати свою репліку</button>
+          <div class="simulator-voice-result" id="coreRoleplayVoiceResult"></div>
+        </div>
+        <div class="block-done" id="coreRoleplayDone"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="coreRoleplayHintBtn">Показати підказку</button>
+          <button class="btn btn-primary" id="coreRoleplayNextBtn">Наступна репліка →</button>
+          <button class="btn btn-secondary" id="coreRoleplayRestartBtn">Почати ситуацію знову</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. ГОВОРІТЬ САМІ -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Практичне застосування</span>
+    <h2 class="section-title">Говоріть самі: три власні дзвінки</h2>
+    
+    
+    <p class="section-sub">Тепер без реплік асистентки. Прочитайте ситуацію і скажіть уголос увесь свій дзвінок — як справжній. Можна записати себе на диктофон телефону і прослухати. Потім відкрийте зразок, порівняйте й відмітьте в чеклісті, що у вас було. Усі 5 пунктів — ситуацію пройдено.</p>
+
+      <div class="speak-card" data-speak-card="core0">
+        <h3>1. Горло і температура</h3>
+        <p class="speak-task">У вас уже два дні болить горло і піднялася температура. Подзвоніть, назвіться, опишіть симптоми та попросіть записати на прийом. Скажіть усе вголос — від привітання до прощання.</p>
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn btn-outline" data-speak-toggle="core0">Показати зразок</button>
+          <button class="btn btn-secondary sound-btn-text" data-speak="Goedemorgen. Ik wil graag een afspraak maken. Mijn naam is Olena Pavlenko, geboren op 14 maart 1989. Het is voor mijzelf. Ik heb al twee dagen keelpijn en ik heb ook koorts, 38,5. Ja, morgen om 10 uur komt uit. Dank u wel, tot ziens.">🔊 Прослухати зразок</button>
+        </div>
+        <div class="speak-sample" id="speakSample-core0">
+          <div>Goedemorgen. Ik wil graag een afspraak maken. Mijn naam is Olena Pavlenko, geboren op 14 maart 1989. Het is voor mijzelf. Ik heb al twee dagen keelpijn en ik heb ook koorts, 38,5. Ja, morgen om 10 uur komt uit. Dank u wel, tot ziens.</div>
+          <div class="ua">Добрий ранок. Я хотіла б записатися на прийом. Мене звати Олена Павленко, народилася 14 березня 1989. Це для мене. У мене вже два дні болить горло, і також температура 38,5. Так, завтра о 10 підходить. Дякую, до побачення.</div>
+        </div>
+        <ul class="checklist"><li><label><input type="checkbox" data-speak-check="core0"> Привіталася й сказала, чого хочу (afspraak / recept / afzeggen)</label></li><li><label><input type="checkbox" data-speak-check="core0"> Назвала ім'я та дату народження</label></li><li><label><input type="checkbox" data-speak-check="core0"> Сказала, для кого (voor mijzelf / voor mijn kind)</label></li><li><label><input type="checkbox" data-speak-check="core0"> Назвала симптом і відколи він триває (al … dagen)</label></li><li><label><input type="checkbox" data-speak-check="core0"> Підтвердила час або перепитала й подякувала</label></li></ul>
+      </div>
+
+      <div class="speak-card" data-speak-card="core1">
+        <h3>2. Дитина кашляє</h3>
+        <p class="speak-task">Ваша дитина кашляє вже три дні, зранку була температура 38,9. Поясніть, що йдеться про дитину, опишіть симптоми та попросіть прийом на сьогодні.</p>
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn btn-outline" data-speak-toggle="core1">Показати зразок</button>
+          <button class="btn btn-secondary sound-btn-text" data-speak="Goedemiddag. Het gaat om mijn kind. Ze hoest al drie dagen en vanmorgen had ze koorts, 38,9. Mijn naam is Olena Pavlenko, mijn dochter heet Sofia, geboren op 2 mei 2019. Kan ze vandaag nog komen? Dank u wel.">🔊 Прослухати зразок</button>
+        </div>
+        <div class="speak-sample" id="speakSample-core1">
+          <div>Goedemiddag. Het gaat om mijn kind. Ze hoest al drie dagen en vanmorgen had ze koorts, 38,9. Mijn naam is Olena Pavlenko, mijn dochter heet Sofia, geboren op 2 mei 2019. Kan ze vandaag nog komen? Dank u wel.</div>
+          <div class="ua">Добрий день. Йдеться про мою дитину. Вона кашляє вже три дні, і зранку була температура 38,9. Мене звати Олена Павленко, мою доньку звати Софія, народилася 2 травня 2019. Чи може вона прийти ще сьогодні? Дякую.</div>
+        </div>
+        <ul class="checklist"><li><label><input type="checkbox" data-speak-check="core1"> Привіталася й сказала, чого хочу (afspraak / recept / afzeggen)</label></li><li><label><input type="checkbox" data-speak-check="core1"> Назвала ім'я та дату народження</label></li><li><label><input type="checkbox" data-speak-check="core1"> Сказала, для кого (voor mijzelf / voor mijn kind)</label></li><li><label><input type="checkbox" data-speak-check="core1"> Назвала симптом і відколи він триває (al … dagen)</label></li><li><label><input type="checkbox" data-speak-check="core1"> Підтвердила час або перепитала й подякувала</label></li></ul>
+      </div>
+
+      <div class="speak-card" data-speak-card="core2">
+        <h3>3. Не зрозуміли час</h3>
+        <p class="speak-task">Асистентка швидко назвала час прийому, і ви не розчули. Перепитайте, попросіть говорити повільніше та підтвердьте час.</p>
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn btn-outline" data-speak-toggle="core2">Показати зразок</button>
+          <button class="btn btn-secondary sound-btn-text" data-speak="Sorry, kunt u dat herhalen, alstublieft? Kunt u iets langzamer praten? Ik spreek niet zo goed Nederlands. … Donderdag om 11 uur? Ja, dat komt uit. Dank u wel.">🔊 Прослухати зразок</button>
+        </div>
+        <div class="speak-sample" id="speakSample-core2">
+          <div>Sorry, kunt u dat herhalen, alstublieft? Kunt u iets langzamer praten? Ik spreek niet zo goed Nederlands. … Donderdag om 11 uur? Ja, dat komt uit. Dank u wel.</div>
+          <div class="ua">Вибачте, можете повторити, будь ласка? Можете говорити трохи повільніше? Я не дуже добре говорю нідерландською. … Четвер об 11? Так, підходить. Дякую.</div>
+        </div>
+        <ul class="checklist"><li><label><input type="checkbox" data-speak-check="core2"> Привіталася й сказала, чого хочу (afspraak / recept / afzeggen)</label></li><li><label><input type="checkbox" data-speak-check="core2"> Назвала ім'я та дату народження</label></li><li><label><input type="checkbox" data-speak-check="core2"> Сказала, для кого (voor mijzelf / voor mijn kind)</label></li><li><label><input type="checkbox" data-speak-check="core2"> Назвала симптом і відколи він триває (al … dagen)</label></li><li><label><input type="checkbox" data-speak-check="core2"> Підтвердила час або перепитала й подякувала</label></li></ul>
+      </div>
+    <div class="block-done" id="coreSpeakDone"></div>
+  </section>
+
+  <!-- 11. ТЕСТ -->
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Міні-тест</span>
+    <h2 class="section-title">Перевірте себе</h2>
+    <p class="section-sub">10 питань. Після кожної відповіді — пояснення.</p>
+    
+    <div class="quiz-progress" id="coreQuizProgress"></div>
+    <div class="quiz-question" id="coreQuizQuestion"></div>
+    <div class="choice-options" id="coreQuizOptions"></div>
+    <div class="exercise-feedback" id="coreQuizExplanation" style="margin-top:14px; font-weight:400; color: var(--color-ink-soft);"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="coreQuizNextBtn" disabled>Далі</button>
+    </div>
+  </section>
+  <section class="section-card result-card" data-animate id="coreResultSection">
+    <span class="section-eyebrow">Результат</span>
+    <div class="result-score" id="coreResultScore">0 / 0</div>
+    <div class="result-percent" id="coreResultPercent">0%</div>
+    <div class="result-bar-wrap"><div class="result-bar-track"><div class="result-bar-fill" id="coreResultBarFill"></div></div></div>
+    <p class="result-message" id="coreResultMessage">Пройдіть тест, щоб побачити результат.</p>
+    <div class="btn-row" style="justify-content:center;"><button class="btn btn-outline" id="coreResultRetryBtn" style="display:none;">Пройти тест ще раз</button></div>
+  </section>
+
+  <!-- 12. ПІДСУМОК -->
+
+  <section class="section-card" data-animate id="summarySection">
+    <span class="section-eyebrow">Підсумок</span>
+    <h2 class="section-title">Що ви тепер умієте</h2>
+    
+    
+    <ul class="summary-list">
+      <li>Пройти голосове меню практики й дочекатися асистентки</li>
+      <li>Назвати ім'я, дату народження та сказати, для кого прийом</li>
+      <li>Описати симптом і його тривалість: «Ik heb al … dagen …»</li>
+      <li>Відповісти на 5 тріажних питань, підтвердити час або перепитати</li>
+    </ul>
+    <h3 style="font-size:17px; margin-top:28px;">Ваша шпаргалка для реального дзвінка</h3>
+    <p class="exercise-instruction">Заповніть і тримайте біля телефону. Перші два рядки — завжди однакові.</p>
+    <div class="cheat-sheet">
+      Goedemorgen / goedemiddag. Ik wil graag een afspraak maken.<br>
+      Mijn naam is <span class="blank"></span>, geboren op <span class="blank"></span>.<br>
+      Het is voor mijzelf / voor mijn kind.<br>
+      Ik heb al <span class="blank">…</span> dagen <span class="blank">…</span>.<br>
+      Kunt u dat herhalen, alstublieft?<br>
+      Ja, dat komt uit. Dank u wel, tot ziens.
+    </div>
+    <div class="note-box">
+      <strong>Маленький наступний крок (5 хвилин)</strong>
+      Знайдіть на сайті вашої huisartsenpraktijk номер телефону та години, коли приймають дзвінки для запису (часто лише зранку, наприклад 8:00–10:30). Запишіть їх у шпаргалку. Скажіть свою дату народження нідерландською вголос три рази — під час реального дзвінка це найчастіше місце, де люди губляться.
+    </div>
+    <p class="section-sub" style="margin-top:18px;">Основний урок завершено. Нижче — додаткова практика: ще 29 діалогів, 23 слова, тренажер на 35 ситуацій, 8 рольових ігор і розширений тест. Повертайтеся сюди перед реальним дзвінком.</p>
+  </section>
+
+  <div class="extra-divider">Додаткова практика · за бажанням</div>
+
+
+  <section class="section-card is-extra" data-animate>
+    <span class="section-eyebrow">Додатково · Діалоги</span>
+    <h2 class="section-title">Банк діалогів: 30 ситуацій</h2>
+    <p class="section-sub">Скасування, перенесення, рецепт, результати аналізів, реєстрація, перекладач і ще 20+ ситуацій.</p>
+    
+    <p class="section-sub" id="extraDialogueCounter"></p>
+    <h3 id="extraDialogueTitle" style="font-size:18px;"></h3>
+    <div class="dialogue-list" id="extraDialogueList"></div>
+    <div class="btn-row">
+      <button class="btn btn-outline" id="extraDialogueToggleBtn">Показати переклад</button>
+      <button class="btn btn-primary" id="extraDialogueNextBtn">Наступний діалог →</button>
+    </div>
+  </section>
+
+
+  <section class="section-card is-extra" data-animate>
+    <span class="section-eyebrow">Додатково · Лексика</span>
+    <h2 class="section-title">Ще 23 слова</h2>
+    <p class="section-sub">Симптоми, документи, аптека, страхування.</p>
+    <div class="vocab-grid"><div class="vocab-card" tabindex="0" role="button" data-speak="de oorpijn">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de oorpijn</span>
+          <button class="sound-btn" data-speak="de oorpijn" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">біль у вусі</div>
+        <div class="vocab-example">Mijn kind heeft oorpijn. — У моєї дитини болить вухо. <em>(вимова: «орпейн»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de buikpijn">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de buikpijn</span>
+          <button class="sound-btn" data-speak="de buikpijn" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">біль у животі</div>
+        <div class="vocab-example">Mijn kind heeft buikpijn. — У моєї дитини болить живіт.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="duizelig">
+        <div class="vocab-card-top">
+          <span class="vocab-word">duizelig</span>
+          <button class="sound-btn" data-speak="duizelig" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">запаморочений</div>
+        <div class="vocab-example">Ik voel me duizelig. — У мене запаморочення. <em>(вимова: «дейзелих»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="misselijk">
+        <div class="vocab-card-top">
+          <span class="vocab-word">misselijk</span>
+          <button class="sound-btn" data-speak="misselijk" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">якого нудить; нудота</div>
+        <div class="vocab-example">Ik ben misselijk. — Мене нудить. <em>(вимова: «міселек»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de uitslag">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de uitslag</span>
+          <button class="sound-btn" data-speak="de uitslag" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">висип (на шкірі)</div>
+        <div class="vocab-example">Ik heb een rode uitslag. — У мене червоний висип.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="gevallen">
+        <div class="vocab-card-top">
+          <span class="vocab-word">gevallen</span>
+          <button class="sound-btn" data-speak="gevallen" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">впав / впала (дієприкметник від vallen)</div>
+        <div class="vocab-example">Mijn kind is gevallen. — Моя дитина впала.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="gezwollen">
+        <div class="vocab-card-top">
+          <span class="vocab-word">gezwollen</span>
+          <button class="sound-btn" data-speak="gezwollen" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">набряклий, опухлий</div>
+        <div class="vocab-example">Mijn been is gezwollen. — У мене опухла нога. <em>(вимова: «хезволен»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="afzeggen">
+        <div class="vocab-card-top">
+          <span class="vocab-word">afzeggen</span>
+          <button class="sound-btn" data-speak="afzeggen" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">скасувати (прийом)</div>
+        <div class="vocab-example">Ik wil mijn afspraak afzeggen. — Я хочу скасувати свій прийом.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="verzetten">
+        <div class="vocab-card-top">
+          <span class="vocab-word">verzetten</span>
+          <button class="sound-btn" data-speak="verzetten" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">перенести (прийом на інший час)</div>
+        <div class="vocab-example">Kan ik de afspraak verzetten? — Чи можу я перенести прийом?</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="het bloedonderzoek">
+        <div class="vocab-card-top">
+          <span class="vocab-word">het bloedonderzoek</span>
+          <button class="sound-btn" data-speak="het bloedonderzoek" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">аналіз крові</div>
+        <div class="vocab-example">Ik bel voor de uitslag van mijn bloedonderzoek. — Я телефоную щодо результатів аналізу крові.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="het BSN-nummer">
+        <div class="vocab-card-top">
+          <span class="vocab-word">het BSN-nummer</span>
+          <button class="sound-btn" data-speak="het BSN-nummer" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">номер соціального страхування (BSN)</div>
+        <div class="vocab-example">Wat is uw BSN-nummer? — Який ваш номер BSN?</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="het spoedgeval">
+        <div class="vocab-card-top">
+          <span class="vocab-word">het spoedgeval</span>
+          <button class="sound-btn" data-speak="het spoedgeval" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">невідкладний випадок</div>
+        <div class="vocab-example">Dit is een spoedgeval. — Це невідкладний випадок.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="doorverbinden">
+        <div class="vocab-card-top">
+          <span class="vocab-word">doorverbinden</span>
+          <button class="sound-btn" data-speak="doorverbinden" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">з'єднати (по телефону)</div>
+        <div class="vocab-example">Ik verbind u door met de huisarts. — Я з'єднаю вас з лікарем.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de apotheek">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de apotheek</span>
+          <button class="sound-btn" data-speak="de apotheek" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">аптека</div>
+        <div class="vocab-example">U kunt het recept bij de apotheek ophalen. — Ви можете забрати рецепт в аптеці.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="ophalen">
+        <div class="vocab-card-top">
+          <span class="vocab-word">ophalen</span>
+          <button class="sound-btn" data-speak="ophalen" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">забрати, отримати</div>
+        <div class="vocab-example">Ik wil mijn medicijnen ophalen. — Я хочу забрати свої ліки.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="het consult">
+        <div class="vocab-card-top">
+          <span class="vocab-word">het consult</span>
+          <button class="sound-btn" data-speak="het consult" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">консультація (прийом у лікаря)</div>
+        <div class="vocab-example">Het consult duurt tien minuten. — Консультація триває десять хвилин.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de verzekering">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de verzekering</span>
+          <button class="sound-btn" data-speak="de verzekering" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">страхування (медичне)</div>
+        <div class="vocab-example">Bent u verzekerd? — Ви застраховані?</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de tolk">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de tolk</span>
+          <button class="sound-btn" data-speak="de tolk" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">перекладач</div>
+        <div class="vocab-example">Kan ik een tolk krijgen? — Чи можу я отримати перекладача? <em>(вимова: «толк»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="ademhalen">
+        <div class="vocab-card-top">
+          <span class="vocab-word">ademhalen</span>
+          <button class="sound-btn" data-speak="ademhalen" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">дихати</div>
+        <div class="vocab-example">Ik kan moeilijk ademhalen. — Мені важко дихати. <em>(вимова: «адемхален»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="zwanger">
+        <div class="vocab-card-top">
+          <span class="vocab-word">zwanger</span>
+          <button class="sound-btn" data-speak="zwanger" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">вагітна</div>
+        <div class="vocab-example">Ik ben zwanger, vier maanden. — Я вагітна, четвертий місяць. <em>(вимова: «звангер»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de bijwerking">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de bijwerking</span>
+          <button class="sound-btn" data-speak="de bijwerking" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">побічна дія (ліків)</div>
+        <div class="vocab-example">Ik heb bijwerkingen van de medicijnen. — У мене побічні дії від ліків.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="doorgeven">
+        <div class="vocab-card-top">
+          <span class="vocab-word">doorgeven</span>
+          <button class="sound-btn" data-speak="doorgeven" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">передати (інформацію)</div>
+        <div class="vocab-example">Ik zal het doorgeven aan de huisarts. — Я передам це лікарю. <em>(вимова: «дорхевен»)</em></div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de verloskundige">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de verloskundige</span>
+          <button class="sound-btn" data-speak="de verloskundige" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">акушерка</div>
+        <div class="vocab-example">Voor de zwangerschap belt u de verloskundige. — Щодо вагітності телефонуйте акушерці.</div>
+      </div></div>
+  </section>
+
+
+  <section class="section-card is-extra" data-animate>
+    <span class="section-eyebrow">Додатково · Фрази</span>
+    <h2 class="section-title">Ще 19 фраз для вас і 5 — від асистентки</h2>
+    
+    
+    <div class="phrase-list"><div class="phrase-item"><span class="phrase-nl">Is het dringend / spoedeisend?<button class="sound-btn" data-speak="Is het dringend / spoedeisend?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Це термінове / невідкладне?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Kan ik een tolk krijgen?<button class="sound-btn" data-speak="Kan ik een tolk krijgen?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Чи можу я отримати перекладача?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Kunt u dat opschrijven, alstublieft?<button class="sound-btn" data-speak="Kunt u dat opschrijven, alstublieft?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Можете записати це, будь ласка?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Ik wil mijn afspraak afzeggen.<button class="sound-btn" data-speak="Ik wil mijn afspraak afzeggen." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Я хочу скасувати свій прийом.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Kan ik de afspraak verzetten?<button class="sound-btn" data-speak="Kan ik de afspraak verzetten?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Чи можу я перенести прийом?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Hoe laat kan ik komen?<button class="sound-btn" data-speak="Hoe laat kan ik komen?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">У скільки я можу прийти?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Moet ik nuchter komen?<button class="sound-btn" data-speak="Moet ik nuchter komen?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Мені потрібно прийти натще?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Wat moet ik doen als het erger wordt?<button class="sound-btn" data-speak="Wat moet ik doen als het erger wordt?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Що мені робити, якщо стане гірше?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Met wie spreek ik?<button class="sound-btn" data-speak="Met wie spreek ik?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">З ким я говорю?</span></div>
+<div class="phrase-item"><span class="phrase-nl">U spreekt met...<button class="sound-btn" data-speak="U spreekt met..." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">З вами говорить... (про себе)</span></div>
+<div class="phrase-item"><span class="phrase-nl">Een moment, ik verbind u door.<button class="sound-btn" data-speak="Een moment, ik verbind u door." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Хвилинку, я з'єднаю вас.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Kunt u even aan de lijn blijven?<button class="sound-btn" data-speak="Kunt u even aan de lijn blijven?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Можете залишитись на лінії?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Wanneer is de praktijk open?<button class="sound-btn" data-speak="Wanneer is de praktijk open?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Коли практика відкрита?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Ik ben patiënt bij deze praktijk.<button class="sound-btn" data-speak="Ik ben patiënt bij deze praktijk." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Я пацієнт цієї практики.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Ik sta nog niet ingeschreven.<button class="sound-btn" data-speak="Ik sta nog niet ingeschreven." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Я ще не зареєстрована.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Kan ik mij inschrijven als patiënt?<button class="sound-btn" data-speak="Kan ik mij inschrijven als patiënt?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Чи можу я зареєструватися як пацієнт?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Het gaat om mijn kind.<button class="sound-btn" data-speak="Het gaat om mijn kind." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Йдеться про мою дитину.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Hoe lang duurt het consult?<button class="sound-btn" data-speak="Hoe lang duurt het consult?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Скільки триває консультація?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Moet ik iets meenemen?<button class="sound-btn" data-speak="Moet ik iets meenemen?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Мені потрібно щось взяти з собою?</span></div></div>
+    <h3 style="font-size:17px; margin-top:28px;">Асистентка</h3>
+    <div class="phrase-list"><div class="phrase-item"><span class="phrase-nl">Met de assistente, waarmee kan ik u helpen?<button class="sound-btn" data-speak="Met de assistente, waarmee kan ik u helpen?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Це асистентка, чим можу допомогти?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Heeft u dit vaker gehad?<button class="sound-btn" data-speak="Heeft u dit vaker gehad?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">У вас таке бувало раніше?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Ik zal het doorgeven aan de huisarts.<button class="sound-btn" data-speak="Ik zal het doorgeven aan de huisarts." aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Я передам це лікарю.</span></div>
+<div class="phrase-item"><span class="phrase-nl">Heeft u nog andere klachten?<button class="sound-btn" data-speak="Heeft u nog andere klachten?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">У вас є ще інші симптоми?</span></div>
+<div class="phrase-item"><span class="phrase-nl">Is er nog iets anders waarmee ik u kan helpen?<button class="sound-btn" data-speak="Is er nog iets anders waarmee ik u kan helpen?" aria-label="Прослухати">🔊</button></span><span class="phrase-ua">Чи є ще щось, з чим я можу допомогти?</span></div></div>
+  </section>
+
+
+  <section class="section-card is-extra" data-animate>
+    <span class="section-eyebrow">Додатково · Вправи</span>
+    <h2 class="section-title">Ще завдання</h2>
+    
+    
+    <div class="exercise-block">
+      <h3 style="font-size:17px;">1. Виберіть правильну відповідь</h3>
+      <p class="exercise-instruction">6 завдань на ситуації з банку діалогів.</p>
+      <div class="task-counter" id="extraChoiceCounter"></div>
+      <p class="quiz-question" id="extraChoiceInstruction" style="font-size:16px;"></p>
+      <div class="choice-options" id="extraChoiceOptions"></div>
+      <div class="exercise-feedback" id="extraChoiceFeedback"></div>
+      <div class="exercise-explanation" id="extraChoiceExplanation"></div>
+      <div class="block-done" id="extraChoiceDone"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="extraChoiceNextBtn">Наступне</button>
+      </div>
+    </div>
+    <div class="exercise-block">
+      <h3 style="font-size:17px;">2. З'єднайте слово з перекладом</h3>
+      <p class="exercise-instruction">Кнопка «Новий набір слів» дає наступну шістку.</p>
+      <div class="dnd-area" id="extraDndArea"></div>
+      <div class="exercise-feedback" id="extraDndFeedback"></div>
+      <div class="block-done" id="extraDndDone"></div>
+      <div class="btn-row"><button class="btn btn-secondary" id="extraDndNewSetBtn">Новий набір слів</button></div>
+    </div>
+    <div class="exercise-block">
+      <h3 style="font-size:17px;">3. Складіть речення</h3>
+      <p class="exercise-instruction">Натискайте слова в правильному порядку. Натиснувши слово в реченні, ви повернете його назад. Якщо речення зібране неправильно — побачите правильний порядок і зможете зібрати ще раз.</p>
+      <div class="task-counter" id="extraSentenceCounter"></div>
+      <p class="exercise-instruction" id="extraSentenceInstruction" style="color:var(--color-ink); font-size:16px;"></p>
+      <div class="sentence-builder" id="extraSentenceBuilder" aria-live="polite"></div>
+      <div class="word-bank" id="extraSentenceBank"></div>
+      <div class="exercise-feedback" id="extraSentenceFeedback"></div>
+      <div class="block-done" id="extraSentenceDone"></div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="extraSentenceResetBtn">Зібрати ще раз</button>
+        <button class="btn btn-primary" id="extraSentenceNextBtn">Наступне</button>
+      </div>
+    </div>
+    <div class="exercise-block">
+      <h3 style="font-size:17px;">4. Перекладіть українською → нідерландською</h3>
+      <p class="exercise-instruction">Скажіть переклад уголос (кнопка з мікрофоном) або напишіть його в поле й натисніть «Перевірити». Якщо є кілька правильних варіантів — ми їх зарахуємо і покажемо.</p>
+      <div class="task-counter" id="extraTranslateCounter"></div>
+      <p class="fill-blank-text" id="extraTranslateText"></p>
+      <div class="simulator-voice-row" id="extraTranslateVoiceRow" style="margin-bottom:14px;">
+        <button class="btn btn-outline" id="extraTranslateRecordBtn">🎤 Сказати відповідь</button>
+      </div>
+      <input type="text" class="blank-input" id="extraTranslateInput" style="width:100%; max-width:420px;" placeholder="…або напишіть нідерландською" autocomplete="off" autocapitalize="sentences">
+      <div class="exercise-feedback" id="extraTranslateFeedback"></div>
+      <div class="exercise-explanation" id="extraTranslateExplanation"></div>
+      <div class="block-done" id="extraTranslateDone"></div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="extraTranslateCheckBtn">Перевірити</button>
+        <button class="btn btn-primary" id="extraTranslateNextBtn">Наступне</button>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section-card is-extra" data-animate>
+    <span class="section-eyebrow">Додатково · Тренажер</span>
+    <h2 class="section-title">Випадкові ситуації</h2>
+    
+    
+    <p class="section-sub">Натисніть «Нова ситуація» — отримаєте випадковий сценарій. Скажіть відповідь уголос (мікрофон) або прочитайте, потім перевірте себе.</p>
+    <div class="simulator-scenario is-empty" id="simulatorScenario"><p>Натисніть «Нова ситуація», щоб почати.</p></div>
+    <div class="simulator-voice-row" id="simulatorVoiceRow" style="display:none; margin-top:16px;">
+      <button class="btn btn-outline" id="recordAnswerBtn">🎤 Надиктувати відповідь</button>
+      <div class="simulator-voice-result" id="voiceResult"></div>
+    </div>
+    <div class="simulator-answer" id="simulatorAnswer"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="newScenarioBtn">Нова ситуація</button>
+      <button class="btn btn-outline" id="showAnswerBtn" disabled>Показати відповідь</button>
+    </div>
+  </section>
+
+
+  <section class="section-card is-extra" data-animate>
+    <span class="section-eyebrow">Додатково · Рольова гра</span>
+    <h2 class="section-title">10 ситуацій</h2>
+    
+    
+    <p class="section-sub">Усі десять ситуацій, включно з двома з основного уроку.</p>
+    <div class="roleplay-card">
+      <div class="btn-row" id="extraRoleplayPicker" style="margin-top:0;"></div>
+      <div style="margin-top:20px;">
+        <p class="exercise-instruction" id="extraRoleplayCounter"></p>
+        <div class="dialogue-line role-a">
+          <div class="speaker">A</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="extraRoleplayAssistantLine"></div></div>
+        </div>
+        <div class="dialogue-line role-b">
+          <div class="speaker">B</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="extraRoleplayUserHint"></div></div>
+        </div>
+        <div class="simulator-voice-row" id="extraRoleplayVoiceRow" style="margin-top:16px;">
+          <button class="btn btn-outline" id="extraRoleplayRecordBtn">🎤 Сказати свою репліку</button>
+          <div class="simulator-voice-result" id="extraRoleplayVoiceResult"></div>
+        </div>
+        <div class="block-done" id="extraRoleplayDone"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="extraRoleplayHintBtn">Показати підказку</button>
+          <button class="btn btn-primary" id="extraRoleplayNextBtn">Наступна репліка →</button>
+          <button class="btn btn-secondary" id="extraRoleplayRestartBtn">Почати ситуацію знову</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section-card is-extra" data-animate>
+    <span class="section-eyebrow">Додатково · Говоріть самі</span>
+    <h2 class="section-title">Ще три дзвінки</h2>
+    
+    
+      <div class="speak-card" data-speak-card="extra0">
+        <h3>4. Новий рецепт</h3>
+        <p class="speak-task">Вам потрібен новий рецепт на ліки, які ви приймаєте постійно. Поясніть, які це ліки й що вони закінчуються.</p>
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn btn-outline" data-speak-toggle="extra0">Показати зразок</button>
+          <button class="btn btn-secondary sound-btn-text" data-speak="Goedemorgen, ik heb een nieuw recept nodig voor mijn medicijnen. Het zijn medicijnen voor mijn bloeddruk, ze zijn bijna op. Mijn naam is Olena Pavlenko, geboren op 14 maart 1989. Kunt u het recept naar mijn apotheek sturen? Dank u wel.">🔊 Прослухати зразок</button>
+        </div>
+        <div class="speak-sample" id="speakSample-extra0">
+          <div>Goedemorgen, ik heb een nieuw recept nodig voor mijn medicijnen. Het zijn medicijnen voor mijn bloeddruk, ze zijn bijna op. Mijn naam is Olena Pavlenko, geboren op 14 maart 1989. Kunt u het recept naar mijn apotheek sturen? Dank u wel.</div>
+          <div class="ua">Добрий ранок, мені потрібен новий рецепт на мої ліки. Це ліки від тиску, вони майже закінчилися. Мене звати Олена Павленко, народилася 14 березня 1989. Можете надіслати рецепт у мою аптеку? Дякую.</div>
+        </div>
+        <ul class="checklist"><li><label><input type="checkbox" data-speak-check="extra0"> Привіталася й сказала, чого хочу (afspraak / recept / afzeggen)</label></li><li><label><input type="checkbox" data-speak-check="extra0"> Назвала ім'я та дату народження</label></li><li><label><input type="checkbox" data-speak-check="extra0"> Сказала, для кого (voor mijzelf / voor mijn kind)</label></li><li><label><input type="checkbox" data-speak-check="extra0"> Назвала симптом і відколи він триває (al … dagen)</label></li><li><label><input type="checkbox" data-speak-check="extra0"> Підтвердила час або перепитала й подякувала</label></li></ul>
+      </div>
+
+      <div class="speak-card" data-speak-card="extra1">
+        <h3>5. Скасувати прийом</h3>
+        <p class="speak-task">Ви хочете скасувати прийом на завтра, бо почуваєтеся краще. Поясніть це і попрощайтеся.</p>
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn btn-outline" data-speak-toggle="extra1">Показати зразок</button>
+          <button class="btn btn-secondary sound-btn-text" data-speak="Goedemiddag, ik wil mijn afspraak van morgen afzeggen. Ik voel me al beter. Mijn naam is Olena Pavlenko. Nee, ik hoef geen nieuwe afspraak. Dank u wel, tot ziens.">🔊 Прослухати зразок</button>
+        </div>
+        <div class="speak-sample" id="speakSample-extra1">
+          <div>Goedemiddag, ik wil mijn afspraak van morgen afzeggen. Ik voel me al beter. Mijn naam is Olena Pavlenko. Nee, ik hoef geen nieuwe afspraak. Dank u wel, tot ziens.</div>
+          <div class="ua">Добрий день, я хочу скасувати свій прийом на завтра. Я вже почуваюся краще. Мене звати Олена Павленко. Ні, новий прийом не потрібен. Дякую, до побачення.</div>
+        </div>
+        <ul class="checklist"><li><label><input type="checkbox" data-speak-check="extra1"> Привіталася й сказала, чого хочу (afspraak / recept / afzeggen)</label></li><li><label><input type="checkbox" data-speak-check="extra1"> Назвала ім'я та дату народження</label></li><li><label><input type="checkbox" data-speak-check="extra1"> Сказала, для кого (voor mijzelf / voor mijn kind)</label></li><li><label><input type="checkbox" data-speak-check="extra1"> Назвала симптом і відколи він триває (al … dagen)</label></li><li><label><input type="checkbox" data-speak-check="extra1"> Підтвердила час або перепитала й подякувала</label></li></ul>
+      </div>
+
+      <div class="speak-card" data-speak-card="extra2">
+        <h3>6. Зареєструватися як пацієнтка</h3>
+        <p class="speak-task">Ви нещодавно переїхали й хочете зареєструватися в цій практиці. Представтеся і поясніть, чого хочете.</p>
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn btn-outline" data-speak-toggle="extra2">Показати зразок</button>
+          <button class="btn btn-secondary sound-btn-text" data-speak="Goedemorgen, ik ben nieuw in de buurt en ik wil mij graag inschrijven als patiënt. Mijn naam is Olena Pavlenko, ik woon in de Bloemenstraat. Ja, ik heb mijn BSN bij de hand. Wat moet ik meenemen? Dank u wel.">🔊 Прослухати зразок</button>
+        </div>
+        <div class="speak-sample" id="speakSample-extra2">
+          <div>Goedemorgen, ik ben nieuw in de buurt en ik wil mij graag inschrijven als patiënt. Mijn naam is Olena Pavlenko, ik woon in de Bloemenstraat. Ja, ik heb mijn BSN bij de hand. Wat moet ik meenemen? Dank u wel.</div>
+          <div class="ua">Добрий ранок, я нова в цьому районі і хотіла б зареєструватися як пацієнтка. Мене звати Олена Павленко, я живу на Bloemenstraat. Так, мій BSN під рукою. Що мені взяти з собою? Дякую.</div>
+        </div>
+        <ul class="checklist"><li><label><input type="checkbox" data-speak-check="extra2"> Привіталася й сказала, чого хочу (afspraak / recept / afzeggen)</label></li><li><label><input type="checkbox" data-speak-check="extra2"> Назвала ім'я та дату народження</label></li><li><label><input type="checkbox" data-speak-check="extra2"> Сказала, для кого (voor mijzelf / voor mijn kind)</label></li><li><label><input type="checkbox" data-speak-check="extra2"> Назвала симптом і відколи він триває (al … dagen)</label></li><li><label><input type="checkbox" data-speak-check="extra2"> Підтвердила час або перепитала й подякувала</label></li></ul>
+      </div>
+  </section>
+
+
+  <section class="section-card is-extra" data-animate>
+    <span class="section-eyebrow">Додатково · Тест</span>
+    <h2 class="section-title">Розширений тест: 20 питань</h2>
+    
+    
+    <div class="quiz-progress" id="extraQuizProgress"></div>
+    <div class="quiz-question" id="extraQuizQuestion"></div>
+    <div class="choice-options" id="extraQuizOptions"></div>
+    <div class="exercise-feedback" id="extraQuizExplanation" style="margin-top:14px; font-weight:400; color: var(--color-ink-soft);"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="extraQuizNextBtn" disabled>Далі</button>
+    </div>
+  </section>
+  <section class="section-card result-card" data-animate id="extraResultSection">
+    <span class="section-eyebrow">Результат</span>
+    <div class="result-score" id="extraResultScore">0 / 0</div>
+    <div class="result-percent" id="extraResultPercent">0%</div>
+    <div class="result-bar-wrap"><div class="result-bar-track"><div class="result-bar-fill" id="extraResultBarFill"></div></div></div>
+    <p class="result-message" id="extraResultMessage">Пройдіть тест, щоб побачити результат.</p>
+    <div class="btn-row" style="justify-content:center;"><button class="btn btn-outline" id="extraResultRetryBtn" style="display:none;">Пройти тест ще раз</button></div>
+  </section>
+
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---------------- УТИЛІТИ: озвучка, розпізнавання, порівняння ---------------- */
+  function speakDutch(text){
+    if (!text || !('speechSynthesis' in window)) return;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'nl-NL';
+    utter.rate = 0.92;
+    const voices = window.speechSynthesis.getVoices();
+    if (voices && voices.length > 0){
+      const dutchVoice = voices.find(v => v.lang === 'nl-NL') || voices.find(v => v.lang && v.lang.startsWith('nl'));
+      if (dutchVoice) utter.voice = dutchVoice;
+    }
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+  }
+  if ('speechSynthesis' in window){
+    window.speechSynthesis.getVoices();
+    if ('onvoiceschanged' in window.speechSynthesis){
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+  }
+  // Делегування: будь-який елемент із data-speak озвучується, включно зі створеними пізніше
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-speak]');
+    if (!el) return;
+    e.stopPropagation();
+    speakDutch(el.getAttribute('data-speak'));
+  });
+
+  const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  function normalizeForCompare(text){
+    return (text || '').toLowerCase().replace(/[.,!?;:"'’«»]/g, '').replace(/\s+/g, ' ').trim();
+  }
+  // Повертає 'correct' | 'partial' | 'wrong' і найкращий еталон
+  function compareSpokenAnswer(heard, expectedList){
+    const list = Array.isArray(expectedList) ? expectedList : [expectedList];
+    const heardNorm = normalizeForCompare(heard);
+    let best = { verdict: 'wrong', ratio: 0, expected: list[0] };
+    list.forEach(expected => {
+      const expectedNorm = normalizeForCompare(expected);
+      if (heardNorm === expectedNorm){ best = { verdict: 'correct', ratio: 1, expected }; return; }
+      const expectedWords = expectedNorm.split(' ').filter(w => w.length > 1);
+      const heardWords = new Set(heardNorm.split(' '));
+      const matched = expectedWords.filter(w => heardWords.has(w)).length;
+      const ratio = expectedWords.length ? matched / expectedWords.length : 0;
+      if (ratio > best.ratio){
+        best = { verdict: ratio >= 0.75 ? 'correct' : (ratio >= 0.4 ? 'partial' : 'wrong'), ratio, expected };
+      }
+    });
+    return best;
+  }
+  function createRecognizer(){
+    if (!SpeechRecognitionAPI) return null;
+    const rec = new SpeechRecognitionAPI();
+    rec.lang = 'nl-NL';
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    return rec;
+  }
+  function recognizerErrorMessage(code){
+    if (code === 'not-allowed' || code === 'service-not-allowed') return 'Доступ до мікрофона заблоковано браузером. Дозвольте мікрофон у налаштуваннях сайту або відповідайте текстом/читайте підказку.';
+    if (code === 'no-speech') return 'Не почув жодного звуку. Спробуйте ще раз ближче до мікрофона.';
+    if (code === 'network') return 'Розпізнавання мовлення потребує інтернет-з\'єднання. Перевірте з\'єднання.';
+    if (code === 'audio-capture') return 'Мікрофон не знайдено на цьому пристрої.';
+    return 'Не вдалося розпізнати мовлення. Спробуйте ще раз.';
+  }
+  // Універсальний запис: кнопка, колбек із текстом, колбек з помилкою
+  function bindRecordButton(btn, idleLabel, onResult, onError){
+    if (!btn) return;
+    if (!SpeechRecognitionAPI){ btn.style.display = 'none'; return; }
+    let recording = false;
+    btn.addEventListener('click', () => {
+      if (recording) return;
+      const rec = createRecognizer();
+      recording = true;
+      btn.classList.add('is-recording');
+      btn.textContent = '🎙️ Слухаю…';
+      rec.addEventListener('result', (ev) => onResult(ev.results[0][0].transcript));
+      rec.addEventListener('error', (ev) => onError(recognizerErrorMessage(ev.error)));
+      rec.addEventListener('end', () => { recording = false; btn.classList.remove('is-recording'); btn.textContent = idleLabel; });
+      try { rec.start(); }
+      catch (err){ recording = false; btn.classList.remove('is-recording'); btn.textContent = idleLabel; onError('Мікрофон уже використовується. Спробуйте ще раз.'); }
+    });
+  }
+  function shuffleArray(arr){
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; }
+    return copy;
+  }
+  function escAttr(s){ return String(s).replace(/"/g, '&quot;'); }
+
+  /* ---------------- ПРОГРЕС: рахує виконані завдання основного уроку ---------------- */
+  const CORE_TASKS = ['choice','dnd','sentence','translate','roleplay','speak','quiz'];
+  const doneTasks = new Set();
+  const progressFill = document.getElementById('progressFill');
+  const progressStepLabel = document.getElementById('progressStepLabel');
+  const progressPercentLabel = document.getElementById('progressPercentLabel');
+  function markTaskDone(id){
+    if (!CORE_TASKS.includes(id) || doneTasks.has(id)) return;
+    doneTasks.add(id);
+    const percent = Math.round(doneTasks.size / CORE_TASKS.length * 100);
+    progressFill.style.width = percent + '%';
+    progressStepLabel.textContent = `Виконано ${doneTasks.size} з ${CORE_TASKS.length} завдань`;
+    progressPercentLabel.textContent = percent + '%';
+  }
+
+  /* ---------------- АНІМАЦІЯ ПОЯВИ ---------------- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting){ entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
+  /* ---------------- СХЕМА СИТУАЦІЇ ---------------- */
+  const routeSteps = document.querySelectorAll('.route-step');
+  const routeStepPreview = document.getElementById('routeStepPreview');
+  routeSteps.forEach(step => {
+    step.addEventListener('click', () => {
+      routeSteps.forEach(s => s.classList.remove('is-active'));
+      step.classList.add('is-active');
+      const text = step.getAttribute('data-step-text') || '';
+      const nl = text.split(' — ')[0];
+      routeStepPreview.innerHTML = `${text} <button class="sound-btn" data-speak="${escAttr(nl)}" aria-label="Прослухати">🔊</button>`;
+      routeStepPreview.classList.add('is-visible');
+    });
+  });
+
+  /* ---------------- ДАНІ ---------------- */
+  const dialogueBank = [
+    { title: "Записатися на прийом: головний біль і температура", lines: [
+      { role:'a', nl:"Goedemorgen, huisartsenpraktijk De Linde, u spreekt met Anouk.", ua:"Доброго ранку, лікарська практика «Де Лінде», з вами говорить Анук." },
+      { role:'b', nl:"Goedemorgen. Ik wil graag een afspraak maken, ik voel me niet goed.", ua:"Доброго ранку. Я хотіла б записатися на прийом, я погано почуваюся." },
+      { role:'a', nl:"Natuurlijk. Mag ik uw naam en geboortedatum, voor de identificatie?", ua:"Звісно. Можу я попросити ваше ім'я та дату народження, для ідентифікації?" },
+      { role:'b', nl:"Mijn naam is Olena Pavlenko, geboren op 14 maart 1989.", ua:"Мене звати Олена Павленко, дата народження — 14 березня 1989." },
+      { role:'a', nl:"Dank u wel. Wat zijn uw klachten precies?", ua:"Дякую. Які саме у вас симптоми?" },
+      { role:'b', nl:"Ik heb al drie dagen hoofdpijn en ik heb ook koorts.", ua:"У мене вже три дні болить голова, і також у мене температура." },
+      { role:'a', nl:"Ik kan u inplannen voor morgenochtend om 10 uur. Komt dat uit?", ua:"Я можу записати вас на завтра вранці на 10:00. Це вам підходить?" },
+      { role:'b', nl:"Ja, dat is goed. Dank u wel!", ua:"Так, добре. Дякую вам!" }
+    ]},
+    { title: "Дитина кашляє і має температуру", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Anouk. Waarmee kan ik u helpen?", ua:"Лікарська практика, з вами Анук. Чим можу допомогти?" },
+      { role:'b', nl:"Goedemorgen. Het gaat om mijn kind, ze hoest al drie dagen.", ua:"Доброго ранку. Йдеться про мою дитину, вона кашляє вже три дні." },
+      { role:'a', nl:"Heeft ze ook koorts?", ua:"У неї також температура?" },
+      { role:'b', nl:"Ja, vanmorgen had ze 38,9 graden.", ua:"Так, зранку у неї було 38,9." },
+      { role:'a', nl:"Dat is best hoog. Ik plan een afspraak voor vanmiddag om 14 uur.", ua:"Це досить високо. Я записую вас на сьогодні на 14:00." },
+      { role:'b', nl:"Heel graag, dank u wel.", ua:"Дуже дякую." }
+    ]},
+    { title: "Скасування прийому", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde, goedemiddag.", ua:"Лікарська практика «Де Лінде», добрий день." },
+      { role:'b', nl:"Goedemiddag, ik wil mijn afspraak van morgen afzeggen.", ua:"Добрий день, я хочу скасувати свій прийом на завтра." },
+      { role:'a', nl:"Geen probleem. Mag ik uw naam, voor het annuleren?", ua:"Без проблем. Можу я попросити ваше ім'я, щоб скасувати?" },
+      { role:'b', nl:"Olena Pavlenko.", ua:"Олена Павленко." },
+      { role:'a', nl:"Uw afspraak is geannuleerd. Wilt u een nieuwe afspraak maken?", ua:"Ваш прийом скасовано. Бажаєте записатися на новий?" },
+      { role:'b', nl:"Nee, dank u, niet nu.", ua:"Ні, дякую, не зараз." }
+    ]},
+    { title: "Перенесення прийому на інший день", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Sanne.", ua:"Лікарська практика, з вами Санне." },
+      { role:'b', nl:"Hallo, kan ik mijn afspraak verzetten naar een andere dag?", ua:"Привіт, чи можу я перенести свій прийом на інший день?" },
+      { role:'a', nl:"Welke dag komt u beter uit?", ua:"Який день вам більше підходить?" },
+      { role:'b', nl:"Donderdag, als dat mogelijk is.", ua:"Четвер, якщо це можливо." },
+      { role:'a', nl:"Donderdag om 11 uur is vrij. Past dat?", ua:"Четвер на 11:00 вільний. Підходить?" },
+      { role:'b', nl:"Ja, perfect, dank u.", ua:"Так, чудово, дякую." }
+    ]},
+    { title: "Новий рецепт на постійні ліки", lines: [
+      { role:'a', nl:"Goedemorgen, huisartsenpraktijk.", ua:"Доброго ранку, лікарська практика." },
+      { role:'b', nl:"Goedemorgen, ik heb een nieuw recept nodig voor mijn medicijnen.", ua:"Доброго ранку, мені потрібен новий рецепт на мої ліки." },
+      { role:'a', nl:"Welke medicijnen gebruikt u?", ua:"Які ліки ви приймаєте?" },
+      { role:'b', nl:"Medicijnen voor mijn bloeddruk.", ua:"Ліки для тиску." },
+      { role:'a', nl:"Ik stuur het recept door naar uw apotheek.", ua:"Я надішлю рецепт у вашу аптеку." },
+      { role:'b', nl:"Dank u wel, dat is heel fijn.", ua:"Дуже дякую, це чудово." }
+    ]},
+    { title: "Результати аналізу крові", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde.", ua:"Лікарська практика «Де Лінде»." },
+      { role:'b', nl:"Goedemiddag, ik bel voor de uitslag van mijn bloedonderzoek.", ua:"Добрий день, я телефоную щодо результатів аналізу крові." },
+      { role:'a', nl:"Een moment, ik kijk het na. Wat is uw naam?", ua:"Хвилинку, я перевірю. Як ваше ім'я?" },
+      { role:'b', nl:"Olena Pavlenko, geboren 14 maart 1989.", ua:"Олена Павленко, дата народження 14 березня 1989." },
+      { role:'a', nl:"De uitslag is normaal, de huisarts hoeft u niet terug te bellen.", ua:"Результат нормальний, лікарю не треба вам передзвонювати." },
+      { role:'b', nl:"Oké, fijn om te horen, dank u.", ua:"Гаразд, приємно це чути, дякую." }
+    ]},
+    { title: "Прохання, щоб лікар зателефонував назад", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Anouk.", ua:"Лікарська практика, з вами Анук." },
+      { role:'b', nl:"Goedemorgen, kan de huisarts mij terugbellen?", ua:"Доброго ранку, чи може лікар зателефонувати мені назад?" },
+      { role:'a', nl:"Waar gaat het om?", ua:"Про що йдеться?" },
+      { role:'b', nl:"Ik heb vragen over mijn nieuwe medicijnen.", ua:"У мене питання щодо моїх нових ліків." },
+      { role:'a', nl:"De huisarts belt u vandaag nog terug.", ua:"Лікар зателефонує вам сьогодні." },
+      { role:'b', nl:"Dank u wel.", ua:"Дякую." }
+    ]},
+    { title: "Дитина впала і вдарила голову", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, goedemiddag.", ua:"Лікарська практика, добрий день." },
+      { role:'b', nl:"Goedemiddag, mijn kind is gevallen en heeft het hoofd gestoten.", ua:"Добрий день, моя дитина впала і вдарила голову." },
+      { role:'a', nl:"Is ze bij bewustzijn? Heeft ze overgegeven?", ua:"Вона при свідомості? Вона блювала?" },
+      { role:'b', nl:"Ze is bij bewustzijn, maar ze huilt veel.", ua:"Вона при свідомості, але дуже плаче." },
+      { role:'a', nl:"Komt u nu meteen langs, wij kijken ernaar.", ua:"Приходьте прямо зараз, ми подивимось." },
+      { role:'b', nl:"Oké, we komen direct.", ua:"Гаразд, ми йдемо прямо зараз." }
+    ]},
+    { title: "Алергічна реакція з висипом", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde.", ua:"Лікарська практика «Де Лінде»." },
+      { role:'b', nl:"Goedemorgen, ik heb een allergie, ik heb rode uitslag op mijn huid.", ua:"Доброго ранку, у мене алергія, у мене червоний висип на шкірі." },
+      { role:'a', nl:"Heeft u moeite met ademhalen?", ua:"Вам важко дихати?" },
+      { role:'b', nl:"Nee, ademhalen gaat goed.", ua:"Ні, дихаю нормально." },
+      { role:'a', nl:"Dan plan ik een afspraak vanmiddag.", ua:"Тоді я записую вас на сьогодні після обіду." },
+      { role:'b', nl:"Dank u wel.", ua:"Дякую." }
+    ]},
+    { title: "Вагітна жінка записується на консультацію", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Sanne.", ua:"Лікарська практика, з вами Санне." },
+      { role:'b', nl:"Goedemorgen, ik ben zwanger en ik wil een afspraak maken.", ua:"Доброго ранку, я вагітна і хочу записатися на прийом." },
+      { role:'a', nl:"Hoeveel weken bent u zwanger?", ua:"Скільки тижнів вагітності?" },
+      { role:'b', nl:"Ongeveer zestien weken.", ua:"Приблизно шістнадцять тижнів." },
+      { role:'a', nl:"Voor de zwangerschap kunt u beter de verloskundige bellen.", ua:"Щодо вагітності краще зателефонувати до акушерки." },
+      { role:'b', nl:"Oké, dank u voor de informatie.", ua:"Гаразд, дякую за інформацію." }
+    ]},
+    { title: "Побічна дія від нових ліків", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde, goedemiddag.", ua:"Лікарська практика «Де Лінде», добрий день." },
+      { role:'b', nl:"Goedemiddag, ik heb bijwerkingen van de nieuwe medicijnen.", ua:"Добрий день, у мене побічна дія від нових ліків." },
+      { role:'a', nl:"Wat voor klachten heeft u precies?", ua:"Які саме у вас симптоми?" },
+      { role:'b', nl:"Ik ben duizelig en misselijk.", ua:"У мене запаморочення і нудота." },
+      { role:'a', nl:"Stop voorlopig met de medicijnen, de huisarts belt u terug.", ua:"Тимчасово припиніть приймати ліки, лікар зателефонує вам назад." },
+      { role:'b', nl:"Goed, dank u wel.", ua:"Добре, дякую." }
+    ]},
+    { title: "Реєстрація як нового пацієнта", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Anouk.", ua:"Лікарська практика, з вами Анук." },
+      { role:'b', nl:"Goedemorgen, ik wil mij inschrijven als nieuwe patiënt.", ua:"Доброго ранку, я хочу зареєструватися як новий пацієнт." },
+      { role:'a', nl:"Waar woont u precies?", ua:"Де саме ви проживаєте?" },
+      { role:'b', nl:"Ik woon in de Bloemenstraat, hier dichtbij.", ua:"Я живу на Bloemenstraat, тут недалеко." },
+      { role:'a', nl:"Dan kunt u zich inschrijven. Heeft u uw BSN-nummer bij de hand?", ua:"Тоді ви можете зареєструватися. У вас є номер BSN під рукою?" },
+      { role:'b', nl:"Ja, een moment...", ua:"Так, хвилинку…" }
+    ]},
+    { title: "Потрібен перекладач під час дзвінка", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, goedemorgen.", ua:"Лікарська практика, доброго ранку." },
+      { role:'b', nl:"Goedemorgen, ik spreek niet zo goed Nederlands. Kan ik een tolk krijgen?", ua:"Доброго ранку, я не дуже добре говорю нідерландською. Чи можу я отримати перекладача?" },
+      { role:'a', nl:"Ja, een moment, ik regel een tolk voor u.", ua:"Так, хвилинку, я організую перекладача для вас." },
+      { role:'b', nl:"Dank u wel, dat helpt erg.", ua:"Дуже дякую, це дуже допомагає." }
+    ]},
+    { title: "Біль у спині, важко рухатись", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde.", ua:"Лікарська практика «Де Лінде»." },
+      { role:'b', nl:"Goedemorgen, ik heb al een week pijn in mijn rug.", ua:"Доброго ранку, у мене вже тиждень болить спина." },
+      { role:'a', nl:"Kunt u nog wel bewegen en lopen?", ua:"Ви ще можете рухатись і ходити?" },
+      { role:'b', nl:"Ja, maar het doet erg pijn.", ua:"Так, але дуже болить." },
+      { role:'a', nl:"Ik plan een afspraak voor overmorgen.", ua:"Я записую вас на післязавтра." },
+      { role:'b', nl:"Dank u wel.", ua:"Дякую." }
+    ]},
+    { title: "Дитина не їсть і виглядає слабкою", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Sanne.", ua:"Лікарська практика, з вами Санне." },
+      { role:'b', nl:"Goedemiddag, mijn kind wil niet eten en ziet er slap uit.", ua:"Добрий день, моя дитина не хоче їсти і виглядає слабкою." },
+      { role:'a', nl:"Hoe lang is dit al zo?", ua:"Скільки це вже триває?" },
+      { role:'b', nl:"Al twee dagen.", ua:"Вже два дні." },
+      { role:'a', nl:"Komt u vanmiddag om 15 uur naar de praktijk.", ua:"Приходьте сьогодні о 15:00 до практики." },
+      { role:'b', nl:"Oké, dank u wel.", ua:"Гаразд, дякую." }
+    ]},
+    { title: "Порізаний палець, кровотеча", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde, goedemiddag.", ua:"Лікарська практика «Де Лінде», добрий день." },
+      { role:'b', nl:"Goedemiddag, ik heb me in mijn vinger gesneden, het bloedt.", ua:"Добрий день, я порізала палець, він кровить." },
+      { role:'a', nl:"Drukt u op de wond met een schone doek. Kunt u nu komen?", ua:"Натисніть на рану чистою тканиною. Можете прийти зараз?" },
+      { role:'b', nl:"Ja, ik kom er nu aan.", ua:"Так, я зараз іду." },
+      { role:'a', nl:"Goed, tot zo.", ua:"Добре, до зустрічі." }
+    ]},
+    { title: "Набряк і біль у нозі після падіння", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Anouk.", ua:"Лікарська практика, з вами Анук." },
+      { role:'b', nl:"Goedemorgen, mijn been is gezwollen en doet pijn na een val.", ua:"Доброго ранку, у мене опухла й болить нога після падіння." },
+      { role:'a', nl:"Kunt u nog op uw been staan?", ua:"Ви можете ще стояти на цій нозі?" },
+      { role:'b', nl:"Een beetje, maar het doet veel pijn.", ua:"Трохи, але дуже болить." },
+      { role:'a', nl:"Kom vanmiddag langs, dan kijken we ernaar.", ua:"Приходьте сьогодні після обіду, ми подивимось." },
+      { role:'b', nl:"Dank u wel.", ua:"Дякую." }
+    ]},
+    { title: "Безсоння і тривожність уже тиждень", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde.", ua:"Лікарська практика «Де Лінде»." },
+      { role:'b', nl:"Goedemorgen, ik slaap slecht en ik voel me al een week erg gespannen.", ua:"Доброго ранку, я погано сплю і вже тиждень дуже напружена." },
+      { role:'a', nl:"Heeft u dit vaker gehad?", ua:"У вас таке бувало раніше?" },
+      { role:'b', nl:"Nee, dit is de eerste keer.", ua:"Ні, це вперше." },
+      { role:'a', nl:"Ik plan een gesprek met de huisarts, volgende week dinsdag.", ua:"Я записую вас на розмову з лікарем, наступного вівторка." },
+      { role:'b', nl:"Dank u wel, dat is goed.", ua:"Дякую, це добре." }
+    ]},
+    { title: "Біль у грудях і задишка (тривожний симптом)", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, goedemorgen.", ua:"Лікарська практика, доброго ранку." },
+      { role:'b', nl:"Goedemorgen, ik heb pijn op de borst en ik ben kortademig.", ua:"Доброго ранку, у мене біль у грудях і задишка." },
+      { role:'a', nl:"Is de pijn nu op dit moment aanwezig?", ua:"Біль присутній прямо зараз?" },
+      { role:'b', nl:"Ja, het is er nu ook.", ua:"Так, він є й зараз." },
+      { role:'a', nl:"Dit kan dringend zijn, ik verbind u nu door met de huisarts.", ua:"Це може бути терміновим, я з'єдную вас з лікарем зараз." },
+      { role:'b', nl:"Oké, dank u wel.", ua:"Гаразд, дякую." }
+    ]},
+    { title: "Питання про години роботи практики", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde.", ua:"Лікарська практика «Де Лінде»." },
+      { role:'b', nl:"Goedemiddag, wanneer is de praktijk open?", ua:"Добрий день, коли практика відкрита?" },
+      { role:'a', nl:"Wij zijn open van 8 tot 17 uur, van maandag tot vrijdag.", ua:"Ми відкриті з 8:00 до 17:00, з понеділка по п'ятницю." },
+      { role:'b', nl:"En in het weekend?", ua:"А у вихідні?" },
+      { role:'a', nl:"In het weekend belt u de huisartsenpost.", ua:"У вихідні телефонуйте на пункт невідкладної допомоги." },
+      { role:'b', nl:"Dank u wel voor de informatie.", ua:"Дякую за інформацію." }
+    ]},
+    { title: "Запит дитячого консульту через біль у вусі", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Sanne.", ua:"Лікарська практика, з вами Санне." },
+      { role:'b', nl:"Goedemorgen, mijn kind heeft oorpijn en huilt veel.", ua:"Доброго ранку, у моєї дитини болить вухо і вона дуже плаче." },
+      { role:'a', nl:"Sinds wanneer heeft ze deze klachten?", ua:"Відколи у неї ці симптоми?" },
+      { role:'b', nl:"Sinds vanochtend.", ua:"Від сьогоднішнього ранку." },
+      { role:'a', nl:"Ik plan een afspraak om 13 uur.", ua:"Я записую на 13:00." },
+      { role:'b', nl:"Dank u wel.", ua:"Дякую." }
+    ]},
+    { title: "Запит на консультацію через біль у животі", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde, goedemorgen.", ua:"Лікарська практика «Де Лінде», доброго ранку." },
+      { role:'b', nl:"Goedemorgen, ik heb al twee dagen buikpijn.", ua:"Доброго ранку, у мене вже два дні болить живіт." },
+      { role:'a', nl:"Heeft u ook koorts of diarree?", ua:"У вас також температура чи діарея?" },
+      { role:'b', nl:"Een beetje diarree, geen koorts.", ua:"Трохи діарея, температури немає." },
+      { role:'a', nl:"Ik plan een afspraak voor morgen.", ua:"Я записую вас на завтра." },
+      { role:'b', nl:"Dank u wel.", ua:"Дякую." }
+    ]},
+    { title: "Дзвінок щодо забору рецепту в аптеці", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, goedemiddag.", ua:"Лікарська практика, добрий день." },
+      { role:'b', nl:"Goedemiddag, ik wil mijn medicijnen ophalen, is het recept al klaar?", ua:"Добрий день, я хочу забрати свої ліки, рецепт уже готовий?" },
+      { role:'a', nl:"Een moment, ik kijk het na... Ja, het recept staat bij de apotheek.", ua:"Хвилинку, перевірю… Так, рецепт уже в аптеці." },
+      { role:'b', nl:"Fijn, dank u wel.", ua:"Чудово, дякую." }
+    ]},
+    { title: "Запит на консультацію через висип без причини", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde.", ua:"Лікарська практика «Де Лінде»." },
+      { role:'b', nl:"Goedemorgen, ik heb een rode uitslag op mijn arm, zonder duidelijke reden.", ua:"Доброго ранку, у мене червоний висип на руці без явної причини." },
+      { role:'a', nl:"Jeukt het of doet het pijn?", ua:"Це свербить чи болить?" },
+      { role:'b', nl:"Het jeukt een beetje.", ua:"Трохи свербить." },
+      { role:'a', nl:"Ik plan een afspraak vandaag nog.", ua:"Я записую вас ще на сьогодні." },
+      { role:'b', nl:"Dank u wel.", ua:"Дякую." }
+    ]},
+    { title: "Дзвінок щодо страхування й оплати консультації", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Anouk.", ua:"Лікарська практика, з вами Анук." },
+      { role:'b', nl:"Goedemorgen, ik heb een vraag over mijn verzekering.", ua:"Доброго ранку, у мене питання щодо моєї страховки." },
+      { role:'a', nl:"Bent u verzekerd bij een Nederlandse zorgverzekeraar?", ua:"Ви застраховані в нідерландській страховій компанії?" },
+      { role:'b', nl:"Ja, sinds twee maanden.", ua:"Так, вже два місяці." },
+      { role:'a', nl:"Dan is het consult gratis voor u.", ua:"Тоді консультація для вас безкоштовна." },
+      { role:'b', nl:"Dank u voor de duidelijkheid.", ua:"Дякую за пояснення." }
+    ]},
+    { title: "Прохання прийти лікаря додому (через хворобу)", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde, goedemorgen.", ua:"Лікарська практика «Де Лінде», доброго ранку." },
+      { role:'b', nl:"Goedemorgen, ik kan niet naar de praktijk komen, kan de huisarts bij mij thuis komen?", ua:"Доброго ранку, я не можу прийти до практики, чи може лікар прийти до мене додому?" },
+      { role:'a', nl:"Wat zijn uw klachten?", ua:"Які у вас симптоми?" },
+      { role:'b', nl:"Ik heb hoge koorts en ik kan niet lopen.", ua:"У мене висока температура і я не можу ходити." },
+      { role:'a', nl:"De huisarts komt vanmiddag bij u langs.", ua:"Лікар прийде до вас сьогодні після обіду." },
+      { role:'b', nl:"Dank u wel, dat is een grote hulp.", ua:"Дуже дякую, це велика допомога." }
+    ]},
+    { title: "Запит інформації, що робити, якщо стане гірше", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, goedemiddag.", ua:"Лікарська практика, добрий день." },
+      { role:'b', nl:"Goedemiddag, ik ben verkouden, mijn neus loopt. Wat moet ik doen als het erger wordt?", ua:"Добрий день, у мене нежить. Що мені робити, якщо стане гірше?" },
+      { role:'a', nl:"Als u koorts krijgt boven 39 graden, belt u ons direct terug.", ua:"Якщо температура перевищить 39 градусів, негайно зателефонуйте нам знову." },
+      { role:'b', nl:"Oké, dat zal ik doen, dank u wel.", ua:"Гаразд, я так і зроблю, дякую." }
+    ]},
+    { title: "Питання про тривалість консультації", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde.", ua:"Лікарська практика «Де Лінде»." },
+      { role:'b', nl:"Goedemorgen, hoe lang duurt het consult ongeveer?", ua:"Доброго ранку, скільки приблизно триває консультація?" },
+      { role:'a', nl:"Een gewoon consult duurt tien minuten.", ua:"Звичайна консультація триває десять хвилин." },
+      { role:'b', nl:"Dank u, dan plan ik mijn dag daarop.", ua:"Дякую, тоді я сплановую свій день з огляду на це." }
+    ]},
+    { title: "Запитання, чи потрібно прийти натще на аналізи", lines: [
+      { role:'a', nl:"Huisartsenpraktijk, met Sanne.", ua:"Лікарська практика, з вами Санне." },
+      { role:'b', nl:"Goedemorgen, ik heb morgen een bloedonderzoek. Moet ik nuchter komen?", ua:"Доброго ранку, у мене завтра аналіз крові. Мені потрібно прийти натще?" },
+      { role:'a', nl:"Ja, niet eten of drinken na middernacht, behalve water.", ua:"Так, не їсти і не пити після півночі, окрім води." },
+      { role:'b', nl:"Begrepen, dank u wel.", ua:"Зрозуміла, дякую." }
+    ]},
+    { title: "Підтвердження часу прийому й очікування на лінії", lines: [
+      { role:'a', nl:"Huisartsenpraktijk De Linde, een moment graag, ik verbind u door.", ua:"Лікарська практика «Де Лінде», хвилинку, я з'єднаю вас." },
+      { role:'b', nl:"Oké, ik wacht wel even.", ua:"Гаразд, я трохи зачекаю." },
+      { role:'a', nl:"Sorry voor het wachten. Kunt u uw vraag herhalen?", ua:"Вибачте за очікування. Можете повторити своє питання?" },
+      { role:'b', nl:"Ja, ik wil graag een afspraak verzetten.", ua:"Так, я хотіла би перенести прийом." },
+      { role:'a', nl:"Geen probleem, welke dag wilt u?", ua:"Без проблем, який день вас цікавить?" },
+      { role:'b', nl:"Vrijdagmiddag, als dat kan.", ua:"П'ятниця після обіду, якщо можливо." }
+    ]}
+  ];
+
+  const choiceCore = [
+  {
+    "question": "Ви подзвонили. Автовідповідач каже: «Voor spoed, toets 1. Voor het maken van een afspraak, toets 2.» Ви хочете записатися на прийом. Що зробити?",
+    "options": [
+      "Натиснути 1",
+      "Натиснути 2",
+      "Нічого не натискати й чекати"
+    ],
+    "correctIndex": 1,
+    "explanation": "«Een afspraak maken» — записатися на прийом, тому 2. «Spoed» (1) — лише для невідкладних випадків; якщо натиснете 1 без потреби, вас перепитають і переведуть у звичайну чергу."
+  },
+  {
+    "question": "Асистентка питає: «Wat zijn uw klachten?» У вас болить горло. Яка відповідь правильна?",
+    "options": [
+      "Ik wil een recept.",
+      "Ik heb keelpijn.",
+      "Ik ben de huisarts."
+    ],
+    "correctIndex": 1,
+    "explanation": "«Klachten» — скарги, симптоми, тому відповідаємо симптомом: «Ik heb keelpijn». «Ik wil een recept» — «я хочу рецепт», а «Ik ben de huisarts» означає «я сімейний лікар»."
+  },
+  {
+    "question": "Асистентка питає вашу дату народження. Яка відповідь правильна?",
+    "options": [
+      "Ik woon in Amsterdam.",
+      "Mijn naam is Olena.",
+      "Ik ben geboren op 14 maart 1989."
+    ],
+    "correctIndex": 2,
+    "explanation": "«Geboortedatum» = дата народження → «Ik ben geboren op …» (я народилася …). Перші два варіанти — адреса та ім'я, їх запитують іншими словами."
+  },
+  {
+    "question": "Ви хочете записати дитину, не себе. Що ви скажете?",
+    "options": [
+      "Het is voor mijn kind.",
+      "Ik wil afzeggen.",
+      "Ik ben de assistente."
+    ],
+    "correctIndex": 0,
+    "explanation": "«Voor mijn kind» — для моєї дитини. Це варто сказати одразу: асистентка далі ставитиме питання про дитину (вік, температура). «Afzeggen» — скасувати, не те, що потрібно."
+  },
+  {
+    "question": "Асистентка питає: «Heeft u koorts gemeten?» Що вона хоче знати?",
+    "options": [
+      "Чи ви вимірювали температуру",
+      "Чи ви приймали ліки",
+      "Чи ви спали вночі"
+    ],
+    "correctIndex": 0,
+    "explanation": "«Meten» — вимірювати, «koorts» — жар. Зручна відповідь: «Ja, 38,5» або «Nee, ik heb geen thermometer» (ні, в мене немає термометра)."
+  }
+];
+  const choiceExtra = [
+  {
+    "question": "Вам потрібно скасувати прийом. Що ви скажете?",
+    "options": [
+      "Ik wil mijn afspraak afzeggen.",
+      "Ik wil een tolk.",
+      "Ik ben verkouden."
+    ],
+    "correctIndex": 0,
+    "explanation": "«Afzeggen» — скасувати. «Een tolk» — перекладач, «verkouden» — простуджена."
+  },
+  {
+    "question": "Асистентка каже: «Ik verbind u door.» Що відбувається?",
+    "options": [
+      "Вона записує вас на прийом",
+      "Вона з'єднує вас з лікарем",
+      "Вона завершує дзвінок"
+    ],
+    "correctIndex": 1,
+    "explanation": "«Doorverbinden» — з'єднати (перемкнути дзвінок). Після цієї фрази зачекайте на лінії: далі з вами говоритиме лікар."
+  },
+  {
+    "question": "У вас алергія і висип на шкірі. Що ви скажете?",
+    "options": [
+      "Ik heb een allergie, ik heb uitslag.",
+      "Ik heb een recept nodig.",
+      "Ik wil verzetten."
+    ],
+    "correctIndex": 0,
+    "explanation": "«Uitslag» — висип. «Een recept nodig hebben» — потребувати рецепт, «verzetten» — перенести прийом."
+  },
+  {
+    "question": "Асистентка питає: «Gebruikt u medicijnen?» Що вона хоче знати?",
+    "options": [
+      "Чи ви приймаєте ліки",
+      "Чи ви застраховані",
+      "Чи ви зареєстровані"
+    ],
+    "correctIndex": 0,
+    "explanation": "«Medicijnen gebruiken» — приймати ліки (буквально «використовувати»). Це стандартне тріажне питання: відповідайте «Ja, …» з назвою або «Nee»."
+  },
+  {
+    "question": "Вам потрібен лікар додому, бо ви не можете прийти. Що ви скажете?",
+    "options": [
+      "Kan de huisarts bij mij thuis komen?",
+      "Kan ik een tolk krijgen?",
+      "Moet ik nuchter komen?"
+    ],
+    "correctIndex": 0,
+    "explanation": "«Bij mij thuis komen» — прийти до мене додому. «Nuchter komen» — прийти натще (перед аналізами)."
+  },
+  {
+    "question": "Асистентка завершує розмову й питає, чи є ще щось. Яка фраза це означає?",
+    "options": [
+      "Is er nog iets anders waarmee ik u kan helpen?",
+      "Wat is uw BSN-nummer?",
+      "Bent u verzekerd?"
+    ],
+    "correctIndex": 0,
+    "explanation": "«Iets anders» — щось інше. Типова відповідь: «Nee, dank u wel» або, якщо є питання, — ставте його зараз."
+  }
+];
+
+  const dndCore = [
+  [
+    {
+      "nl": "de afspraak",
+      "ua": "прийом, домовленість"
+    },
+    {
+      "nl": "de klacht",
+      "ua": "скарга, симптом"
+    },
+    {
+      "nl": "de koorts",
+      "ua": "висока температура, жар"
+    },
+    {
+      "nl": "hoesten",
+      "ua": "кашляти"
+    },
+    {
+      "nl": "de geboortedatum",
+      "ua": "дата народження"
+    },
+    {
+      "nl": "verkouden",
+      "ua": "простуджений, з нежитем"
+    }
+  ]
+];
+  const dndExtra = [
+  [
+    {
+      "nl": "de huisarts",
+      "ua": "сімейний лікар"
+    },
+    {
+      "nl": "de assistente",
+      "ua": "асистентка"
+    },
+    {
+      "nl": "de pijn",
+      "ua": "біль"
+    },
+    {
+      "nl": "de keelpijn",
+      "ua": "біль у горлі"
+    },
+    {
+      "nl": "de oorpijn",
+      "ua": "біль у вусі"
+    },
+    {
+      "nl": "de huisartsenpost",
+      "ua": "пункт невідкладної допомоги"
+    }
+  ],
+  [
+    {
+      "nl": "terugbellen",
+      "ua": "зателефонувати назад"
+    },
+    {
+      "nl": "het recept",
+      "ua": "рецепт"
+    },
+    {
+      "nl": "de buikpijn",
+      "ua": "біль у животі"
+    },
+    {
+      "nl": "duizelig",
+      "ua": "запаморочений"
+    },
+    {
+      "nl": "misselijk",
+      "ua": "якого нудить; нудота"
+    },
+    {
+      "nl": "de uitslag",
+      "ua": "висип"
+    }
+  ],
+  [
+    {
+      "nl": "gevallen",
+      "ua": "впав / впала"
+    },
+    {
+      "nl": "gezwollen",
+      "ua": "набряклий, опухлий"
+    },
+    {
+      "nl": "afzeggen",
+      "ua": "скасувати"
+    },
+    {
+      "nl": "verzetten",
+      "ua": "перенести"
+    },
+    {
+      "nl": "het bloedonderzoek",
+      "ua": "аналіз крові"
+    },
+    {
+      "nl": "het BSN-nummer",
+      "ua": "номер соціального страхування"
+    }
+  ],
+  [
+    {
+      "nl": "het consult",
+      "ua": "консультація"
+    },
+    {
+      "nl": "de verzekering",
+      "ua": "страхування"
+    },
+    {
+      "nl": "de tolk",
+      "ua": "перекладач"
+    },
+    {
+      "nl": "ademhalen",
+      "ua": "дихати"
+    },
+    {
+      "nl": "zwanger",
+      "ua": "вагітна"
+    },
+    {
+      "nl": "de bijwerking",
+      "ua": "побічна дія"
+    },
+    {
+      "nl": "doorgeven",
+      "ua": "передати"
+    },
+    {
+      "nl": "de verloskundige",
+      "ua": "акушерка"
+    }
+  ],
+  [
+    {
+      "nl": "het consult",
+      "ua": "консультація"
+    },
+    {
+      "nl": "de verzekering",
+      "ua": "страхування"
+    },
+    {
+      "nl": "de tolk",
+      "ua": "перекладач"
+    },
+    {
+      "nl": "ademhalen",
+      "ua": "дихати"
+    },
+    {
+      "nl": "zwanger",
+      "ua": "вагітна"
+    },
+    {
+      "nl": "de bijwerking",
+      "ua": "побічна дія"
+    },
+    {
+      "nl": "doorgeven",
+      "ua": "передати"
+    },
+    {
+      "nl": "de verloskundige",
+      "ua": "акушерка"
+    }
+  ]
+];
+
+  const sentenceTasks = [
+    { instruction: "Складіть фразу «Я хотіла б записатися на прийом».", words: [{w:"Ik", o:1},{w:"wil", o:2},{w:"graag", o:3},{w:"een afspraak", o:4},{w:"maken", o:5}] },
+    { instruction: "Складіть фразу «У мене вже три дні болить голова».", words: [{w:"Ik", o:1},{w:"heb al", o:2},{w:"drie dagen", o:3},{w:"hoofdpijn", o:4}] },
+    { instruction: "Складіть фразу «Можу я попросити ваше ім'я та дату народження?».", words: [{w:"Mag ik", o:1},{w:"uw naam", o:2},{w:"en", o:3},{w:"geboortedatum", o:4}] },
+    { instruction: "Складіть фразу «Які саме у вас симптоми?».", words: [{w:"Wat", o:1},{w:"zijn", o:2},{w:"uw klachten", o:3},{w:"precies", o:4}] },
+    { instruction: "Складіть фразу «Цей час вам підходить?».", words: [{w:"Komt", o:1},{w:"deze tijd", o:2},{w:"u", o:3},{w:"uit", o:4}] },
+    { instruction: "Складіть фразу «Я хочу скасувати свій прийом».", words: [{w:"Ik", o:1},{w:"wil", o:2},{w:"mijn afspraak", o:3},{w:"afzeggen", o:4}] },
+    { instruction: "Складіть фразу «Моя дитина кашляє вже два дні».", words: [{w:"Mijn kind", o:1},{w:"hoest", o:2},{w:"al twee dagen", o:3}] },
+    { instruction: "Складіть фразу «Чи можу я отримати перекладача?».", words: [{w:"Kan ik", o:1},{w:"een tolk", o:2},{w:"krijgen", o:3}] }
+  ];
+  const sentenceCore = [sentenceTasks[0], sentenceTasks[1], sentenceTasks[2], sentenceTasks[4]];
+  const sentenceExtra = [sentenceTasks[3], sentenceTasks[5], sentenceTasks[6], sentenceTasks[7]];
+
+  const translateCore = [
+  {
+    "ua": "Я хотіла б записатися на прийом.",
+    "nl": "Ik wil graag een afspraak maken.",
+    "accepted": [
+      "Ik wil een afspraak maken.",
+      "Ik zou graag een afspraak willen maken.",
+      "Ik zou graag een afspraak maken."
+    ],
+    "explanation": "«Graag» робить прохання ввічливим («хотіла б»). Без «graag» — теж правильно, трохи прямолінійніше."
+  },
+  {
+    "ua": "Це для моєї дитини.",
+    "nl": "Het is voor mijn kind.",
+    "accepted": [
+      "Het gaat om mijn kind."
+    ],
+    "explanation": "«Voor mijn kind» — для моєї дитини. «Het gaat om mijn kind» (йдеться про мою дитину) — теж природний варіант."
+  },
+  {
+    "ua": "У мене вже три дні болить голова.",
+    "nl": "Ik heb al drie dagen hoofdpijn.",
+    "accepted": [
+      "Ik heb sinds drie dagen hoofdpijn."
+    ],
+    "explanation": "Тривалість: «al» (вже) + період. Біль — завжди через «hebben»: ik heb hoofdpijn / keelpijn / buikpijn."
+  },
+  {
+    "ua": "У мене температура.",
+    "nl": "Ik heb koorts.",
+    "accepted": [
+      "Ik heb verhoging."
+    ],
+    "explanation": "«Koorts» — жар, температура вище 38. Невелику температуру (37,5–38) називають «verhoging»."
+  },
+  {
+    "ua": "Можете повторити, будь ласка?",
+    "nl": "Kunt u dat herhalen, alstublieft?",
+    "accepted": [
+      "Kunt u dat herhalen?",
+      "Kunt u het herhalen, alstublieft?",
+      "Kunt u dat nog een keer zeggen?"
+    ],
+    "explanation": "«Kunt u …?» — ввічливе «чи можете ви». Ця фраза рятує в будь-якому дзвінку: асистентки звикли повторювати повільніше."
+  }
+];
+  const translateExtra = [
+  {
+    "ua": "Я погано почуваюся.",
+    "nl": "Ik voel me niet goed.",
+    "accepted": [
+      "Ik voel me niet lekker.",
+      "Ik ben ziek."
+    ],
+    "explanation": "«Zich niet goed/lekker voelen» — погано почуватися. «Ik ben ziek» — я хвора, теж підходить."
+  },
+  {
+    "ua": "Можу я попросити ваше ім'я та дату народження?",
+    "nl": "Mag ik uw naam en geboortedatum?",
+    "accepted": [
+      "Mag ik uw naam en uw geboortedatum?",
+      "Wat is uw naam en geboortedatum?"
+    ],
+    "explanation": "Це репліка асистентки: «Mag ik …?» — «можна мені …?». Корисно впізнавати її на слух."
+  },
+  {
+    "ua": "Які саме у вас симптоми?",
+    "nl": "Wat zijn uw klachten precies?",
+    "accepted": [
+      "Wat zijn uw klachten?"
+    ],
+    "explanation": "«Precies» — саме, точно. Без нього питання теж повне."
+  },
+  {
+    "ua": "Моя дитина кашляє вже два дні.",
+    "nl": "Mijn kind hoest al twee dagen.",
+    "accepted": [
+      "Mijn kind hoest sinds twee dagen."
+    ],
+    "explanation": "«Hoest» — форма дієслова «hoesten» для він/вона. Тривалість — «al twee dagen»."
+  },
+  {
+    "ua": "Цей час вам підходить?",
+    "nl": "Komt deze tijd u uit?",
+    "accepted": [
+      "Komt dat u uit?",
+      "Past deze tijd u?",
+      "Komt het u uit?"
+    ],
+    "explanation": "«Uitkomen» — підходити (про час). Асистентка частіше скаже «Komt dat uit?» — впізнавайте обидва варіанти."
+  },
+  {
+    "ua": "Я хочу скасувати свій прийом.",
+    "nl": "Ik wil mijn afspraak afzeggen.",
+    "accepted": [
+      "Ik wil graag mijn afspraak afzeggen.",
+      "Ik wil mijn afspraak annuleren."
+    ],
+    "explanation": "«Afzeggen» і «annuleren» — обидва означають «скасувати»; перше — розмовніше."
+  },
+  {
+    "ua": "Дякую, до побачення.",
+    "nl": "Dank u wel, tot ziens.",
+    "accepted": [
+      "Dank u, tot ziens.",
+      "Bedankt, tot ziens.",
+      "Dank u wel, dag."
+    ],
+    "explanation": "«Dank u wel» — ввічливе «дякую» на «ви». По телефону часто завершують коротким «dag!»."
+  }
+];
+
+  const simulatorScenarios = [
+    { situation: "Асистентка питає: «Wat zijn uw klachten?» У вас болить голова вже два дні.", answer: "Ik heb al twee dagen hoofdpijn." },
+    { situation: "Асистентка питає про симптоми. У вас кашель.", answer: "Ik hoest al een paar dagen." },
+    { situation: "Асистентка питає, що з вами. У вас висока температура.", answer: "Ik heb koorts, 38,7 graden." },
+    { situation: "Асистентка питає про симптоми. У вас нежить.", answer: "Ik ben verkouden, mijn neus loopt." },
+    { situation: "Асистентка питає, що болить. У вас болить спина.", answer: "Ik heb pijn in mijn rug." },
+    { situation: "Асистентка питає про симптоми. У вас болить живіт.", answer: "Ik heb buikpijn." },
+    { situation: "Асистентка питає про симптоми. У вас алергія, висип на шкірі.", answer: "Ik heb een allergie, ik heb uitslag op mijn huid." },
+    { situation: "Ви телефонуєте через дитину: дитина кашляє вже три дні.", answer: "Mijn kind hoest al drie dagen." },
+    { situation: "Ви телефонуєте через дитину: у дитини температура 39 градусів.", answer: "Mijn kind heeft koorts, 39 graden." },
+    { situation: "Ви телефонуєте через дитину: дитина впала і вдарила голову.", answer: "Mijn kind is gevallen en heeft haar hoofd gestoten." },
+    { situation: "Асистентка питає про симптоми. У вас болить горло, важко ковтати.", answer: "Ik heb keelpijn, slikken doet pijn." },
+    { situation: "Асистентка питає про симптоми. У вас болить вухо.", answer: "Ik heb oorpijn." },
+    { situation: "Асистентка питає про симптоми. У вас запаморочення.", answer: "Ik voel me duizelig." },
+    { situation: "Асистентка питає про симптоми. У вас нудота і блювання.", answer: "Ik ben misselijk en ik heb overgegeven." },
+    { situation: "Асистентка питає про симптоми. У вас діарея вже два дні.", answer: "Ik heb al twee dagen diarree." },
+    { situation: "Асистентка питає про симптоми. У вас задишка.", answer: "Ik ben kortademig." },
+    { situation: "Асистентка питає про симптоми. У вас біль у грудях.", answer: "Ik heb pijn op de borst." },
+    { situation: "Асистентка питає про симптоми. У вас висип на руці без причини.", answer: "Ik heb een rode uitslag op mijn arm." },
+    { situation: "Ви телефонуєте через дитину: у дитини болить вухо і вона плаче.", answer: "Mijn kind heeft oorpijn en huilt veel." },
+    { situation: "Ви телефонуєте через дитину: дитина не хоче їсти і виглядає слабкою.", answer: "Mijn kind wil niet eten en ziet er slap uit." },
+    { situation: "Асистентка питає про симптоми. Ви поранили палець, є кровотеча.", answer: "Ik heb me in mijn vinger gesneden, het bloedt." },
+    { situation: "Асистентка питає про симптоми. У вас набряк і біль у нозі після падіння.", answer: "Mijn been is gezwollen en doet pijn na een val." },
+    { situation: "Вам потрібен новий рецепт на ліки, які ви приймаєте регулярно.", answer: "Ik heb een nieuw recept nodig voor mijn medicijnen." },
+    { situation: "Вам потрібно дізнатися результати аналізів, які робив лікар.", answer: "Ik bel voor de uitslag van mijn bloedonderzoek." },
+    { situation: "Ви хочете скасувати прийом, який у вас завтра.", answer: "Ik wil mijn afspraak van morgen afzeggen." },
+    { situation: "Ви хочете перенести прийом на інший день.", answer: "Kan ik mijn afspraak verzetten naar een andere dag?" },
+    { situation: "Асистентка питає про симптоми. У вас безсоння і тривожність уже тиждень.", answer: "Ik slaap slecht en ik voel me al een week erg gespannen." },
+    { situation: "Ви хочете, щоб лікар зателефонував вам, а не записуватись на прийом.", answer: "Kan de huisarts mij terugbellen?" },
+    { situation: "Асистентка питає про симптоми. У вас біль у суглобах, важко рухатись.", answer: "Ik heb pijn in mijn gewrichten, bewegen doet pijn." },
+    { situation: "Ви телефонуєте, бо потрібен лікар вдома — самостійно прийти не можете.", answer: "Ik kan niet naar de praktijk komen, kan de huisarts bij mij thuis komen?" },
+    { situation: "Ви вагітна і хочете записатися на консультацію.", answer: "Ik ben zwanger en ik wil een afspraak maken." },
+    { situation: "Асистентка просить ваш номер BSN для реєстрації.", answer: "Mijn BSN-nummer is..." },
+    { situation: "У вас побічна дія від нових ліків, які прописав лікар.", answer: "Ik heb bijwerkingen van de nieuwe medicijnen." },
+    { situation: "Ви новий мешканець міста і хочете зареєструватися як пацієнт у цій практиці.", answer: "Ik wil mij graag inschrijven als nieuwe patiënt." },
+    { situation: "Асистентка каже зачекати, поки вона з'єднає вас із лікарем. Підтвердіть, що чекаєте.", answer: "Ja, natuurlijk, ik wacht." }
+  ];
+
+  const roleplaySituations = [
+    {
+      title: "1. Записатися на прийом через хворобу",
+      steps: [
+        { assistantNl: "Goedemorgen, huisartsenpraktijk De Linde, u spreekt met Anouk.", expectedAnswer: "Goedemorgen. Ik wil graag een afspraak maken, ik voel me niet goed.", hintUa: "Доброго ранку. Я хотіла б записатися на прийом, я погано почуваюся." },
+        { assistantNl: "Natuurlijk. Mag ik uw naam en geboortedatum, voor de identificatie?", expectedAnswer: "Mijn naam is Olena Pavlenko, geboren op 14 maart 1989.", hintUa: "Мене звати Олена Павленко, дата народження — 14 березня 1989." },
+        { assistantNl: "Dank u wel. Wat zijn uw klachten precies?", expectedAnswer: "Ik heb al drie dagen hoofdpijn en ik heb ook koorts.", hintUa: "У мене вже три дні болить голова, і також у мене температура." },
+        { assistantNl: "Ik kan u inplannen voor morgenochtend om 10 uur. Komt dat uit?", expectedAnswer: "Ja, dat is goed. Dank u wel!", hintUa: "Так, добре. Дякую вам!" }
+      ]
+    },
+    {
+      title: "2. Дитина кашляє і має температуру",
+      steps: [
+        { assistantNl: "Huisartsenpraktijk, met Anouk. Waarmee kan ik u helpen?", expectedAnswer: "Het gaat om mijn kind, ze hoest al drie dagen.", hintUa: "Йдеться про мою дитину, вона кашляє вже три дні." },
+        { assistantNl: "Heeft ze ook koorts?", expectedAnswer: "Ja, vanmorgen had ze 38,9 graden.", hintUa: "Так, зранку у неї було 38,9." },
+        { assistantNl: "Dat is best hoog. Ik plan een afspraak voor vanmiddag om 14 uur. Komt dat uit?", expectedAnswer: "Heel graag, dank u wel.", hintUa: "Дуже дякую." }
+      ]
+    },
+    {
+      title: "3. Скасування або перенесення прийому",
+      steps: [
+        { assistantNl: "Huisartsenpraktijk De Linde, goedemiddag.", expectedAnswer: "Goedemiddag, ik wil mijn afspraak van morgen afzeggen.", hintUa: "Добрий день, я хочу скасувати свій прийом на завтра." },
+        { assistantNl: "Geen probleem. Mag ik uw naam, voor het annuleren?", expectedAnswer: "Olena Pavlenko.", hintUa: "Олена Павленко." },
+        { assistantNl: "Uw afspraak is geannuleerd. Wilt u een nieuwe afspraak maken?", expectedAnswer: "Nee, dank u, niet nu.", hintUa: "Ні, дякую, не зараз." }
+      ]
+    },
+    {
+      title: "4. Невідкладна ситуація: біль у грудях і задишка",
+      steps: [
+        { assistantNl: "Huisartsenpraktijk, goedemorgen.", expectedAnswer: "Goedemorgen, ik heb pijn op de borst en ik ben kortademig.", hintUa: "Доброго ранку, у мене біль у грудях і задишка." },
+        { assistantNl: "Is de pijn nu op dit moment aanwezig?", expectedAnswer: "Ja, het is er nu ook.", hintUa: "Так, він є й зараз." },
+        { assistantNl: "Dit kan dringend zijn, ik verbind u nu door met de huisarts.", expectedAnswer: "Oké, dank u wel.", hintUa: "Гаразд, дякую." }
+      ]
+    },
+    {
+      title: "5. Новий рецепт на постійні ліки",
+      steps: [
+        { assistantNl: "Goedemorgen, huisartsenpraktijk.", expectedAnswer: "Goedemorgen, ik heb een nieuw recept nodig voor mijn medicijnen.", hintUa: "Доброго ранку, мені потрібен новий рецепт на мої ліки." },
+        { assistantNl: "Welke medicijnen gebruikt u?", expectedAnswer: "Medicijnen voor mijn bloeddruk.", hintUa: "Ліки для тиску." },
+        { assistantNl: "Ik stuur het recept door naar uw apotheek.", expectedAnswer: "Dank u wel, dat is heel fijn.", hintUa: "Дуже дякую, це чудово." }
+      ]
+    },
+    {
+      title: "6. Результати аналізу крові",
+      steps: [
+        { assistantNl: "Huisartsenpraktijk De Linde.", expectedAnswer: "Goedemiddag, ik bel voor de uitslag van mijn bloedonderzoek.", hintUa: "Добрий день, я телефоную щодо результатів аналізу крові." },
+        { assistantNl: "Een moment, ik kijk het na. Wat is uw naam?", expectedAnswer: "Olena Pavlenko, geboren 14 maart 1989.", hintUa: "Олена Павленко, дата народження 14 березня 1989." },
+        { assistantNl: "De uitslag is normaal, de huisarts hoeft u niet terug te bellen.", expectedAnswer: "Oké, fijn om te horen, dank u.", hintUa: "Гаразд, приємно це чути, дякую." }
+      ]
+    },
+    {
+      title: "7. Біль у животі",
+      steps: [
+        { assistantNl: "Huisartsenpraktijk De Linde, goedemorgen.", expectedAnswer: "Goedemorgen, ik heb al twee dagen buikpijn.", hintUa: "Доброго ранку, у мене вже два дні болить живіт." },
+        { assistantNl: "Heeft u ook koorts of diarree?", expectedAnswer: "Een beetje diarree, geen koorts.", hintUa: "Трохи діарея, температури немає." },
+        { assistantNl: "Ik plan een afspraak voor morgen. Komt dat uit?", expectedAnswer: "Dank u wel, dat is goed.", hintUa: "Дякую, це добре." }
+      ]
+    },
+    {
+      title: "8. Алергічна реакція з висипом",
+      steps: [
+        { assistantNl: "Huisartsenpraktijk De Linde.", expectedAnswer: "Goedemorgen, ik heb een allergie, ik heb rode uitslag op mijn huid.", hintUa: "Доброго ранку, у мене алергія, у мене червоний висип на шкірі." },
+        { assistantNl: "Heeft u moeite met ademhalen?", expectedAnswer: "Nee, ademhalen gaat goed.", hintUa: "Ні, дихаю нормально." },
+        { assistantNl: "Dan plan ik een afspraak vanmiddag.", expectedAnswer: "Dank u wel.", hintUa: "Дякую." }
+      ]
+    },
+    {
+      title: "9. Реєстрація як нового пацієнта",
+      steps: [
+        { assistantNl: "Huisartsenpraktijk, met Anouk.", expectedAnswer: "Goedemorgen, ik wil mij inschrijven als nieuwe patiënt.", hintUa: "Доброго ранку, я хочу зареєструватися як новий пацієнт." },
+        { assistantNl: "Waar woont u precies?", expectedAnswer: "Ik woon in de Bloemenstraat, hier dichtbij.", hintUa: "Я живу на Bloemenstraat, тут недалеко." },
+        { assistantNl: "Dan kunt u zich inschrijven. Heeft u uw BSN-nummer bij de hand?", expectedAnswer: "Ja, een moment...", hintUa: "Так, хвилинку…" }
+      ]
+    },
+    {
+      title: "10. Прохання, щоб лікар прийшов додому",
+      steps: [
+        { assistantNl: "Huisartsenpraktijk De Linde, goedemorgen.", expectedAnswer: "Goedemorgen, ik kan niet naar de praktijk komen, kan de huisarts bij mij thuis komen?", hintUa: "Доброго ранку, я не можу прийти до практики, чи може лікар прийти до мене додому?" },
+        { assistantNl: "Wat zijn uw klachten?", expectedAnswer: "Ik heb hoge koorts en ik kan niet lopen.", hintUa: "У мене висока температура і я не можу ходити." },
+        { assistantNl: "De huisarts komt vanmiddag bij u langs.", expectedAnswer: "Dank u wel, dat is een grote hulp.", hintUa: "Дуже дякую, це велика допомога." }
+      ]
+    }
+  ];
+  const roleplayCore = roleplaySituations.slice(0, 2);
+
+  const quizQuestions = [
+    {
+      question: "Як запитати «Можна записатися на прийом?» нідерландською?",
+      options: ["Ik wil graag een afspraak maken.", "Ik ben de huisarts.", "Wat is uw naam?"],
+      correctIndex: 0,
+      explanation: "«Ik wil graag een afspraak maken» буквально означає «я хотіла б зробити прийом» — це стандартна фраза для запису. Інші варіанти не стосуються запису на прийом."
+    },
+    {
+      question: "Що означає слово «de koorts»?",
+      options: ["Кашель", "Висока температура", "Біль у горлі"],
+      correctIndex: 1,
+      explanation: "«De koorts» — це підвищена температура тіла (жар). «Hoesten» — кашляти, «keelpijn» — біль у горлі."
+    },
+    {
+      question: "Асистентка питає: «Wat is uw geboortedatum?» Що вона хоче знати?",
+      options: ["Ваше ім'я", "Вашу адресу", "Вашу дату народження"],
+      correctIndex: 2,
+      explanation: "«Geboortedatum» складається з «geboorte» (народження) і «datum» (дата) — отже, це питання про дату народження, потрібну для ідентифікації пацієнта."
+    },
+    {
+      question: "Як сказати «У мене вже три дні болить голова»?",
+      options: ["Ik heb al drie dagen hoofdpijn.", "Ik ga drie dagen weg.", "Ik wil drie afspraken."],
+      correctIndex: 0,
+      explanation: "«Ik heb al drie dagen hoofdpijn» точно передає тривалість симптому: «al» (вже) + кількість днів + «hoofdpijn» (головний біль)."
+    },
+    {
+      question: "Що відповість асистентка, якщо хоче передзвонити пізніше, а не записати на прийом одразу?",
+      options: ["De huisarts belt u terug.", "U moet nu komen.", "Dat kost niets."],
+      correctIndex: 0,
+      explanation: "«De huisarts belt u terug» означає «лікар зателефонує вам назад» — це типова відповідь, коли асистентка спершу консультується з лікарем."
+    },
+    {
+      question: "Яке слово означає «дитина кашляє»?",
+      options: ["Mijn kind hoest.", "Mijn kind slaapt.", "Mijn kind eet."],
+      correctIndex: 0,
+      explanation: "«Hoest» — третя особа однини від дієслова «hoesten» (кашляти). «Slaapt» — спить, «eet» — їсть."
+    },
+    {
+      question: "Як перепитати, якщо ви не зрозуміли асистентку?",
+      options: ["Tot ziens.", "Kunt u dat herhalen, alstublieft?", "Ik weet het niet."],
+      correctIndex: 1,
+      explanation: "«Kunt u dat herhalen, alstublieft?» означає «Можете повторити, будь ласка?» — це ввічлива і дуже корисна фраза, якщо ви не встигли зрозуміти сказане."
+    },
+    {
+      question: "Що означає «de huisartsenpost»?",
+      options: ["Звичайна практика лікаря вдень", "Пункт невідкладної допомоги ввечері/вночі/у вихідні", "Аптека"],
+      correctIndex: 1,
+      explanation: "«Huisartsenpost» — це окрема служба для термінових випадків поза робочим часом звичайної huisartsenpraktijk: ввечері, вночі та у вихідні."
+    },
+    {
+      question: "Як сказати «Це для моєї дитини»?",
+      options: ["Het is voor mijn kind.", "Het is voor mij.", "Het is voor de assistente."],
+      correctIndex: 0,
+      explanation: "«Voor mijn kind» означає «для моєї дитини». Це важливо сказати на початку дзвінка, якщо записуєте дитину, а не себе."
+    },
+    {
+      question: "Асистентка каже: «Komt het u morgen om 10 uur uit?» Що вона питає?",
+      options: ["Чи підходить вам завтра о 10:00", "Чи болить у вас завтра", "Чи прийдете ви сьогодні"],
+      correctIndex: 0,
+      explanation: "«Komt het u uit?» — стійкий вираз «це вам підходить/зручно?», де «het» — формальний підмет, а «u» — додаток (вам). Разом із «morgen om 10 uur» (завтра о 10:00) питання звучить: «Завтра о 10:00 вам підходить?»."
+    },
+    {
+      question: "Що означає слово «duizelig»?",
+      options: ["Запаморочений", "Втомлений", "Голодний"],
+      correctIndex: 0,
+      explanation: "«Duizelig» означає «запаморочений» — стан, коли крутиться голова. Вживається у фразі «Ik voel me duizelig» (у мене запаморочення)."
+    },
+    {
+      question: "Як сказати «Мене нудить»?",
+      options: ["Ik ben misselijk.", "Ik ben moe.", "Ik ben boos."],
+      correctIndex: 0,
+      explanation: "«Misselijk» — нудота, відчуття, що зараз вирве. «Moe» означає втомлений, «boos» — злий."
+    },
+    {
+      question: "Що таке «de apotheek»?",
+      options: ["Аптека", "Лікарня", "Поліклініка"],
+      correctIndex: 0,
+      explanation: "«De apotheek» — це аптека, місце, де забирають ліки за рецептом («recept»), виписаним лікарем."
+    },
+    {
+      question: "Асистентка каже: «Ik verbind u door.» Що відбувається?",
+      options: ["Вона з'єднує вас з лікарем по телефону", "Вона завершує дзвінок", "Вона записує вас на прийом"],
+      correctIndex: 0,
+      explanation: "«Doorverbinden» означає «з'єднати» — асистентка перемикає дзвінок на іншу людину, найчастіше на лікаря."
+    },
+    {
+      question: "Як запитати «Чи можу я отримати перекладача?»",
+      options: ["Kan ik een tolk krijgen?", "Kan ik een recept krijgen?", "Kan ik een afspraak krijgen?"],
+      correctIndex: 0,
+      explanation: "«De tolk» означає «перекладач». Цю фразу варто знати, якщо вам важко висловитися нідерландською під час важливого дзвінка."
+    },
+    {
+      question: "Що означає слово «zwanger»?",
+      options: ["Вагітна", "Хвора", "Втомлена"],
+      correctIndex: 0,
+      explanation: "«Zwanger» означає «вагітна». Цю інформацію важливо повідомити асистентці, якщо вона впливає на лікування чи призначення."
+    },
+    {
+      question: "Як сказати «У мене побічна дія від ліків»?",
+      options: ["Ik heb bijwerkingen van de medicijnen.", "Ik heb een recept nodig.", "Ik ben verkouden."],
+      correctIndex: 0,
+      explanation: "«De bijwerking» означає «побічна дія». Якщо ліки викликають неочікувані симптоми, варто повідомити про це лікаря цією фразою."
+    },
+    {
+      question: "Що означає «het BSN-nummer»?",
+      options: ["Номер соціального страхування", "Номер телефону", "Номер прийому"],
+      correctIndex: 0,
+      explanation: "BSN (Burgerservicenummer) — це особистий ідентифікаційний номер у Нідерландах, який часто запитують для реєстрації в медичних закладах."
+    },
+    {
+      question: "Асистентка каже: «Dit is een spoedgeval.» Що це означає?",
+      options: ["Це невідкладний випадок", "Це звичайний прийом", "Це скасований прийом"],
+      correctIndex: 0,
+      explanation: "«Het spoedgeval» означає «невідкладний випадок» — ситуація, що потребує термінової реакції, на відміну від звичайного запису на прийом."
+    },
+    {
+      question: "Як запитати «Чи можу я перенести прийом?»",
+      options: ["Kan ik de afspraak verzetten?", "Kan ik de afspraak maken?", "Kan ik de afspraak betalen?"],
+      correctIndex: 0,
+      explanation: "«Verzetten» означає «перенести» (на інший час чи дату). Це інша дія, ніж «afzeggen» (скасувати) чи «maken» (записатися)."
+    },
+    {
+      question: "Що означає вислів «Ik ben patiënt bij deze praktijk»?",
+      options: ["Я пацієнт цієї практики", "Я лікар цієї практики", "Я хочу скасувати реєстрацію"],
+      correctIndex: 0,
+      explanation: "Ця фраза підтверджує, що ви вже зареєстровані як пацієнт у конкретній huisartsenpraktijk — це часто запитують на початку дзвінка."
+    },
+    {
+      question: "Як сказати «Мені важко дихати»?",
+      options: ["Ik kan moeilijk ademhalen.", "Ik kan niet slapen.", "Ik kan niet lopen."],
+      correctIndex: 0,
+      explanation: "«Ademhalen» означає «дихати». Це важливий симптом, про який варто негайно повідомити, оскільки він може свідчити про серйозний стан."
+    },
+    {
+      question: "Що означає слово «wachten»?",
+      options: ["Чекати", "Йти", "Телефонувати"],
+      correctIndex: 0,
+      explanation: "«Wachten» означає «чекати». Асистентка може попросити: «Kunt u even wachten?» (Можете трохи зачекати?)."
+    },
+    {
+      question: "Як сказати «Я хочу зареєструватися як новий пацієнт»?",
+      options: ["Ik wil mij inschrijven als nieuwe patiënt.", "Ik wil mijn afspraak afzeggen.", "Ik wil een recept ophalen."],
+      correctIndex: 0,
+      explanation: "«Inschrijven» означає «зареєструватися». Це потрібна фраза, якщо ви ще не є пацієнтом певної лікарської практики й хочете записатися вперше."
+    },
+    {
+      question: "Що відповість пацієнтка, якщо у неї болить вухо?",
+      options: ["Ik heb oorpijn.", "Ik heb buikpijn.", "Ik heb keelpijn."],
+      correctIndex: 0,
+      explanation: "«De oorpijn» означає «біль у вусі» («oor» — вухо). «Buikpijn» — біль у животі, «keelpijn» — біль у горлі."
+    },
+    {
+      question: "Як запитати «Скільки триває консультація?»",
+      options: ["Hoe lang duurt het consult?", "Hoeveel kost het consult?", "Waar is het consult?"],
+      correctIndex: 0,
+      explanation: "«Het consult» означає «консультація» (прийом у лікаря). «Hoe lang duurt...?» — стандартна конструкція для запитання про тривалість."
+    },
+    {
+      question: "Що означає слово «verkouden»?",
+      options: ["Простуджений, з нежитем", "Голодний", "Поранений"],
+      correctIndex: 0,
+      explanation: "«Verkouden» означає «простуджений». Природний вираз — «Ik ben verkouden» (у мене нежить/простуда), а не буквальний переклад зі словом «neus»."
+    },
+    {
+      question: "Асистентка питає: «Is het dringend?» Що вона хоче знати?",
+      options: ["Чи це термінове", "Чи це дорого", "Чи це довго"],
+      correctIndex: 0,
+      explanation: "«Dringend» означає «термінове, невідкладне». Асистентка ставить це питання, щоб визначити пріоритет вашого звернення (тріаж)."
+    },
+    {
+      question: "Як сказати «Дитина впала і вдарила голову»?",
+      options: ["Mijn kind is gevallen en heeft het hoofd gestoten.", "Mijn kind heeft koorts.", "Mijn kind wil eten."],
+      correctIndex: 0,
+      explanation: "«Gevallen» — дієприкметник від «vallen» (падати). «Het hoofd gestoten» означає «вдарив(ла) голову»."
+    },
+    {
+      question: "Що означає фраза «Moet ik nuchter komen?»",
+      options: ["Чи потрібно прийти натще", "Чи потрібно прийти раніше", "Чи потрібно платити заздалегідь"],
+      correctIndex: 0,
+      explanation: "«Nuchter» означає «натще» (не їсти і не пити перед процедурою) — важливе запитання перед аналізами крові чи деякими обстеженнями."
+    }
+  ];
+  const CORE_QUIZ_IDX = [0, 1, 2, 3, 4, 5, 6, 8, 9, 26];
+  const quizCore = CORE_QUIZ_IDX.map(i => quizQuestions[i]);
+  const quizExtra = quizQuestions.filter((q, i) => !CORE_QUIZ_IDX.includes(i));
+
+  /* ---------------- ДІАЛОГ ---------------- */
+  function initDialogue(prefix, bank, withNext){
+    const listEl = document.getElementById(prefix + 'List');
+    const titleEl = document.getElementById(prefix + 'Title');
+    const counterEl = document.getElementById(prefix + 'Counter');
+    const toggleBtn = document.getElementById(prefix + 'ToggleBtn');
+    const nextBtn = document.getElementById(prefix + 'NextBtn');
+    if (!listEl) return;
+    let index = 0;
+    function render(){
+      const dlg = bank[index];
+      if (titleEl) titleEl.textContent = dlg.title;
+      if (counterEl) counterEl.textContent = `Діалог ${index + 1} з ${bank.length}`;
+      listEl.innerHTML = dlg.lines.map(line => `
+        <div class="dialogue-line ${line.role === 'a' ? 'role-a' : 'role-b'}">
+          <div class="speaker">${line.role === 'a' ? 'A' : 'B'}</div>
+          <div class="dialogue-bubble">
+            <div class="dialogue-nl">${line.nl} <button class="sound-btn" data-speak="${escAttr(line.nl)}" aria-label="Прослухати">🔊</button></div>
+            <div class="dialogue-translation">${line.ua}</div>
+          </div>
+        </div>`).join('');
+      if (toggleBtn && toggleBtn.textContent === 'Сховати переклад'){
+        listEl.querySelectorAll('.dialogue-translation').forEach(t => t.classList.add('is-visible'));
+      }
+    }
+    if (toggleBtn){
+      toggleBtn.addEventListener('click', () => {
+        const translations = listEl.querySelectorAll('.dialogue-translation');
+        const isShowing = translations[0] && translations[0].classList.contains('is-visible');
+        translations.forEach(t => t.classList.toggle('is-visible', !isShowing));
+        toggleBtn.textContent = isShowing ? 'Показати переклад' : 'Сховати переклад';
+      });
+    }
+    if (nextBtn && withNext){
+      nextBtn.addEventListener('click', () => { index = (index + 1) % bank.length; render(); });
+    }
+    render();
+  }
+  initDialogue('coreDialogue', [dialogueBank[0]], false);
+  initDialogue('extraDialogue', dialogueBank, true);
+
+  /* ---------------- ЛЕКСИКА ---------------- */
+  document.querySelectorAll('.vocab-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('is-open'));
+    card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); card.classList.toggle('is-open'); } });
+  });
+
+  /* ---------------- ВПРАВА 1: вибір відповіді ---------------- */
+  function initChoice(prefix, tasks, taskId){
+    const instructionEl = document.getElementById(prefix + 'Instruction');
+    if (!instructionEl) return;
+    const optionsEl = document.getElementById(prefix + 'Options');
+    const feedbackEl = document.getElementById(prefix + 'Feedback');
+    const explanationEl = document.getElementById(prefix + 'Explanation');
+    const counterEl = document.getElementById(prefix + 'Counter');
+    const doneEl = document.getElementById(prefix + 'Done');
+    const nextBtn = document.getElementById(prefix + 'NextBtn');
+    let index = 0, correct = 0, answered = false;
+
+    function render(){
+      const task = tasks[index];
+      answered = false;
+      counterEl.textContent = `Завдання ${index + 1} з ${tasks.length}`;
+      instructionEl.textContent = task.question;
+      feedbackEl.textContent = ''; feedbackEl.className = 'exercise-feedback';
+      explanationEl.textContent = ''; explanationEl.classList.remove('is-visible');
+      nextBtn.textContent = index === tasks.length - 1 ? 'Завершити блок' : 'Наступне';
+      optionsEl.innerHTML = task.options.map((opt, i) => `<button class="choice-option" data-correct="${i === task.correctIndex}">${opt}</button>`).join('');
+      optionsEl.querySelectorAll('.choice-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (answered) return;
+          answered = true;
+          const isCorrect = btn.getAttribute('data-correct') === 'true';
+          if (isCorrect) correct++;
+          optionsEl.querySelectorAll('.choice-option').forEach(b => b.disabled = true);
+          btn.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
+          if (!isCorrect) optionsEl.querySelector('[data-correct="true"]').classList.add('is-correct');
+          feedbackEl.textContent = isCorrect ? '✓ Правильно!' : '✗ Не зовсім. Правильна відповідь підсвічена зеленим — прочитайте, чому.';
+          feedbackEl.className = 'exercise-feedback ' + (isCorrect ? 'is-correct' : 'is-wrong');
+          explanationEl.textContent = task.explanation || '';
+          explanationEl.classList.add('is-visible');
+        });
+      });
+    }
+    nextBtn.addEventListener('click', () => {
+      if (!answered){ feedbackEl.textContent = 'Спершу виберіть відповідь.'; feedbackEl.className = 'exercise-feedback'; return; }
+      if (index === tasks.length - 1){
+        doneEl.textContent = `✓ Блок виконано: ${correct} з ${tasks.length} правильно.` + (correct < tasks.length ? ' Можете пройти ще раз.' : '');
+        doneEl.classList.add('is-visible');
+        if (taskId) markTaskDone(taskId);
+        index = 0; correct = 0;
+      } else { index++; }
+      render();
+    });
+    render();
+  }
+  initChoice('coreChoice', choiceCore, 'choice');
+  initChoice('extraChoice', choiceExtra, null);
+
+  /* ---------------- ВПРАВА 2: з'єднайте пари ---------------- */
+  function initDnd(prefix, sets, taskId){
+    const areaEl = document.getElementById(prefix + 'Area');
+    if (!areaEl) return;
+    const feedbackEl = document.getElementById(prefix + 'Feedback');
+    const doneEl = document.getElementById(prefix + 'Done');
+    const newSetBtn = document.getElementById(prefix + 'NewSetBtn');
+    let setIndex = 0;
+
+    function render(){
+      const wordSet = sets[setIndex];
+      const shuffled = shuffleArray(wordSet);
+      areaEl.innerHTML = `
+        <div class="dnd-pool">${wordSet.map((p, i) => `<div class="dnd-chip" data-match="w${i}">${p.nl}</div>`).join('')}</div>
+        <div class="dnd-targets">${shuffled.map(p => `<div class="dnd-target" data-match="w${wordSet.indexOf(p)}">${p.ua}</div>`).join('')}</div>`;
+      feedbackEl.textContent = ''; feedbackEl.className = 'exercise-feedback';
+      doneEl.classList.remove('is-visible');
+      attach(wordSet);
+    }
+    function attach(wordSet){
+      const chips = areaEl.querySelectorAll('.dnd-chip');
+      const targets = areaEl.querySelectorAll('.dnd-target');
+      let correctCount = 0, selected = null;
+      chips.forEach(chip => chip.addEventListener('click', () => {
+        if (chip.classList.contains('is-placed')) return;
+        if (selected) selected.classList.remove('is-selected');
+        if (selected === chip){ selected = null; return; }
+        selected = chip; chip.classList.add('is-selected');
+      }));
+      targets.forEach(target => target.addEventListener('click', () => {
+        if (target.classList.contains('is-filled')) return;
+        if (!selected){ feedbackEl.textContent = 'Спершу торкніться слова зверху, потім перекладу.'; feedbackEl.className = 'exercise-feedback'; return; }
+        if (selected.getAttribute('data-match') === target.getAttribute('data-match')){
+          target.classList.add('is-filled');
+          target.textContent = selected.textContent + ' → ' + target.textContent;
+          selected.classList.add('is-placed'); selected.classList.remove('is-selected'); selected = null;
+          correctCount++;
+          if (correctCount === targets.length){
+            feedbackEl.textContent = '✓ Усі пари з\'єднано правильно!'; feedbackEl.className = 'exercise-feedback is-correct';
+            doneEl.textContent = sets.length > 1 ? '✓ Набір виконано.' : '✓ Блок виконано.'; doneEl.classList.add('is-visible');
+            if (taskId) markTaskDone(taskId);
+          } else { feedbackEl.textContent = ''; feedbackEl.className = 'exercise-feedback'; }
+        } else {
+          const wrongWord = selected.textContent;
+          const pair = wordSet.find(p => p.nl === wrongWord);
+          selected.classList.remove('is-selected'); selected = null;
+          feedbackEl.textContent = `✗ Це не та пара. «${wrongWord}» означає «${pair ? pair.ua : '…'}». Спробуйте ще раз.`;
+          feedbackEl.className = 'exercise-feedback is-wrong';
+        }
+      }));
+    }
+    if (newSetBtn) newSetBtn.addEventListener('click', () => { setIndex = (setIndex + 1) % sets.length; render(); });
+    render();
+  }
+  initDnd('coreDnd', dndCore, 'dnd');
+  initDnd('extraDnd', dndExtra, null);
+
+  /* ---------------- ВПРАВА 3: складіть речення ---------------- */
+  function initSentence(prefix, tasks, taskId){
+    const builderEl = document.getElementById(prefix + 'Builder');
+    if (!builderEl) return;
+    const bankEl = document.getElementById(prefix + 'Bank');
+    const instructionEl = document.getElementById(prefix + 'Instruction');
+    const feedbackEl = document.getElementById(prefix + 'Feedback');
+    const counterEl = document.getElementById(prefix + 'Counter');
+    const doneEl = document.getElementById(prefix + 'Done');
+    const nextBtn = document.getElementById(prefix + 'NextBtn');
+    const resetBtn = document.getElementById(prefix + 'ResetBtn');
+    let index = 0, solved = false;
+
+    function correctSentence(task){ return [...task.words].sort((a, b) => a.o - b.o).map(w => w.w).join(' '); }
+    function render(){
+      const task = tasks[index];
+      solved = false;
+      counterEl.textContent = `Речення ${index + 1} з ${tasks.length}`;
+      instructionEl.textContent = task.instruction;
+      builderEl.innerHTML = '';
+      feedbackEl.textContent = ''; feedbackEl.className = 'exercise-feedback';
+      nextBtn.textContent = index === tasks.length - 1 ? 'Завершити блок' : 'Наступне';
+      bankEl.innerHTML = shuffleArray(task.words).map(item => `<button class="word-tile" data-order="${item.o}">${item.w}</button>`).join('');
+      bankEl.querySelectorAll('.word-tile').forEach(tile => tile.addEventListener('click', () => {
+        if (tile.classList.contains('is-used')) return;
+        const clone = tile.cloneNode(true);
+        clone.addEventListener('click', () => { clone.remove(); tile.classList.remove('is-used'); feedbackEl.textContent = ''; feedbackEl.className = 'exercise-feedback'; });
+        builderEl.appendChild(clone);
+        tile.classList.add('is-used');
+        check(task);
+      }));
+    }
+    function check(task){
+      const tiles = [...builderEl.querySelectorAll('.word-tile')];
+      if (tiles.length !== task.words.length) return;
+      const ok = tiles.every((t, i) => parseInt(t.getAttribute('data-order'), 10) === i + 1);
+      if (ok){
+        solved = true;
+        feedbackEl.innerHTML = `✓ Правильно: ${correctSentence(task)} <button class="sound-btn" data-speak="${escAttr(correctSentence(task))}" aria-label="Прослухати">🔊</button>`;
+        feedbackEl.className = 'exercise-feedback is-correct';
+      } else {
+        feedbackEl.innerHTML = `✗ Порядок не той. Правильно: <em>${correctSentence(task)}</em>. Натисніть «Зібрати ще раз» і повторіть. Запам'ятайте: у реченні-твердженні дієслово стоїть на другому місці (Ik <u>wil</u> …, Ik <u>heb</u> …), у питанні — на першому (<u>Komt</u> deze tijd u uit?).`;
+        feedbackEl.className = 'exercise-feedback is-wrong';
+      }
+    }
+    resetBtn.addEventListener('click', render);
+    nextBtn.addEventListener('click', () => {
+      if (!solved){ feedbackEl.textContent = 'Спершу зберіть речення правильно.'; feedbackEl.className = 'exercise-feedback'; return; }
+      if (index === tasks.length - 1){
+        doneEl.textContent = '✓ Блок виконано.'; doneEl.classList.add('is-visible');
+        if (taskId) markTaskDone(taskId);
+        index = 0;
+      } else { index++; }
+      render();
+    });
+    render();
+  }
+  initSentence('coreSentence', sentenceCore, 'sentence');
+  initSentence('extraSentence', sentenceExtra, null);
+
+  /* ---------------- ВПРАВА 4: переклад (голос або текст) ---------------- */
+  function initTranslate(prefix, tasks, taskId){
+    const textEl = document.getElementById(prefix + 'Text');
+    if (!textEl) return;
+    const inputEl = document.getElementById(prefix + 'Input');
+    const feedbackEl = document.getElementById(prefix + 'Feedback');
+    const explanationEl = document.getElementById(prefix + 'Explanation');
+    const counterEl = document.getElementById(prefix + 'Counter');
+    const doneEl = document.getElementById(prefix + 'Done');
+    const checkBtn = document.getElementById(prefix + 'CheckBtn');
+    const nextBtn = document.getElementById(prefix + 'NextBtn');
+    const recordBtn = document.getElementById(prefix + 'RecordBtn');
+    let index = 0, checked = false, correct = 0;
+
+    function render(){
+      const task = tasks[index];
+      checked = false;
+      counterEl.textContent = `Речення ${index + 1} з ${tasks.length}`;
+      textEl.textContent = task.ua;
+      inputEl.value = '';
+      feedbackEl.textContent = ''; feedbackEl.className = 'exercise-feedback';
+      explanationEl.textContent = ''; explanationEl.classList.remove('is-visible');
+      nextBtn.textContent = index === tasks.length - 1 ? 'Завершити блок' : 'Наступне';
+    }
+    function check(answer){
+      const task = tasks[index];
+      const all = [task.nl].concat(task.accepted || []);
+      const res = compareSpokenAnswer(answer, all);
+      if (!checked && res.verdict === 'correct') correct++;
+      checked = true;
+      const alt = (task.accepted && task.accepted.length) ? ` Також правильно: ${task.accepted.join(' / ')}` : '';
+      if (res.verdict === 'correct'){
+        const exact = all.some(a => normalizeForCompare(a) === normalizeForCompare(answer));
+        feedbackEl.innerHTML = (exact ? '✓ Правильно!' : `✓ Зараховано. Зразок: <em>${res.expected}</em>`) + ` <button class="sound-btn" data-speak="${escAttr(task.nl)}" aria-label="Прослухати">🔊</button>`;
+        feedbackEl.className = 'exercise-feedback is-correct';
+      } else if (res.verdict === 'partial'){
+        feedbackEl.innerHTML = `~ Частково. Зразок: <em>${task.nl}</em> <button class="sound-btn" data-speak="${escAttr(task.nl)}" aria-label="Прослухати">🔊</button>`;
+        feedbackEl.className = 'exercise-feedback is-wrong';
+      } else {
+        feedbackEl.innerHTML = `✗ Зразок: <em>${task.nl}</em> <button class="sound-btn" data-speak="${escAttr(task.nl)}" aria-label="Прослухати">🔊</button>`;
+        feedbackEl.className = 'exercise-feedback is-wrong';
+      }
+      explanationEl.textContent = (task.explanation || '') + alt;
+      explanationEl.classList.add('is-visible');
+    }
+    checkBtn.addEventListener('click', () => {
+      const typed = inputEl.value || '';
+      if (!typed.trim()){ feedbackEl.textContent = 'Напишіть або надиктуйте відповідь спочатку.'; feedbackEl.className = 'exercise-feedback'; return; }
+      check(typed);
+    });
+    inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter'){ e.preventDefault(); checkBtn.click(); } });
+    nextBtn.addEventListener('click', () => {
+      if (!checked){ feedbackEl.textContent = 'Спершу перевірте свою відповідь.'; feedbackEl.className = 'exercise-feedback'; return; }
+      if (index === tasks.length - 1){
+        doneEl.textContent = `✓ Блок виконано: ${correct} з ${tasks.length} з першого разу.`; doneEl.classList.add('is-visible');
+        if (taskId) markTaskDone(taskId);
+        index = 0; correct = 0;
+      } else { index++; }
+      render();
+    });
+    bindRecordButton(recordBtn, '🎤 Сказати відповідь',
+      (heard) => { inputEl.value = heard; check(heard); },
+      (msg) => { feedbackEl.textContent = msg; feedbackEl.className = 'exercise-feedback is-wrong'; });
+    render();
+  }
+  initTranslate('coreTranslate', translateCore, 'translate');
+  initTranslate('extraTranslate', translateExtra, null);
+
+  /* ---------------- ТРЕНАЖЕР (додатково) ---------------- */
+  (function initSimulator(){
+    const scenarioEl = document.getElementById('simulatorScenario');
+    if (!scenarioEl) return;
+    const answerEl = document.getElementById('simulatorAnswer');
+    const newBtn = document.getElementById('newScenarioBtn');
+    const showBtn = document.getElementById('showAnswerBtn');
+    const voiceRow = document.getElementById('simulatorVoiceRow');
+    const recordBtn = document.getElementById('recordAnswerBtn');
+    const voiceResultEl = document.getElementById('voiceResult');
+    let current = null;
+    newBtn.addEventListener('click', () => {
+      current = simulatorScenarios[Math.floor(Math.random() * simulatorScenarios.length)];
+      scenarioEl.classList.remove('is-empty');
+      scenarioEl.innerHTML = `<p>${current.situation}</p>`;
+      answerEl.classList.remove('is-visible'); answerEl.textContent = '';
+      showBtn.disabled = false;
+      if (SpeechRecognitionAPI) voiceRow.style.display = 'flex';
+      voiceResultEl.classList.remove('is-visible'); voiceResultEl.innerHTML = '';
+    });
+    showBtn.addEventListener('click', () => {
+      if (!current) return;
+      answerEl.innerHTML = `${current.answer} <button class="sound-btn" data-speak="${escAttr(current.answer)}" aria-label="Прослухати">🔊</button>`;
+      answerEl.classList.add('is-visible');
+    });
+    bindRecordButton(recordBtn, '🎤 Надиктувати відповідь',
+      (heard) => {
+        if (!current) return;
+        const res = compareSpokenAnswer(heard, current.answer);
+        const label = res.verdict === 'correct' ? '✓ Чудово, це звучить правильно!' : (res.verdict === 'partial' ? '~ Частково правильно, перевірте деталі.' : '✗ Спробуйте ще раз або подивіться відповідь.');
+        const cls = res.verdict === 'correct' ? 'is-correct' : (res.verdict === 'partial' ? 'is-partial' : 'is-wrong');
+        voiceResultEl.innerHTML = `<span class="heard">Розпізнано: «${heard}»</span><span class="verdict ${cls}">${label}</span>`;
+        voiceResultEl.classList.add('is-visible');
+      },
+      (msg) => { voiceResultEl.innerHTML = `<span class="heard">${msg}</span>`; voiceResultEl.classList.add('is-visible'); });
+  })();
+
+  /* ---------------- РОЛЬОВА ГРА ---------------- */
+  function initRoleplay(prefix, situations, taskId){
+    const pickerEl = document.getElementById(prefix + 'Picker');
+    if (!pickerEl) return;
+    const counterEl = document.getElementById(prefix + 'Counter');
+    const assistantEl = document.getElementById(prefix + 'AssistantLine');
+    const hintEl = document.getElementById(prefix + 'UserHint');
+    const recordBtn = document.getElementById(prefix + 'RecordBtn');
+    const voiceResultEl = document.getElementById(prefix + 'VoiceResult');
+    const hintBtn = document.getElementById(prefix + 'HintBtn');
+    const nextBtn = document.getElementById(prefix + 'NextBtn');
+    const restartBtn = document.getElementById(prefix + 'RestartBtn');
+    const doneEl = document.getElementById(prefix + 'Done');
+    let sit = 0, step = 0, stepPassed = false;
+    const completed = new Set();
+
+    function renderPicker(){
+      pickerEl.innerHTML = situations.map((s, i) => `<button class="btn ${i === sit ? 'btn-primary' : 'btn-secondary'}" data-i="${i}">${s.title}${completed.has(i) ? ' ✓' : ''}</button>`).join('');
+      pickerEl.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { sit = parseInt(btn.getAttribute('data-i'), 10); step = 0; renderPicker(); renderStep(); }));
+    }
+    function renderStep(){
+      const s = situations[sit];
+      const st = s.steps[step];
+      stepPassed = false;
+      counterEl.textContent = `${s.title} — репліка ${step + 1} з ${s.steps.length}`;
+      assistantEl.innerHTML = `${st.assistantNl} <button class="sound-btn" data-speak="${escAttr(st.assistantNl)}" aria-label="Прослухати">🔊</button>`;
+      hintEl.textContent = 'Ваша черга відповісти. Натисніть мікрофон або «Показати підказку».';
+      voiceResultEl.classList.remove('is-visible'); voiceResultEl.innerHTML = '';
+      doneEl.classList.remove('is-visible');
+      nextBtn.textContent = step === s.steps.length - 1 ? 'Завершити ситуацію ✓' : 'Наступна репліка →';
+      if (SpeechRecognitionAPI) setTimeout(() => speakDutch(st.assistantNl), 150); else speakDutch(st.assistantNl);
+    }
+    hintBtn.addEventListener('click', () => {
+      const st = situations[sit].steps[step];
+      stepPassed = true;
+      hintEl.innerHTML = `<em>Підказка:</em> ${st.hintUa}<br><span style="color:var(--color-ink); font-weight:600;">${st.expectedAnswer}</span> <button class="sound-btn" data-speak="${escAttr(st.expectedAnswer)}" aria-label="Прослухати">🔊</button><br><span style="color:var(--color-muted); font-size:13px;">Повторіть уголос, потім — наступна репліка.</span>`;
+    });
+    nextBtn.addEventListener('click', () => {
+      const s = situations[sit];
+      if (!stepPassed){ voiceResultEl.innerHTML = '<span class="heard">Спершу скажіть репліку в мікрофон або відкрийте підказку й повторіть за зразком.</span>'; voiceResultEl.classList.add('is-visible'); return; }
+      if (step < s.steps.length - 1){ step++; renderStep(); return; }
+      completed.add(sit);
+      doneEl.textContent = `✓ Ситуацію «${s.title.replace(/^\d+\.\s*/, '')}» пройдено.` + (completed.size < situations.length ? ' Виберіть наступну вгорі.' : ' Усі ситуації пройдено!');
+      doneEl.classList.add('is-visible');
+      renderPicker();
+      if (taskId && completed.size === situations.length) markTaskDone(taskId);
+    });
+    restartBtn.addEventListener('click', () => { step = 0; renderStep(); });
+    bindRecordButton(recordBtn, '🎤 Сказати свою репліку',
+      (heard) => {
+        const st = situations[sit].steps[step];
+        const res = compareSpokenAnswer(heard, st.expectedAnswer);
+        if (res.verdict !== 'wrong') stepPassed = true;
+        const label = res.verdict === 'correct' ? '✓ Чудово, саме так!' : (res.verdict === 'partial' ? '~ Частково правильно — можна йти далі, але прослухайте зразок у підказці.' : '✗ Спробуйте ще раз або подивіться підказку.');
+        const cls = res.verdict === 'correct' ? 'is-correct' : (res.verdict === 'partial' ? 'is-partial' : 'is-wrong');
+        voiceResultEl.innerHTML = `<span class="heard">Розпізнано: «${heard}»</span><span class="verdict ${cls}">${label}</span>`;
+        voiceResultEl.classList.add('is-visible');
+      },
+      (msg) => { voiceResultEl.innerHTML = `<span class="heard">${msg}</span>`; voiceResultEl.classList.add('is-visible'); });
+    renderPicker();
+    // перший рендер без автоозвучки, щоб сторінка не «говорила» сама при завантаженні
+    const first = situations[0].steps[0];
+    counterEl.textContent = `${situations[0].title} — репліка 1 з ${situations[0].steps.length}`;
+    assistantEl.innerHTML = `${first.assistantNl} <button class="sound-btn" data-speak="${escAttr(first.assistantNl)}" aria-label="Прослухати">🔊</button>`;
+    hintEl.textContent = 'Натисніть 🔊, щоб почути асистентку, потім відповідайте в мікрофон або відкрийте підказку.';
+    nextBtn.textContent = situations[0].steps.length === 1 ? 'Завершити ситуацію ✓' : 'Наступна репліка →';
+  }
+  initRoleplay('coreRoleplay', roleplayCore, 'roleplay');
+  initRoleplay('extraRoleplay', roleplaySituations, null);
+
+  /* ---------------- ГОВОРІТЬ САМІ ---------------- */
+  (function initSpeak(){
+    document.querySelectorAll('[data-speak-toggle]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const el = document.getElementById('speakSample-' + btn.getAttribute('data-speak-toggle'));
+        const open = el.classList.toggle('is-visible');
+        btn.textContent = open ? 'Сховати зразок' : 'Показати зразок';
+      });
+    });
+    const coreCards = [...document.querySelectorAll('[data-speak-card^="core"]')];
+    const doneEl = document.getElementById('coreSpeakDone');
+    function update(){
+      const allDone = coreCards.every(card => [...card.querySelectorAll('input[type=checkbox]')].every(c => c.checked));
+      if (allDone){
+        doneEl.textContent = '✓ Усі три дзвінки пройдено за чеклістом.'; doneEl.classList.add('is-visible');
+        markTaskDone('speak');
+      }
+    }
+    coreCards.forEach(card => card.querySelectorAll('input[type=checkbox]').forEach(c => c.addEventListener('change', update)));
+  })();
+
+  /* ---------------- ТЕСТ ---------------- */
+  function initQuiz(prefix, questions, resultPrefix, resultSectionId, taskId){
+    const progressEl = document.getElementById(prefix + 'Progress');
+    if (!progressEl) return;
+    const questionEl = document.getElementById(prefix + 'Question');
+    const optionsEl = document.getElementById(prefix + 'Options');
+    const explanationEl = document.getElementById(prefix + 'Explanation');
+    const nextBtn = document.getElementById(prefix + 'NextBtn');
+    const scoreEl = document.getElementById(resultPrefix + 'Score');
+    const percentEl = document.getElementById(resultPrefix + 'Percent');
+    const barEl = document.getElementById(resultPrefix + 'BarFill');
+    const messageEl = document.getElementById(resultPrefix + 'Message');
+    const retryBtn = document.getElementById(resultPrefix + 'RetryBtn');
+    const resultSection = document.getElementById(resultSectionId);
+    let index = 0, score = 0, answered = false;
+
+    function render(){
+      const q = questions[index];
+      progressEl.textContent = `Питання ${index + 1} з ${questions.length}`;
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = ''; explanationEl.textContent = '';
+      answered = false; nextBtn.disabled = true;
+      nextBtn.textContent = index === questions.length - 1 ? 'Завершити тест' : 'Далі';
+      q.options.forEach((text, i) => {
+        const b = document.createElement('button');
+        b.className = 'choice-option'; b.textContent = text;
+        b.addEventListener('click', () => {
+          if (answered) return;
+          answered = true;
+          const ok = i === q.correctIndex;
+          if (ok) score++;
+          b.classList.add(ok ? 'is-correct' : 'is-wrong');
+          if (!ok) optionsEl.children[q.correctIndex].classList.add('is-correct');
+          [...optionsEl.children].forEach(x => x.disabled = true);
+          explanationEl.textContent = q.explanation || '';
+          nextBtn.disabled = false;
+        });
+        optionsEl.appendChild(b);
+      });
+    }
+    function showResult(){
+      const total = questions.length;
+      const percent = Math.round(score / total * 100);
+      scoreEl.textContent = `${score} / ${total}`;
+      percentEl.textContent = `${percent}%`;
+      let msg;
+      if (percent === 100) msg = '🎉 Ідеально! Ви засвоїли весь матеріал.';
+      else if (percent >= 80) msg = '👍 Чудовий результат — ви готові до реального дзвінка. Перегляньте пояснення до питань, де помилилися.';
+      else if (percent >= 60) msg = '👍 Непогано. Поверніться до розділів «Що ви почуєте» і «Корисні фрази», потім пройдіть тест ще раз.';
+      else msg = '💪 Варто повторити урок: прослухайте діалог ще раз із перекладом, повторіть фрази вголос і повертайтеся до тесту.';
+      messageEl.textContent = msg;
+      retryBtn.style.display = 'inline-flex';
+      requestAnimationFrame(() => { barEl.style.width = percent + '%'; });
+      resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (taskId) markTaskDone(taskId);
+    }
+    nextBtn.addEventListener('click', () => {
+      index++;
+      if (index < questions.length) render(); else showResult();
+    });
+    retryBtn.addEventListener('click', () => {
+      index = 0; score = 0; barEl.style.width = '0%';
+      scoreEl.textContent = '0 / 0'; percentEl.textContent = '0%'; messageEl.textContent = 'Пройдіть тест, щоб побачити результат.';
+      retryBtn.style.display = 'none';
+      render();
+      progressEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    render();
+  }
+  initQuiz('coreQuiz', quizCore, 'coreResult', 'coreResultSection', 'quiz');
+  initQuiz('extraQuiz', quizExtra, 'extraResult', 'extraResultSection', null);
+
+}); // DOMContentLoaded
+</script>
+</body>
+</html>
