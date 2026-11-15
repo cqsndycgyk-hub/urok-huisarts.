@@ -784,6 +784,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, .vocab-card:focus-vi
 .lesson-header.is-compact .eyebrow, .lesson-header.is-compact .subtitle{ display: none; }
 .lesson-header.is-compact h1{ font-size: 20px; margin-bottom: 12px; }
 .link-btn{ background: none; border: 0; padding: 8px 0; color: var(--color-accent-dark); font: inherit; font-size: 14.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; text-align: left; }
+.rp-ua{ display: block; margin-top: 4px; font-size: 14px; font-weight: 400; color: var(--color-muted); }
+.rp-say{ font-weight: 600; }
+[id$="CallCounter"]{ scroll-margin-top: 84px; }
 button{ touch-action: manipulation; } /* v4: подвійний дотик не масштабує сторінку й не дає другий click */
 .back-row{ margin-bottom: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; }
 .day-grid{ display: grid; gap: 12px; margin-top: 20px; }
@@ -856,7 +859,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 
 <header class="lesson-header" data-animate>
   <div class="lesson-header-inner">
-    <span class="eyebrow">Нідерландська мова · Рівень A1–A2 · Мінікурс · 7 днів по 15–20 хвилин</span>
+    <span class="eyebrow">Нідерландська мова · Рівень A1–A2 · Мінікурс · 7 днів по 20–25 хвилин</span>
     <h1 id="lessonTitle">Дзвінок до huisarts за 7 днів</h1>
     <p class="subtitle" id="lessonSubtitle">За 7 днів ви самі подзвоните до huisartsenpraktijk: назветеся, опишете симптоми — свої або дитини — і запишетеся на прийом.</p>
     <div class="progress-track" aria-label="Прогрес курсу">
@@ -881,7 +884,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     <div class="btn-row" style="margin-top:16px;"><button type="button" class="btn btn-primary" id="continueBtn" data-go="day1">Почати: день 1 →</button></div>
     <div class="note-box">
       <strong>Як проходити курс</strong>
-      7 днів по 15–20 хвилин. Щодня — одне вміння: спершу слухаєте, потім кажете самі. Наступний день відкривається, коли пройдено попередній, — не за календарем, тож ідіть у своєму темпі. Прогрес зберігається в цьому браузері. Потрібен звук; мікрофон — за бажанням: кожну вправу можна зробити текстом.
+      7 днів по 20–25 хвилин. Щодня — одне вміння: спершу слухаєте, потім кажете самі. Наступний день відкривається, коли пройдено попередній, — не за календарем, тож ідіть у своєму темпі. Прогрес зберігається в цьому браузері. Потрібен звук; мікрофон — за бажанням: кожну вправу можна зробити текстом.
     </div>
     <div class="note-box is-safety">
       <strong>Важливо про безпеку</strong>
@@ -935,7 +938,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day1" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="home">← Усі дні</button></div>
-    <span class="section-eyebrow">День 1 з 7 · ≈ 15–20 хвилин</span>
+    <span class="section-eyebrow">День 1 з 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Додзвонитися й сказати, чого хочу</h2>
     <p class="section-sub">Уміння дня: Пройти голосове меню і сказати перше речення.</p>
     <button type="button" class="link-btn" id="d1Resume" hidden></button>
@@ -961,7 +964,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
         <div class="label">Хто дзвонить</div>
       </div>
       <div class="route-line"></div>
-      <div class="route-step" data-step-text="Wat zijn uw klachten precies? — Які саме у вас скарги?">
+      <div class="route-step" data-step-text="Wat zijn uw klachten? — Які у вас скарги?">
         <div class="dot">4</div>
         <div class="label">Запитання</div>
       </div>
@@ -976,7 +979,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
         <div class="label">Уточнення</div>
       </div>
       <div class="route-line"></div>
-      <div class="route-step" data-step-text="Ik kan u inplannen voor morgenochtend om tien uur. Komt dat goed uit? — Можу записати вас на завтра вранці на десяту. Вам підходить? / Ja, dat is goed. Dank u wel! — Так, добре. Дякую!">
+      <div class="route-step" data-step-text="Kunt u morgenochtend om half tien komen? — Можете прийти завтра вранці о пів на десяту? / Ja, dat komt goed uit. Dank u wel. — Так, підходить. Дякую.">
         <div class="dot">7</div>
         <div class="label">Завершення</div>
       </div>
@@ -994,6 +997,44 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     <div class="btn-row">
       <button class="btn btn-outline" id="d1EtalonToggleBtn">Показати переклад</button>
     </div>
+  </section>
+
+  <section class="section-card" data-animate>
+    <span class="section-eyebrow">Слова з діалогу</span>
+    <h2 class="section-title">4 слова, щоб зрозуміти зразок</h2>
+    <p class="section-sub">Ці слова ви щойно чули в діалозі. Учити їх сьогодні не треба: de geboortedatum — тема дня 2, решта — дня 3. Натисніть на картку, щоб побачити переклад і приклад.</p>
+    <div class="vocab-grid"><div class="vocab-card" tabindex="0" role="button" data-speak="de geboortedatum">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de geboortedatum</span>
+          <button class="sound-btn" data-speak="de geboortedatum" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">дата народження</div>
+        <div class="vocab-example">Mag ik uw naam en geboortedatum? — Назвіть, будь ласка, ім'я й дату народження.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de klachten">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de klachten</span>
+          <button class="sound-btn" data-speak="de klachten" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">скарги, симптоми (одна — de klacht)</div>
+        <div class="vocab-example">Wat zijn uw klachten? — Які у вас скарги?</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de hoofdpijn">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de hoofdpijn</span>
+          <button class="sound-btn" data-speak="de hoofdpijn" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">головний біль</div>
+        <div class="vocab-example">Ik heb hoofdpijn. — У мене болить голова.</div>
+      </div>
+<div class="vocab-card" tabindex="0" role="button" data-speak="de koorts">
+        <div class="vocab-card-top">
+          <span class="vocab-word">de koorts</span>
+          <button class="sound-btn" data-speak="de koorts" aria-label="Прослухати">🔊</button>
+        </div>
+        <div class="vocab-translation">висока температура, жар</div>
+        <div class="vocab-example">Ik heb ook koorts. — У мене ще й температура. <em>(вимова: «кортс»)</em></div>
+      </div></div>
   </section>
 
   <section class="section-card" data-animate>
@@ -1133,6 +1174,37 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     </div>
   </section>
 
+  <section class="section-card" data-animate id="d1CallCard">
+    <span class="section-eyebrow">Увесь дзвінок</span>
+    <h2 class="section-title">Пройдіть увесь дзвінок за Оленою</h2>
+    <p class="section-sub">Той самий дзвінок, що в зразку, — тепер говорите ви. Ваша відповідь написана на екрані: прочитайте її вголос у мікрофон або повторіть за 🔊. Учити напам'ять не треба — щодня тексту ставатиме менше.</p>
+    <div class="roleplay-card">
+      <div class="btn-row" id="d1CallPicker" style="margin-top:0;"></div>
+      <div style="margin-top:20px;">
+        <p class="exercise-instruction" id="d1CallCounter"></p>
+        <div class="dialogue-line role-a">
+          <div class="speaker">A</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d1CallAssistantLine"></div></div>
+        </div>
+        <div class="dialogue-line role-b">
+          <div class="speaker">B</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d1CallUserHint"></div></div>
+        </div>
+        <div class="simulator-voice-row" id="d1CallVoiceRow" style="margin-top:16px;">
+          <button class="btn btn-outline" id="d1CallRecordBtn">🎤 Сказати свою репліку</button>
+          <div class="roleplay-text-row"><input type="text" class="blank-input" id="d1CallInput" placeholder="…або напишіть свою репліку" aria-label="Ваша репліка нідерландською" enterkeyhint="done" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false" lang="nl"><button class="btn btn-secondary" id="d1CallCheckBtn">Перевірити</button></div>
+          <div class="simulator-voice-result" id="d1CallVoiceResult"></div>
+        </div>
+        <div class="block-done" id="d1CallDone"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="d1CallHintBtn">Показати підказку</button>
+          <button class="btn btn-primary" id="d1CallNextBtn">Наступна репліка →</button>
+          <button class="btn btn-secondary" id="d1CallRestartBtn">Почати ситуацію знову</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section-card" data-animate id="d1ResultCard">
     <span class="section-eyebrow">Результат дня</span>
     <h2 class="section-title">Завдання дня 1</h2>
@@ -1153,7 +1225,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day2" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day1">← День 1</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 2 з 7 · ≈ 15–20 хвилин</span>
+    <span class="section-eyebrow">День 2 з 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Хто дзвонить</h2>
     <p class="section-sub">Уміння дня: Назвати ім'я, дату народження і сказати, для кого прийом.</p>
     <button type="button" class="link-btn" id="d2Resume" hidden></button>
@@ -1350,6 +1422,37 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     </div>
   </section>
 
+  <section class="section-card" data-animate id="d2CallCard">
+    <span class="section-eyebrow">Увесь дзвінок</span>
+    <h2 class="section-title">Увесь дзвінок: першу репліку — самі</h2>
+    <p class="section-sub">Той самий дзвінок, що й у попередні дні. Першу репліку ви вже вчили — скажіть її самі, без тексту. Решта написана на екрані: прочитайте вголос у мікрофон або повторіть за 🔊. Не виходить без тексту двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
+    <div class="roleplay-card">
+      <div class="btn-row" id="d2CallPicker" style="margin-top:0;"></div>
+      <div style="margin-top:20px;">
+        <p class="exercise-instruction" id="d2CallCounter"></p>
+        <div class="dialogue-line role-a">
+          <div class="speaker">A</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d2CallAssistantLine"></div></div>
+        </div>
+        <div class="dialogue-line role-b">
+          <div class="speaker">B</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d2CallUserHint"></div></div>
+        </div>
+        <div class="simulator-voice-row" id="d2CallVoiceRow" style="margin-top:16px;">
+          <button class="btn btn-outline" id="d2CallRecordBtn">🎤 Сказати свою репліку</button>
+          <div class="roleplay-text-row"><input type="text" class="blank-input" id="d2CallInput" placeholder="…або напишіть свою репліку" aria-label="Ваша репліка нідерландською" enterkeyhint="done" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false" lang="nl"><button class="btn btn-secondary" id="d2CallCheckBtn">Перевірити</button></div>
+          <div class="simulator-voice-result" id="d2CallVoiceResult"></div>
+        </div>
+        <div class="block-done" id="d2CallDone"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="d2CallHintBtn">Показати підказку</button>
+          <button class="btn btn-primary" id="d2CallNextBtn">Наступна репліка →</button>
+          <button class="btn btn-secondary" id="d2CallRestartBtn">Почати ситуацію знову</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section-card" data-animate id="d2ResultCard">
     <span class="section-eyebrow">Результат дня</span>
     <h2 class="section-title">Завдання дня 2</h2>
@@ -1371,7 +1474,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day3" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day2">← День 2</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 3 з 7 · ≈ 15–20 хвилин</span>
+    <span class="section-eyebrow">День 3 з 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Що болить і відколи</h2>
     <p class="section-sub">Уміння дня: Описати симптом і тривалість двома реченнями.</p>
     <button type="button" class="link-btn" id="d3Resume" hidden></button>
@@ -1549,6 +1652,37 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     </div>
   </section>
 
+  <section class="section-card" data-animate id="d3CallCard">
+    <span class="section-eyebrow">Увесь дзвінок</span>
+    <h2 class="section-title">Увесь дзвінок: 2 репліки — самі</h2>
+    <p class="section-sub">Той самий дзвінок, що й у попередні дні. Перші 2 репліки ви вже вчили — скажіть їх самі, без тексту. Решта написана на екрані: прочитайте вголос у мікрофон або повторіть за 🔊. Не виходить без тексту двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
+    <div class="roleplay-card">
+      <div class="btn-row" id="d3CallPicker" style="margin-top:0;"></div>
+      <div style="margin-top:20px;">
+        <p class="exercise-instruction" id="d3CallCounter"></p>
+        <div class="dialogue-line role-a">
+          <div class="speaker">A</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d3CallAssistantLine"></div></div>
+        </div>
+        <div class="dialogue-line role-b">
+          <div class="speaker">B</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d3CallUserHint"></div></div>
+        </div>
+        <div class="simulator-voice-row" id="d3CallVoiceRow" style="margin-top:16px;">
+          <button class="btn btn-outline" id="d3CallRecordBtn">🎤 Сказати свою репліку</button>
+          <div class="roleplay-text-row"><input type="text" class="blank-input" id="d3CallInput" placeholder="…або напишіть свою репліку" aria-label="Ваша репліка нідерландською" enterkeyhint="done" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false" lang="nl"><button class="btn btn-secondary" id="d3CallCheckBtn">Перевірити</button></div>
+          <div class="simulator-voice-result" id="d3CallVoiceResult"></div>
+        </div>
+        <div class="block-done" id="d3CallDone"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="d3CallHintBtn">Показати підказку</button>
+          <button class="btn btn-primary" id="d3CallNextBtn">Наступна репліка →</button>
+          <button class="btn btn-secondary" id="d3CallRestartBtn">Почати ситуацію знову</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section-card" data-animate id="d3ResultCard">
     <span class="section-eyebrow">Результат дня</span>
     <h2 class="section-title">Завдання дня 3</h2>
@@ -1569,7 +1703,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day4" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day3">← День 3</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 4 з 7 · ≈ 15–20 хвилин</span>
+    <span class="section-eyebrow">День 4 з 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Питання асистентки</h2>
     <p class="section-sub">Уміння дня: Упізнати на слух стандартні питання й коротко відповісти.</p>
     <button type="button" class="link-btn" id="d4Resume" hidden></button>
@@ -1744,6 +1878,37 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     </div>
   </section>
 
+  <section class="section-card" data-animate id="d4CallCard">
+    <span class="section-eyebrow">Увесь дзвінок</span>
+    <h2 class="section-title">Увесь дзвінок: 3 репліки — самі</h2>
+    <p class="section-sub">Той самий дзвінок, що й у попередні дні. Перші 3 репліки ви вже вчили — скажіть їх самі, без тексту. Решта написана на екрані: прочитайте вголос у мікрофон або повторіть за 🔊. Не виходить без тексту двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
+    <div class="roleplay-card">
+      <div class="btn-row" id="d4CallPicker" style="margin-top:0;"></div>
+      <div style="margin-top:20px;">
+        <p class="exercise-instruction" id="d4CallCounter"></p>
+        <div class="dialogue-line role-a">
+          <div class="speaker">A</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d4CallAssistantLine"></div></div>
+        </div>
+        <div class="dialogue-line role-b">
+          <div class="speaker">B</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d4CallUserHint"></div></div>
+        </div>
+        <div class="simulator-voice-row" id="d4CallVoiceRow" style="margin-top:16px;">
+          <button class="btn btn-outline" id="d4CallRecordBtn">🎤 Сказати свою репліку</button>
+          <div class="roleplay-text-row"><input type="text" class="blank-input" id="d4CallInput" placeholder="…або напишіть свою репліку" aria-label="Ваша репліка нідерландською" enterkeyhint="done" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false" lang="nl"><button class="btn btn-secondary" id="d4CallCheckBtn">Перевірити</button></div>
+          <div class="simulator-voice-result" id="d4CallVoiceResult"></div>
+        </div>
+        <div class="block-done" id="d4CallDone"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="d4CallHintBtn">Показати підказку</button>
+          <button class="btn btn-primary" id="d4CallNextBtn">Наступна репліка →</button>
+          <button class="btn btn-secondary" id="d4CallRestartBtn">Почати ситуацію знову</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section-card" data-animate id="d4ResultCard">
     <span class="section-eyebrow">Результат дня</span>
     <h2 class="section-title">Завдання дня 4</h2>
@@ -1764,7 +1929,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day5" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day4">← День 4</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 5 з 7 · ≈ 15–20 хвилин</span>
+    <span class="section-eyebrow">День 5 з 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Час і «повторіть, будь ласка»</h2>
     <p class="section-sub">Уміння дня: Зрозуміти запропонований час, підтвердити, відмовитися або перепитати.</p>
     <button type="button" class="link-btn" id="d5Resume" hidden></button>
@@ -1943,6 +2108,37 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     </div>
   </section>
 
+  <section class="section-card" data-animate id="d5CallCard">
+    <span class="section-eyebrow">Увесь дзвінок</span>
+    <h2 class="section-title">Увесь дзвінок: 4 репліки — самі</h2>
+    <p class="section-sub">Той самий дзвінок, що й у попередні дні. Перші 4 репліки ви вже вчили — скажіть їх самі, без тексту. Решта написана на екрані: прочитайте вголос у мікрофон або повторіть за 🔊. Не виходить без тексту двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
+    <div class="roleplay-card">
+      <div class="btn-row" id="d5CallPicker" style="margin-top:0;"></div>
+      <div style="margin-top:20px;">
+        <p class="exercise-instruction" id="d5CallCounter"></p>
+        <div class="dialogue-line role-a">
+          <div class="speaker">A</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d5CallAssistantLine"></div></div>
+        </div>
+        <div class="dialogue-line role-b">
+          <div class="speaker">B</div>
+          <div class="dialogue-bubble"><div class="dialogue-nl" id="d5CallUserHint"></div></div>
+        </div>
+        <div class="simulator-voice-row" id="d5CallVoiceRow" style="margin-top:16px;">
+          <button class="btn btn-outline" id="d5CallRecordBtn">🎤 Сказати свою репліку</button>
+          <div class="roleplay-text-row"><input type="text" class="blank-input" id="d5CallInput" placeholder="…або напишіть свою репліку" aria-label="Ваша репліка нідерландською" enterkeyhint="done" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false" lang="nl"><button class="btn btn-secondary" id="d5CallCheckBtn">Перевірити</button></div>
+          <div class="simulator-voice-result" id="d5CallVoiceResult"></div>
+        </div>
+        <div class="block-done" id="d5CallDone"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="d5CallHintBtn">Показати підказку</button>
+          <button class="btn btn-primary" id="d5CallNextBtn">Наступна репліка →</button>
+          <button class="btn btn-secondary" id="d5CallRestartBtn">Почати ситуацію знову</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section-card" data-animate id="d5ResultCard">
     <span class="section-eyebrow">Результат дня</span>
     <h2 class="section-title">Завдання дня 5</h2>
@@ -2074,7 +2270,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
   <section class="section-card" data-animate id="d6RoleplayCard">
     <span class="section-eyebrow">Скажіть уголос</span>
     <h2 class="section-title">Два повні дзвінки — без підказки</h2>
-    <p class="section-sub">Це головна перевірка курсу. 1) Ви — Олена: три дні болить голова, є температура 38,5. 2) Ви дзвоните через доньку Софію (2 травня 2019): кашляє три дні, зранку було 38,9. Час прийому тут інший, ніж у зразку, — слухайте уважно. Мета — 4 репліки з 5 без підказки; не вийшло — «Почати ситуацію знову». Після першого дзвінка натисніть «Наступна ситуація →». Не виходить двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
+    <p class="section-sub">Це головна перевірка курсу. 1) Ви — Олена: три дні болить голова, є температура 38,5. 2) Ви дзвоните через доньку Софію (2 травня 2019): кашляє три дні, зранку було 38,9. У другому дзвінку час прийому інший, ніж у зразку, — слухайте уважно. Мета — 4 репліки з 5 без підказки; не вийшло — «Почати ситуацію знову». Після першого дзвінка натисніть «Наступна ситуація →». Не виходить двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
     <div class="roleplay-card">
       <div class="btn-row" id="d6RoleplayPicker" style="margin-top:0;"></div>
       <div style="margin-top:20px;">
@@ -2952,6 +3148,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (ePain.some(w => !heardWords.has(w)) || hPain.some(w => !expectedWords.includes(w))) down(`симптом не збігається: у зразку «${ePain.join(', ') || 'без …pijn'}»`);
         if (guardReason) down(guardReason);
         if (polReason && cand.verdict === 'correct'){ cand.verdict = 'wrong'; if (!cand.reason) cand.reason = polReason; }
+        // v6: «Частково» без причини збивало — пояснюємо, чого бракує (тривалість або число)
+        if (cand.verdict === 'partial' && !cand.reason){
+          if (guardBits(expectedCan).dur.size && !guardBits(heardCan).dur.size) cand.reason = 'додайте, скільки це триває: al … dagen або sinds …';
+          else if (expectedWords.some(w => /\d/.test(w) && !heardWords.has(w))) cand.reason = /\d/.test(heardCan) ? 'число не таке, як у ситуації' : 'назвіть також число (дату, температуру або час)';
+        }
       }
       if (!best || rank[cand.verdict] > rank[best.verdict] || (rank[cand.verdict] === rank[best.verdict] && cand.ratio > best.ratio)) best = cand;
     });
@@ -3103,6 +3304,11 @@ document.addEventListener('DOMContentLoaded', () => {
        "id": "d1:roleplay",
        "label": "Скажіть уголос",
        "anchor": "d1RoleplayCard"
+      },
+      {
+       "id": "d1:call",
+       "label": "Увесь дзвінок (5 реплік)",
+       "anchor": "d1CallCard"
       }
      ],
      "listen": [
@@ -3194,6 +3400,96 @@ document.addEventListener('DOMContentLoaded', () => {
         }
        ]
       }
+     ],
+     "call": [
+      {
+       "title": "Увесь дзвінок",
+       "steps": [
+        {
+         "assistantNl": "Goedemorgen, huisartsenpraktijk De Linde, u spreekt met Anouk.",
+         "expectedAnswer": "Goedemorgen. Ik wil graag een afspraak maken.",
+         "accepted": [
+          "Goedemorgen, ik wil een afspraak maken.",
+          "Ik wil graag een afspraak maken.",
+          "Ik wil een afspraak maken.",
+          "Goedemorgen. Ik wil graag een afspraak maken, ik voel me niet goed.",
+          "Ik wil graag een afspraak maken, ik voel me niet goed."
+         ],
+         "hintUa": "Доброго ранку. Я хотіла б записатися на прийом.",
+         "assistantUa": "Доброго ранку, лікарська практика «Де Лінде», з вами говорить Анук.",
+         "show": true
+        },
+        {
+         "assistantNl": "Dat kan. Mag ik uw naam en geboortedatum?",
+         "expectedAnswer": "Mijn naam is Olena Pavlenko, geboren op 14 maart 1989.",
+         "accepted": [
+          "Olena Pavlenko, 14 maart 1989.",
+          "Ik ben Olena Pavlenko, geboren op 14 maart 1989.",
+          "Mijn naam is Olena Pavlenko, 14 maart 1989.",
+          "Ik heet Olena Pavlenko, geboren op 14 maart 1989.",
+          "Olena Pavlenko, geboren op 14 maart 1989."
+         ],
+         "hintUa": "Мене звати Олена Павленко, народилася 14 березня 1989.",
+         "assistantUa": "Можна. Назвіть, будь ласка, ім'я й дату народження.",
+         "show": true,
+         "readAs": "veertien maart negentien negenentachtig"
+        },
+        {
+         "assistantNl": "Dank u wel. Wat zijn uw klachten?",
+         "expectedAnswer": "Ik heb al drie dagen hoofdpijn en ik heb ook koorts.",
+         "accepted": [
+          "Ik heb al drie dagen hoofdpijn en koorts.",
+          "Ik heb hoofdpijn en koorts, al drie dagen.",
+          "Ik heb al drie dagen hoofdpijn en ook koorts."
+         ],
+         "hintUa": "У мене вже три дні болить голова, і ще температура.",
+         "assistantUa": "Дякую. Які у вас скарги?",
+         "show": true
+        },
+        {
+         "assistantNl": "Heeft u de temperatuur gemeten?",
+         "expectedAnswer": "Ja, 38,5.",
+         "accepted": [
+          "Ja, 38,5 graden.",
+          "Ja, het was 38,5.",
+          "Ja, vanmorgen 38,5 graden.",
+          "Ja, vanmorgen 38,5.",
+          "Ja, gisteren 38,5.",
+          "Ja, vandaag 38,5.",
+          "38,5.",
+          "38,5 graden."
+         ],
+         "hintUa": "Так, 38,5.",
+         "assistantUa": "Ви міряли температуру?",
+         "show": true,
+         "readAs": "achtendertig komma vijf"
+        },
+        {
+         "assistantNl": "Kunt u morgenochtend om half tien komen?",
+         "expectedAnswer": "Ja, dat komt goed uit. Dank u wel.",
+         "accepted": [
+          "Ja, dat komt goed uit.",
+          "Ja, dat komt uit. Dank u wel.",
+          "Ja, dat komt uit.",
+          "Ja, dat is goed. Dank u wel.",
+          "Ja, dat kan. Dank u wel.",
+          "Ja, dat is goed.",
+          "Ja, dat kan.",
+          "Half tien? Ja, dat komt goed uit.",
+          "Half tien? Ja, dat is goed.",
+          "Morgenochtend om half tien? Ja, dat is goed.",
+          "Ja, prima. Dank u wel.",
+          "Ja, prima.",
+          "Ja, morgen om half tien.",
+          "Ja, half tien.",
+          "Ja."
+         ],
+         "hintUa": "Так, підходить. Дякую.",
+         "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
+         "show": true
+        }
+       ]
+      }
      ]
     },
     {
@@ -3225,6 +3521,11 @@ document.addEventListener('DOMContentLoaded', () => {
        "id": "d2:roleplay",
        "label": "Скажіть уголос",
        "anchor": "d2RoleplayCard"
+      },
+      {
+       "id": "d2:call",
+       "label": "Увесь дзвінок (5 реплік)",
+       "anchor": "d2CallCard"
       }
      ],
      "warm": [
@@ -3350,6 +3651,95 @@ document.addEventListener('DOMContentLoaded', () => {
         }
        ]
       }
+     ],
+     "call": [
+      {
+       "title": "Увесь дзвінок",
+       "steps": [
+        {
+         "assistantNl": "Goedemorgen, huisartsenpraktijk De Linde, u spreekt met Anouk.",
+         "expectedAnswer": "Goedemorgen. Ik wil graag een afspraak maken.",
+         "accepted": [
+          "Goedemorgen, ik wil een afspraak maken.",
+          "Ik wil graag een afspraak maken.",
+          "Ik wil een afspraak maken.",
+          "Goedemorgen. Ik wil graag een afspraak maken, ik voel me niet goed.",
+          "Ik wil graag een afspraak maken, ik voel me niet goed."
+         ],
+         "hintUa": "Доброго ранку. Я хотіла б записатися на прийом.",
+         "assistantUa": "Доброго ранку, лікарська практика «Де Лінде», з вами говорить Анук."
+        },
+        {
+         "assistantNl": "Dat kan. Mag ik uw naam en geboortedatum?",
+         "expectedAnswer": "Mijn naam is Olena Pavlenko, geboren op 14 maart 1989.",
+         "accepted": [
+          "Olena Pavlenko, 14 maart 1989.",
+          "Ik ben Olena Pavlenko, geboren op 14 maart 1989.",
+          "Mijn naam is Olena Pavlenko, 14 maart 1989.",
+          "Ik heet Olena Pavlenko, geboren op 14 maart 1989.",
+          "Olena Pavlenko, geboren op 14 maart 1989."
+         ],
+         "hintUa": "Мене звати Олена Павленко, народилася 14 березня 1989.",
+         "assistantUa": "Можна. Назвіть, будь ласка, ім'я й дату народження.",
+         "show": true,
+         "readAs": "veertien maart negentien negenentachtig"
+        },
+        {
+         "assistantNl": "Dank u wel. Wat zijn uw klachten?",
+         "expectedAnswer": "Ik heb al drie dagen hoofdpijn en ik heb ook koorts.",
+         "accepted": [
+          "Ik heb al drie dagen hoofdpijn en koorts.",
+          "Ik heb hoofdpijn en koorts, al drie dagen.",
+          "Ik heb al drie dagen hoofdpijn en ook koorts."
+         ],
+         "hintUa": "У мене вже три дні болить голова, і ще температура.",
+         "assistantUa": "Дякую. Які у вас скарги?",
+         "show": true
+        },
+        {
+         "assistantNl": "Heeft u de temperatuur gemeten?",
+         "expectedAnswer": "Ja, 38,5.",
+         "accepted": [
+          "Ja, 38,5 graden.",
+          "Ja, het was 38,5.",
+          "Ja, vanmorgen 38,5 graden.",
+          "Ja, vanmorgen 38,5.",
+          "Ja, gisteren 38,5.",
+          "Ja, vandaag 38,5.",
+          "38,5.",
+          "38,5 graden."
+         ],
+         "hintUa": "Так, 38,5.",
+         "assistantUa": "Ви міряли температуру?",
+         "show": true,
+         "readAs": "achtendertig komma vijf"
+        },
+        {
+         "assistantNl": "Kunt u morgenochtend om half tien komen?",
+         "expectedAnswer": "Ja, dat komt goed uit. Dank u wel.",
+         "accepted": [
+          "Ja, dat komt goed uit.",
+          "Ja, dat komt uit. Dank u wel.",
+          "Ja, dat komt uit.",
+          "Ja, dat is goed. Dank u wel.",
+          "Ja, dat kan. Dank u wel.",
+          "Ja, dat is goed.",
+          "Ja, dat kan.",
+          "Half tien? Ja, dat komt goed uit.",
+          "Half tien? Ja, dat is goed.",
+          "Morgenochtend om half tien? Ja, dat is goed.",
+          "Ja, prima. Dank u wel.",
+          "Ja, prima.",
+          "Ja, morgen om half tien.",
+          "Ja, half tien.",
+          "Ja."
+         ],
+         "hintUa": "Так, підходить. Дякую.",
+         "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
+         "show": true
+        }
+       ]
+      }
      ]
     },
     {
@@ -3386,6 +3776,11 @@ document.addEventListener('DOMContentLoaded', () => {
        "id": "d3:roleplay",
        "label": "Скажіть уголос",
        "anchor": "d3RoleplayCard"
+      },
+      {
+       "id": "d3:call",
+       "label": "Увесь дзвінок (5 реплік)",
+       "anchor": "d3CallCard"
       }
      ],
      "warm": [
@@ -3554,6 +3949,93 @@ document.addEventListener('DOMContentLoaded', () => {
         }
        ]
       }
+     ],
+     "call": [
+      {
+       "title": "Увесь дзвінок",
+       "steps": [
+        {
+         "assistantNl": "Goedemorgen, huisartsenpraktijk De Linde, u spreekt met Anouk.",
+         "expectedAnswer": "Goedemorgen. Ik wil graag een afspraak maken.",
+         "accepted": [
+          "Goedemorgen, ik wil een afspraak maken.",
+          "Ik wil graag een afspraak maken.",
+          "Ik wil een afspraak maken.",
+          "Goedemorgen. Ik wil graag een afspraak maken, ik voel me niet goed.",
+          "Ik wil graag een afspraak maken, ik voel me niet goed."
+         ],
+         "hintUa": "Доброго ранку. Я хотіла б записатися на прийом.",
+         "assistantUa": "Доброго ранку, лікарська практика «Де Лінде», з вами говорить Анук."
+        },
+        {
+         "assistantNl": "Dat kan. Mag ik uw naam en geboortedatum?",
+         "expectedAnswer": "Mijn naam is Olena Pavlenko, geboren op 14 maart 1989.",
+         "accepted": [
+          "Olena Pavlenko, 14 maart 1989.",
+          "Ik ben Olena Pavlenko, geboren op 14 maart 1989.",
+          "Mijn naam is Olena Pavlenko, 14 maart 1989.",
+          "Ik heet Olena Pavlenko, geboren op 14 maart 1989.",
+          "Olena Pavlenko, geboren op 14 maart 1989."
+         ],
+         "hintUa": "Мене звати Олена Павленко, народилася 14 березня 1989.",
+         "assistantUa": "Можна. Назвіть, будь ласка, ім'я й дату народження."
+        },
+        {
+         "assistantNl": "Dank u wel. Wat zijn uw klachten?",
+         "expectedAnswer": "Ik heb al drie dagen hoofdpijn en ik heb ook koorts.",
+         "accepted": [
+          "Ik heb al drie dagen hoofdpijn en koorts.",
+          "Ik heb hoofdpijn en koorts, al drie dagen.",
+          "Ik heb al drie dagen hoofdpijn en ook koorts."
+         ],
+         "hintUa": "У мене вже три дні болить голова, і ще температура.",
+         "assistantUa": "Дякую. Які у вас скарги?",
+         "show": true
+        },
+        {
+         "assistantNl": "Heeft u de temperatuur gemeten?",
+         "expectedAnswer": "Ja, 38,5.",
+         "accepted": [
+          "Ja, 38,5 graden.",
+          "Ja, het was 38,5.",
+          "Ja, vanmorgen 38,5 graden.",
+          "Ja, vanmorgen 38,5.",
+          "Ja, gisteren 38,5.",
+          "Ja, vandaag 38,5.",
+          "38,5.",
+          "38,5 graden."
+         ],
+         "hintUa": "Так, 38,5.",
+         "assistantUa": "Ви міряли температуру?",
+         "show": true,
+         "readAs": "achtendertig komma vijf"
+        },
+        {
+         "assistantNl": "Kunt u morgenochtend om half tien komen?",
+         "expectedAnswer": "Ja, dat komt goed uit. Dank u wel.",
+         "accepted": [
+          "Ja, dat komt goed uit.",
+          "Ja, dat komt uit. Dank u wel.",
+          "Ja, dat komt uit.",
+          "Ja, dat is goed. Dank u wel.",
+          "Ja, dat kan. Dank u wel.",
+          "Ja, dat is goed.",
+          "Ja, dat kan.",
+          "Half tien? Ja, dat komt goed uit.",
+          "Half tien? Ja, dat is goed.",
+          "Morgenochtend om half tien? Ja, dat is goed.",
+          "Ja, prima. Dank u wel.",
+          "Ja, prima.",
+          "Ja, morgen om half tien.",
+          "Ja, half tien.",
+          "Ja."
+         ],
+         "hintUa": "Так, підходить. Дякую.",
+         "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
+         "show": true
+        }
+       ]
+      }
      ]
     },
     {
@@ -3585,6 +4067,11 @@ document.addEventListener('DOMContentLoaded', () => {
        "id": "d4:roleplay",
        "label": "Скажіть уголос (2 ситуації)",
        "anchor": "d4RoleplayCard"
+      },
+      {
+       "id": "d4:call",
+       "label": "Увесь дзвінок (5 реплік)",
+       "anchor": "d4CallCard"
       }
      ],
      "warm": [
@@ -3793,6 +4280,92 @@ document.addEventListener('DOMContentLoaded', () => {
         }
        ]
       }
+     ],
+     "call": [
+      {
+       "title": "Увесь дзвінок",
+       "steps": [
+        {
+         "assistantNl": "Goedemorgen, huisartsenpraktijk De Linde, u spreekt met Anouk.",
+         "expectedAnswer": "Goedemorgen. Ik wil graag een afspraak maken.",
+         "accepted": [
+          "Goedemorgen, ik wil een afspraak maken.",
+          "Ik wil graag een afspraak maken.",
+          "Ik wil een afspraak maken.",
+          "Goedemorgen. Ik wil graag een afspraak maken, ik voel me niet goed.",
+          "Ik wil graag een afspraak maken, ik voel me niet goed."
+         ],
+         "hintUa": "Доброго ранку. Я хотіла б записатися на прийом.",
+         "assistantUa": "Доброго ранку, лікарська практика «Де Лінде», з вами говорить Анук."
+        },
+        {
+         "assistantNl": "Dat kan. Mag ik uw naam en geboortedatum?",
+         "expectedAnswer": "Mijn naam is Olena Pavlenko, geboren op 14 maart 1989.",
+         "accepted": [
+          "Olena Pavlenko, 14 maart 1989.",
+          "Ik ben Olena Pavlenko, geboren op 14 maart 1989.",
+          "Mijn naam is Olena Pavlenko, 14 maart 1989.",
+          "Ik heet Olena Pavlenko, geboren op 14 maart 1989.",
+          "Olena Pavlenko, geboren op 14 maart 1989."
+         ],
+         "hintUa": "Мене звати Олена Павленко, народилася 14 березня 1989.",
+         "assistantUa": "Можна. Назвіть, будь ласка, ім'я й дату народження."
+        },
+        {
+         "assistantNl": "Dank u wel. Wat zijn uw klachten?",
+         "expectedAnswer": "Ik heb al drie dagen hoofdpijn en ik heb ook koorts.",
+         "accepted": [
+          "Ik heb al drie dagen hoofdpijn en koorts.",
+          "Ik heb hoofdpijn en koorts, al drie dagen.",
+          "Ik heb al drie dagen hoofdpijn en ook koorts."
+         ],
+         "hintUa": "У мене вже три дні болить голова, і ще температура.",
+         "assistantUa": "Дякую. Які у вас скарги?"
+        },
+        {
+         "assistantNl": "Heeft u de temperatuur gemeten?",
+         "expectedAnswer": "Ja, 38,5.",
+         "accepted": [
+          "Ja, 38,5 graden.",
+          "Ja, het was 38,5.",
+          "Ja, vanmorgen 38,5 graden.",
+          "Ja, vanmorgen 38,5.",
+          "Ja, gisteren 38,5.",
+          "Ja, vandaag 38,5.",
+          "38,5.",
+          "38,5 graden."
+         ],
+         "hintUa": "Так, 38,5.",
+         "assistantUa": "Ви міряли температуру?",
+         "show": true,
+         "readAs": "achtendertig komma vijf"
+        },
+        {
+         "assistantNl": "Kunt u morgenochtend om half tien komen?",
+         "expectedAnswer": "Ja, dat komt goed uit. Dank u wel.",
+         "accepted": [
+          "Ja, dat komt goed uit.",
+          "Ja, dat komt uit. Dank u wel.",
+          "Ja, dat komt uit.",
+          "Ja, dat is goed. Dank u wel.",
+          "Ja, dat kan. Dank u wel.",
+          "Ja, dat is goed.",
+          "Ja, dat kan.",
+          "Half tien? Ja, dat komt goed uit.",
+          "Half tien? Ja, dat is goed.",
+          "Morgenochtend om half tien? Ja, dat is goed.",
+          "Ja, prima. Dank u wel.",
+          "Ja, prima.",
+          "Ja, morgen om half tien.",
+          "Ja, half tien.",
+          "Ja."
+         ],
+         "hintUa": "Так, підходить. Дякую.",
+         "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
+         "show": true
+        }
+       ]
+      }
      ]
     },
     {
@@ -3824,6 +4397,11 @@ document.addEventListener('DOMContentLoaded', () => {
        "id": "d5:roleplay",
        "label": "Скажіть уголос",
        "anchor": "d5RoleplayCard"
+      },
+      {
+       "id": "d5:call",
+       "label": "Увесь дзвінок (5 реплік)",
+       "anchor": "d5CallCard"
       }
      ],
      "warm": [
@@ -4000,6 +4578,90 @@ document.addEventListener('DOMContentLoaded', () => {
           "Dank u wel, dag."
          ],
          "hintUa": "Дякую, до побачення."
+        }
+       ]
+      }
+     ],
+     "call": [
+      {
+       "title": "Увесь дзвінок",
+       "steps": [
+        {
+         "assistantNl": "Goedemorgen, huisartsenpraktijk De Linde, u spreekt met Anouk.",
+         "expectedAnswer": "Goedemorgen. Ik wil graag een afspraak maken.",
+         "accepted": [
+          "Goedemorgen, ik wil een afspraak maken.",
+          "Ik wil graag een afspraak maken.",
+          "Ik wil een afspraak maken.",
+          "Goedemorgen. Ik wil graag een afspraak maken, ik voel me niet goed.",
+          "Ik wil graag een afspraak maken, ik voel me niet goed."
+         ],
+         "hintUa": "Доброго ранку. Я хотіла б записатися на прийом.",
+         "assistantUa": "Доброго ранку, лікарська практика «Де Лінде», з вами говорить Анук."
+        },
+        {
+         "assistantNl": "Dat kan. Mag ik uw naam en geboortedatum?",
+         "expectedAnswer": "Mijn naam is Olena Pavlenko, geboren op 14 maart 1989.",
+         "accepted": [
+          "Olena Pavlenko, 14 maart 1989.",
+          "Ik ben Olena Pavlenko, geboren op 14 maart 1989.",
+          "Mijn naam is Olena Pavlenko, 14 maart 1989.",
+          "Ik heet Olena Pavlenko, geboren op 14 maart 1989.",
+          "Olena Pavlenko, geboren op 14 maart 1989."
+         ],
+         "hintUa": "Мене звати Олена Павленко, народилася 14 березня 1989.",
+         "assistantUa": "Можна. Назвіть, будь ласка, ім'я й дату народження."
+        },
+        {
+         "assistantNl": "Dank u wel. Wat zijn uw klachten?",
+         "expectedAnswer": "Ik heb al drie dagen hoofdpijn en ik heb ook koorts.",
+         "accepted": [
+          "Ik heb al drie dagen hoofdpijn en koorts.",
+          "Ik heb hoofdpijn en koorts, al drie dagen.",
+          "Ik heb al drie dagen hoofdpijn en ook koorts."
+         ],
+         "hintUa": "У мене вже три дні болить голова, і ще температура.",
+         "assistantUa": "Дякую. Які у вас скарги?"
+        },
+        {
+         "assistantNl": "Heeft u de temperatuur gemeten?",
+         "expectedAnswer": "Ja, 38,5.",
+         "accepted": [
+          "Ja, 38,5 graden.",
+          "Ja, het was 38,5.",
+          "Ja, vanmorgen 38,5 graden.",
+          "Ja, vanmorgen 38,5.",
+          "Ja, gisteren 38,5.",
+          "Ja, vandaag 38,5.",
+          "38,5.",
+          "38,5 graden."
+         ],
+         "hintUa": "Так, 38,5.",
+         "assistantUa": "Ви міряли температуру?"
+        },
+        {
+         "assistantNl": "Kunt u morgenochtend om half tien komen?",
+         "expectedAnswer": "Ja, dat komt goed uit. Dank u wel.",
+         "accepted": [
+          "Ja, dat komt goed uit.",
+          "Ja, dat komt uit. Dank u wel.",
+          "Ja, dat komt uit.",
+          "Ja, dat is goed. Dank u wel.",
+          "Ja, dat kan. Dank u wel.",
+          "Ja, dat is goed.",
+          "Ja, dat kan.",
+          "Half tien? Ja, dat komt goed uit.",
+          "Half tien? Ja, dat is goed.",
+          "Morgenochtend om half tien? Ja, dat is goed.",
+          "Ja, prima. Dank u wel.",
+          "Ja, prima.",
+          "Ja, morgen om half tien.",
+          "Ja, half tien.",
+          "Ja."
+         ],
+         "hintUa": "Так, підходить. Дякую.",
+         "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
+         "show": true
         }
        ]
       }
@@ -4666,13 +5328,13 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       {
        "role": "b",
-       "nl": "Goedemorgen. Ik wil graag een afspraak maken, ik voel me niet goed.",
-       "ua": "Доброго ранку. Я хотіла б записатися на прийом, я погано почуваюся."
+       "nl": "Goedemorgen. Ik wil graag een afspraak maken.",
+       "ua": "Доброго ранку. Я хотіла б записатися на прийом."
       },
       {
        "role": "a",
-       "nl": "Natuurlijk. Mag ik uw naam en geboortedatum?",
-       "ua": "Звісно. Назвіть, будь ласка, ім'я й дату народження."
+       "nl": "Dat kan. Mag ik uw naam en geboortedatum?",
+       "ua": "Можна. Назвіть, будь ласка, ім'я й дату народження."
       },
       {
        "role": "b",
@@ -4681,8 +5343,8 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       {
        "role": "a",
-       "nl": "Dank u wel. Wat zijn uw klachten precies?",
-       "ua": "Дякую. Які саме у вас скарги?"
+       "nl": "Dank u wel. Wat zijn uw klachten?",
+       "ua": "Дякую. Які у вас скарги?"
       },
       {
        "role": "b",
@@ -4691,13 +5353,23 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       {
        "role": "a",
-       "nl": "Ik kan u inplannen voor morgenochtend om tien uur. Komt dat goed uit?",
-       "ua": "Можу записати вас на завтра вранці на десяту. Вам підходить?"
+       "nl": "Heeft u de temperatuur gemeten?",
+       "ua": "Ви міряли температуру?"
       },
       {
        "role": "b",
-       "nl": "Ja, dat is goed. Dank u wel!",
-       "ua": "Так, добре. Дякую!"
+       "nl": "Ja, 38,5.",
+       "ua": "Так, 38,5."
+      },
+      {
+       "role": "a",
+       "nl": "Kunt u morgenochtend om half tien komen?",
+       "ua": "Можете прийти завтра вранці о пів на десяту?"
+      },
+      {
+       "role": "b",
+       "nl": "Ja, dat komt goed uit. Dank u wel.",
+       "ua": "Так, підходить. Дякую."
       }
      ],
      "q": {
@@ -4712,16 +5384,20 @@ document.addEventListener('DOMContentLoaded', () => {
      },
      "hints": [
       [
-       "inplannen",
-       "записати (на прийом)"
+       "Heeft u … gemeten?",
+       "ви міряли …? (докладно в дні 4)"
       ],
       [
        "morgenochtend",
-       "завтра вранці"
+       "завтра вранці (докладно в дні 5)"
       ],
       [
-       "Komt dat goed uit?",
-       "Вам підходить? (докладно в дні 5)"
+       "half tien",
+       "пів на десяту, 9:30 (докладно в дні 5)"
+      ],
+      [
+       "dat komt goed uit",
+       "підходить (докладно в дні 5)"
       ]
      ],
      "cards": []
@@ -8193,13 +8869,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const completed = new Map(STORE.get('rp-' + prefix) || []); // індекс ситуації → найкращий рахунок (зберігається)
     const needed = (s) => s.steps.length >= 5 ? 4 : Math.max(1, s.steps.length - 1);
 
+    const anyShow = (s) => s.steps.some(x => x.show);
+    function showStep(st){
+      if (!st.show) return;
+      assistantEl.innerHTML = `${st.assistantNl} <button class="sound-btn" data-speak="${escAttr(st.assistantNl)}" aria-label="Прослухати">🔊</button>` + (st.assistantUa ? `<span class="rp-ua">${st.assistantUa}</span>` : '');
+      hintEl.innerHTML = `<span class="rp-say">${st.expectedAnswer}</span> <button class="sound-btn" data-speak="${escAttr(st.expectedAnswer)}" aria-label="Прослухати">🔊</button>`
+        + (st.readAs ? `<span class="rp-ua">читається: ${st.readAs}</span>` : '') + `<span class="rp-ua">${st.hintUa}</span>`
+        + '<span class="rp-ua">Ваша черга: прочитайте вголос або напишіть у поле.</span>';
+      hintBtn.hidden = true; stepPassed = true; // текст уже на екрані: підказка зайва, а невдалий мікрофон не блокує
+    }
     function renderPicker(){
       pickerEl.innerHTML = situations.map((s, i) => `<button class="btn ${i === sit ? 'btn-primary' : 'btn-secondary'}" data-i="${i}">${s.title}${completed.has(i) ? ` ${completed.get(i) >= needed(s) ? '✓ ' : ''}${completed.get(i)}/${s.steps.length}` : ''}</button>`).join('');
       pickerEl.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { sit = parseInt(btn.getAttribute('data-i'), 10); step = 0; score = 0; renderPicker(); renderStep(); }));
     }
     function renderCounter(){
       const s = situations[sit];
-      counterEl.innerHTML = `${s.title} — репліка ${step + 1} з ${s.steps.length}<span class="roleplay-score">· зараховано без підказки: ${score}</span>`;
+      counterEl.innerHTML = `${s.title} — репліка ${step + 1} з ${s.steps.length}<span class="roleplay-score">· ${anyShow(s) ? 'зараховано' : 'зараховано без підказки'}: ${score}</span>`;
     }
     function renderStep(){
       const s = situations[sit];
@@ -8209,6 +8894,9 @@ document.addEventListener('DOMContentLoaded', () => {
       renderCounter();
       assistantEl.innerHTML = `${st.assistantNl} <button class="sound-btn" data-speak="${escAttr(st.assistantNl)}" aria-label="Прослухати">🔊</button>`;
       hintEl.textContent = 'Ваша черга. Скажіть репліку в мікрофон або напишіть її в поле й натисніть «Перевірити». Не виходить — «Показати підказку».';
+      hintBtn.hidden = false;
+      showStep(st);
+      if (/Call$/.test(prefix)){ try { counterEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }
       if (inputEl) inputEl.value = '';
       voiceResultEl.classList.remove('is-visible'); voiceResultEl.innerHTML = '';
       doneEl.classList.remove('is-visible');
@@ -8253,7 +8941,7 @@ document.addEventListener('DOMContentLoaded', () => {
       STORE.set('rp-' + prefix, [...completed]);
       const title = s.title.replace(/^\d+\.\s*/, '');
       const verdict = score >= need ? ` Мету досягнуто (${need} з ${n}) ✓` : ` Мета — ${need} з ${n}. Спробуйте ще раз без підказки: «Почати ситуацію знову».`;
-      doneEl.textContent = `✓ Ситуацію «${title}» пройдено. Зараховано без підказки: ${score} з ${n}.` + verdict + (completed.size < situations.length ? ' Далі — кнопка «Наступна ситуація →».' : ' Усі ситуації пройдено!');
+      doneEl.textContent = `✓ Ситуацію «${title}» пройдено. ${anyShow(s) ? 'Зараховано' : 'Зараховано без підказки'}: ${score} з ${n}.` + verdict + (completed.size < situations.length ? ' Далі — кнопка «Наступна ситуація →».' : ' Усі ситуації пройдено!');
       doneEl.classList.add('is-visible');
       renderPicker();
       if (taskId && completed.size === situations.length) markTaskDone(taskId);
@@ -8277,6 +8965,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCounter();
     assistantEl.innerHTML = `${first.assistantNl} <button class="sound-btn" data-speak="${escAttr(first.assistantNl)}" aria-label="Прослухати">🔊</button>`;
     hintEl.textContent = 'Натисніть 🔊, щоб почути співрозмовника, потім відповідайте: в мікрофон або текстом у поле. Є й підказка.';
+    showStep(first);
     nextBtn.textContent = situations[0].steps.length === 1 ? 'Завершити ситуацію ✓' : 'Наступна репліка →';
   }
 
@@ -8392,6 +9081,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (day.sentence) initSentence(p + 'Sentence', day.sentence, p + ':sentence');
     if (day.translate) initTranslate(p + 'Translate', day.translate, p + ':translate');
     if (day.roleplay) initRoleplay(p + 'Roleplay', day.roleplay, p + ':roleplay');
+    if (day.call) initRoleplay(p + 'Call', day.call, p + ':call'); // v5
     if (day.listen){
       const host = $id(p + 'Listen');
       day.listen.forEach((id, i) => {
