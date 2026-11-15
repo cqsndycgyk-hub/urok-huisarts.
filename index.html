@@ -784,7 +784,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, .vocab-card:focus-vi
 .lesson-header.is-compact .eyebrow, .lesson-header.is-compact .subtitle{ display: none; }
 .lesson-header.is-compact h1{ font-size: 20px; margin-bottom: 12px; }
 .link-btn{ background: none; border: 0; padding: 8px 0; color: var(--color-accent-dark); font: inherit; font-size: 14.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; text-align: left; }
-.back-row{ margin-bottom: 8px; }
+button{ touch-action: manipulation; } /* v4: подвійний дотик не масштабує сторінку й не дає другий click */
+.back-row{ margin-bottom: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; }
 .day-grid{ display: grid; gap: 12px; margin-top: 20px; }
 .day-card{ display: flex; gap: 14px; align-items: flex-start; text-align: left; width: 100%; background: var(--color-bg-soft); border: 1.5px solid transparent; border-radius: var(--radius-md); padding: 16px 18px; font: inherit; color: var(--color-ink); cursor: pointer; transition: var(--transition); }
 .day-card:hover{ border-color: var(--color-accent); }
@@ -1151,7 +1152,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 </div>
 <div class="screen" id="screen-day2" hidden>
   <section class="section-card" data-animate>
-    <div class="back-row"><button type="button" class="link-btn" data-go="home">← Усі дні</button></div>
+    <div class="back-row"><button type="button" class="link-btn" data-go="day1">← День 1</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
     <span class="section-eyebrow">День 2 з 7 · ≈ 15–20 хвилин</span>
     <h2 class="section-title">Хто дзвонить</h2>
     <p class="section-sub">Уміння дня: Назвати ім'я, дату народження і сказати, для кого прийом.</p>
@@ -1364,12 +1365,12 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
       <p class="section-sub" style="margin-top:16px;">Далі, у дні 3: як сказати, що болить і відколи.</p>
     </div>
     <div class="home-notice" id="d2NextNote" aria-live="polite"></div>
-    <div class="btn-row"><button class="btn btn-primary" id="d2NextBtn" data-go="day3">До дня 3 →</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
+    <div class="btn-row"><button class="btn btn-primary" id="d2NextBtn" data-go="day3">До дня 3 →</button><button class="btn btn-secondary" data-go="day1">← День 1</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
   </section>
 </div>
 <div class="screen" id="screen-day3" hidden>
   <section class="section-card" data-animate>
-    <div class="back-row"><button type="button" class="link-btn" data-go="home">← Усі дні</button></div>
+    <div class="back-row"><button type="button" class="link-btn" data-go="day2">← День 2</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
     <span class="section-eyebrow">День 3 з 7 · ≈ 15–20 хвилин</span>
     <h2 class="section-title">Що болить і відколи</h2>
     <p class="section-sub">Уміння дня: Описати симптом і тривалість двома реченнями.</p>
@@ -1562,12 +1563,12 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
       <p class="section-sub" style="margin-top:16px;">Далі, у дні 4, — день слухання: питання, які ставить асистентка.</p>
     </div>
     <div class="home-notice" id="d3NextNote" aria-live="polite"></div>
-    <div class="btn-row"><button class="btn btn-primary" id="d3NextBtn" data-go="day4">До дня 4 →</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
+    <div class="btn-row"><button class="btn btn-primary" id="d3NextBtn" data-go="day4">До дня 4 →</button><button class="btn btn-secondary" data-go="day2">← День 2</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
   </section>
 </div>
 <div class="screen" id="screen-day4" hidden>
   <section class="section-card" data-animate>
-    <div class="back-row"><button type="button" class="link-btn" data-go="home">← Усі дні</button></div>
+    <div class="back-row"><button type="button" class="link-btn" data-go="day3">← День 3</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
     <span class="section-eyebrow">День 4 з 7 · ≈ 15–20 хвилин</span>
     <h2 class="section-title">Питання асистентки</h2>
     <p class="section-sub">Уміння дня: Упізнати на слух стандартні питання й коротко відповісти.</p>
@@ -1757,12 +1758,12 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
       <p class="section-sub" style="margin-top:16px;">Далі, у дні 5: час прийому — half tien, kwart over — і як перепитати.</p>
     </div>
     <div class="home-notice" id="d4NextNote" aria-live="polite"></div>
-    <div class="btn-row"><button class="btn btn-primary" id="d4NextBtn" data-go="day5">До дня 5 →</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
+    <div class="btn-row"><button class="btn btn-primary" id="d4NextBtn" data-go="day5">До дня 5 →</button><button class="btn btn-secondary" data-go="day3">← День 3</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
   </section>
 </div>
 <div class="screen" id="screen-day5" hidden>
   <section class="section-card" data-animate>
-    <div class="back-row"><button type="button" class="link-btn" data-go="home">← Усі дні</button></div>
+    <div class="back-row"><button type="button" class="link-btn" data-go="day4">← День 4</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
     <span class="section-eyebrow">День 5 з 7 · ≈ 15–20 хвилин</span>
     <h2 class="section-title">Час і «повторіть, будь ласка»</h2>
     <p class="section-sub">Уміння дня: Зрозуміти запропонований час, підтвердити, відмовитися або перепитати.</p>
@@ -1957,12 +1958,12 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
       <p class="section-sub" style="margin-top:16px;">Далі, у дні 6: увесь дзвінок від початку до кінця — без підказки.</p>
     </div>
     <div class="home-notice" id="d5NextNote" aria-live="polite"></div>
-    <div class="btn-row"><button class="btn btn-primary" id="d5NextBtn" data-go="day6">До дня 6 →</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
+    <div class="btn-row"><button class="btn btn-primary" id="d5NextBtn" data-go="day6">До дня 6 →</button><button class="btn btn-secondary" data-go="day4">← День 4</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
   </section>
 </div>
 <div class="screen" id="screen-day6" hidden>
   <section class="section-card" data-animate>
-    <div class="back-row"><button type="button" class="link-btn" data-go="home">← Усі дні</button></div>
+    <div class="back-row"><button type="button" class="link-btn" data-go="day5">← День 5</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
     <span class="section-eyebrow">День 6 з 7 · ≈ 15–20 хвилин</span>
     <h2 class="section-title">Увесь дзвінок</h2>
     <p class="section-sub">Уміння дня: Провести дзвінок від привітання до прощання без підказки.</p>
@@ -2115,12 +2116,12 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
       <p class="section-sub" style="margin-top:16px;">Далі, у дні 7: іспит і ваш власний дзвінок.</p>
     </div>
     <div class="home-notice" id="d6NextNote" aria-live="polite"></div>
-    <div class="btn-row"><button class="btn btn-primary" id="d6NextBtn" data-go="day7">До дня 7 →</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
+    <div class="btn-row"><button class="btn btn-primary" id="d6NextBtn" data-go="day7">До дня 7 →</button><button class="btn btn-secondary" data-go="day5">← День 5</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
   </section>
 </div>
 <div class="screen" id="screen-day7" hidden>
   <section class="section-card" data-animate>
-    <div class="back-row"><button type="button" class="link-btn" data-go="home">← Усі дні</button></div>
+    <div class="back-row"><button type="button" class="link-btn" data-go="day6">← День 6</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
     <span class="section-eyebrow">День 7 з 7 · ≈ 30 хвилин, можна за 2 рази</span>
     <h2 class="section-title">Іспит і ваш дзвінок</h2>
     <p class="section-sub">Уміння дня: Перевірити себе й підготувати власний дзвінок.</p>
@@ -2288,7 +2289,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
       <div class="note-box"><strong>✓ День 7 пройдено</strong>Ви пройшли курс. Тепер — справжній дзвінок.</div>
     </div>
     <div class="home-notice" id="d7NextNote" aria-live="polite"></div>
-    <div class="btn-row"><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
+    <div class="btn-row"><button class="btn btn-secondary" data-go="day6">← День 6</button><button class="btn btn-secondary" data-go="home">Усі дні</button></div>
   </section>
 </div>
 
@@ -2727,6 +2728,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------------- УТИЛІТИ: озвучка, розпізнавання, порівняння ---------------- */
   function speakDutch(text){
     if (!text || !('speechSynthesis' in window)) return;
+    stopRecording();
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = 'nl-NL';
     utter.rate = 0.92;
@@ -2991,24 +2993,64 @@ document.addEventListener('DOMContentLoaded', () => {
     if (code === 'audio-capture') return 'Мікрофон не знайдено на цьому пристрої.';
     return 'Не вдалося розпізнати мовлення. Спробуйте ще раз.';
   }
-  // Універсальний запис: кнопка, колбек із текстом, колбек з помилкою
+  // Універсальний запис (v4): один активний розпізнавач на сторінку; кнопка відновлюється завжди
+  // var, а не let: speakDutch стоїть у коді вище й теж зупиняє запис (з let був би TDZ)
+  var REC = null;              // { rec, btn, idleLabel, onError, timer }
+  var REC_TIMEOUT = 10000;     // стільки чекаємо на результат, потім звільняємо мікрофон
+  var MIC_RETRY = 'Не почув. Натисніть 🎤 ще раз або напишіть відповідь у поле.';
+  function stopRecording(message){
+    const st = REC;
+    if (!st) return;
+    REC = null;
+    if (st.timer) clearTimeout(st.timer);
+    if (st.btn){ st.btn.classList.remove('is-recording'); st.btn.textContent = st.idleLabel; }
+    try { st.rec.onresult = st.rec.onerror = st.rec.onnomatch = st.rec.onend = st.rec.onspeechstart = st.rec.onaudiostart = null; } catch (e) {}
+    try { st.rec.abort(); } catch (e) {}
+    try { if (st.rec.stop) st.rec.stop(); } catch (e) {}
+    if (message && st.onError) st.onError(message);
+  }
   function bindRecordButton(btn, idleLabel, onResult, onError){
     if (!btn) return;
     if (!SpeechRecognitionAPI){ btn.style.display = 'none'; return; }
-    let recording = false;
     btn.addEventListener('click', () => {
-      if (recording) return;
+      // повторне натискання на «Слухаю…» — зупинити запис (подвійний дотик на телефоні не рахуємо)
+      if (REC && REC.btn === btn){
+        if (Date.now() - REC.t0 < 400) return;
+        stopRecording('Запис зупинено. Натисніть 🎤, щоб сказати ще раз.');
+        return;
+      }
+      stopRecording();                                     // чужий запис тримає мікрофон — звільнити
+      try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
       const rec = createRecognizer();
-      recording = true;
+      if (!rec){ onError('Мікрофон недоступний у цьому браузері. Напишіть відповідь у поле.'); return; }
+      const st = { rec: rec, btn: btn, idleLabel: idleLabel, onError: onError, timer: null, t0: Date.now() };
+      REC = st;
       btn.classList.add('is-recording');
       btn.textContent = '🎙️ Слухаю…';
-      rec.addEventListener('result', (ev) => onResult(ev.results[0][0].transcript));
-      rec.addEventListener('error', (ev) => onError(recognizerErrorMessage(ev.error)));
-      rec.addEventListener('end', () => { recording = false; btn.classList.remove('is-recording'); btn.textContent = idleLabel; });
+      rec.onresult = (ev) => {
+        let heard = '';
+        try { heard = ev.results[0][0].transcript || ''; } catch (e) {}
+        stopRecording();
+        if (heard.trim()) onResult(heard); else onError(MIC_RETRY);
+      };
+      rec.onerror = (ev) => {
+        const code = ev && ev.error;
+        stopRecording(code === 'aborted' ? null : recognizerErrorMessage(code));
+      };
+      rec.onnomatch = () => stopRecording(MIC_RETRY);
+      // мовлення почалося — відлік тайм-ауту починаємо заново (щоб не обірвати посеред фрази)
+      rec.onspeechstart = rec.onaudiostart = () => {
+        if (REC !== st) return;
+        clearTimeout(st.timer);
+        st.timer = setTimeout(() => { if (REC === st) stopRecording(MIC_RETRY); }, REC_TIMEOUT);
+      };
+      rec.onend = () => { if (REC === st) stopRecording(MIC_RETRY); };
+      st.timer = setTimeout(() => { if (REC === st) stopRecording(MIC_RETRY); }, REC_TIMEOUT);
       try { rec.start(); }
-      catch (err){ recording = false; btn.classList.remove('is-recording'); btn.textContent = idleLabel; onError('Мікрофон уже використовується. Спробуйте ще раз.'); }
+      catch (err){ stopRecording(); onError('Мікрофон зайнятий. Натисніть 🎤 ще раз.'); }
     });
   }
+  window.__mic = { stop: stopRecording, active: () => !!REC, timeout: REC_TIMEOUT }; // для смоук-тестів
   function shuffleArray(arr){
     const copy = [...arr];
     for (let i = copy.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; }
@@ -7531,21 +7573,29 @@ document.addEventListener('DOMContentLoaded', () => {
     currentScreen = name;
     if (name === 'ref') renderArchive();
     playerStop();
+    stopRecording(); // v4: перехід між днями не лишає ввімкненого мікрофона
     try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
     try { window.scrollTo(0, 0); } catch (e) {}
   }
   function notice(text){
     const el = /^day\d$/.test(currentScreen) ? $id('d' + currentScreen.slice(3) + 'NextNote') : $id('homeNotice');
-    if (el) el.textContent = text;
+    if (!el) return;
+    el.textContent = text;
+    // v4: на екрані дня повідомлення стоїть унизу — без цього кнопка виглядає мертвою
+    if (text){ try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} }
   }
   function go(name){
     const m = /^day(\d)$/.exec(name);
-    if (m && !dayOpen(+m[1])){
+    // v4: крок назад (день N → день N−1) замок не перевіряє — уперед нічого не перескочити
+    const cur = /^day(\d)$/.exec(currentScreen);
+    const backStep = !!(m && cur && +m[1] === +cur[1] - 1);
+    if (m && !backStep && !dayOpen(+m[1])){
       const prev = +m[1] - 1;
       notice(currentScreen === 'day' + prev ? `Щоб відкрити день ${m[1]}, виконайте завдання вище, біля яких стоїть ○.` : `День ${m[1]} відкриється, коли ви пройдете день ${prev}.`);
       return false;
     }
     $id('homeNotice').textContent = '';
+    if (/^day\d$/.test(currentScreen)){ const nt = $id('d' + currentScreen.slice(3) + 'NextNote'); if (nt) nt.textContent = ''; } // v4: не лишати старе повідомлення
     showScreen(name);
     try { window.history.pushState(null, '', name === 'home' ? (window.location.pathname + window.location.search) : '#' + name); } catch (e) {}
     return true;
@@ -7604,11 +7654,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (was) playerPaint();
   }
   function playerPause(){ if (!player.id || !player.playing) return; player.gen++; player.playing = false; player.utts = []; try { window.speechSynthesis.cancel(); } catch (err) {} playerPaint(); }
-  document.addEventListener('visibilitychange', () => { if (document.hidden) playerPause(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden){ playerPause(); stopRecording(); } }); // v4: згорнули браузер — мікрофон вимкнено
   document.addEventListener('toggle', (e) => { if (player.host && e.target === player.host && !e.target.open) playerStop(true); }, true);
   function playerStart(id, host, from){
     const d = DLG[id];
     if (!d || !('speechSynthesis' in window)) return;
+    stopRecording(); // v4: плеєр діалогу не говорить одночасно з мікрофоном
     const gen = ++player.gen, last = d.lines.length - 1;
     player.id = id; player.host = host; player.idx = from; player.playing = true;
     window.speechSynthesis.cancel();
@@ -7752,10 +7803,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------------- АНІМАЦІЯ ПОЯВИ ---------------- */
-  const observer = new IntersectionObserver((entries) => {
+  const observer = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
     entries.forEach(entry => { if (entry.isIntersecting){ entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+  }, { threshold: 0.08 }) : null;
+  document.querySelectorAll('[data-animate]').forEach(el => { if (observer) observer.observe(el); else el.classList.add('is-visible'); });
 
   /* ---------------- СХЕМА СИТУАЦІЇ ---------------- */
   const routeSteps = document.querySelectorAll('.route-step');
@@ -8137,7 +8188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartBtn = document.getElementById(prefix + 'RestartBtn');
     const doneEl = document.getElementById(prefix + 'Done');
     // stepPassed — можна йти далі; stepScored — репліку зараховано (правильно й без підказки); score — зараховано в цій ситуації
-    let sit = 0, step = 0, stepPassed = false, stepScored = false, hintUsed = false, score = 0, finished = false;
+    let sit = 0, step = 0, stepPassed = false, stepScored = false, hintUsed = false, score = 0, finished = false, stepGen = 0;
     const nextOpen = () => { for (let k = 1; k < situations.length; k++){ const i = (sit + k) % situations.length; if (!completed.has(i)) return i; } return -1; };
     const completed = new Map(STORE.get('rp-' + prefix) || []); // індекс ситуації → найкращий рахунок (зберігається)
     const needed = (s) => s.steps.length >= 5 ? 4 : Math.max(1, s.steps.length - 1);
@@ -8153,6 +8204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderStep(){
       const s = situations[sit];
       const st = s.steps[step];
+      stopRecording(); // v4: «Почати ситуацію знову» / «Наступна репліка» не лишають увімкненого мікрофона
       stepPassed = false; stepScored = false; hintUsed = false; finished = false;
       renderCounter();
       assistantEl.innerHTML = `${st.assistantNl} <button class="sound-btn" data-speak="${escAttr(st.assistantNl)}" aria-label="Прослухати">🔊</button>`;
@@ -8161,7 +8213,8 @@ document.addEventListener('DOMContentLoaded', () => {
       voiceResultEl.classList.remove('is-visible'); voiceResultEl.innerHTML = '';
       doneEl.classList.remove('is-visible');
       nextBtn.textContent = step === s.steps.length - 1 ? 'Завершити ситуацію ✓' : 'Наступна репліка →';
-      if (SpeechRecognitionAPI) setTimeout(() => speakDutch(st.assistantNl), 150); else speakDutch(st.assistantNl);
+      if (SpeechRecognitionAPI){ const g = ++stepGen; setTimeout(() => { if (g === stepGen && !(window.__mic && window.__mic.active())) speakDutch(st.assistantNl); }, 150); }
+      else speakDutch(st.assistantNl);
     }
     function evaluate(answer, fromVoice){
       const st = situations[sit].steps[step];
