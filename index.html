@@ -783,6 +783,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, .vocab-card:focus-vi
 .lesson-header.is-compact{ padding: 18px 20px 16px; }
 .lesson-header.is-compact .eyebrow, .lesson-header.is-compact .subtitle{ display: none; }
 .lesson-header.is-compact h1{ font-size: 20px; margin-bottom: 12px; }
+.build-mark{ text-align: center; font-size: 12px; color: #9aa3ad; margin: 28px 0 8px; }
 .link-btn{ background: none; border: 0; padding: 8px 0; color: var(--color-accent-dark); font: inherit; font-size: 14.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; text-align: left; }
 .rp-ua{ display: block; margin-top: 4px; font-size: 14px; font-weight: 400; color: var(--color-muted); }
 .rp-say{ font-weight: 600; }
@@ -2928,6 +2929,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
   </section>
 </div>
 
+<p class="build-mark">Версія 10 · 19.11.2026</p>
 </main>
 
 <script>
@@ -2946,6 +2948,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function speakDutch(text, waited){
     if (!text || !hasSpeech()) return;
     if (waited && REC) return;   // v9: поки чекали, учениця вже ввімкнула мікрофон — не перебивати
+    if (!waited) micLog('озвучка: «' + text.slice(0, 50) + '»');
     stopRecording();
     // v9: iPhone — не говорити поверх ще відкритої сесії мікрофона (чекаємо її кінця, щонайбільше 1,5 с)
     if (IS_IOS && closingOpen() && (waited || 0) < 1500){
@@ -3302,6 +3305,32 @@ document.addEventListener('DOMContentLoaded', () => {
   var IS_IOS = window.__forceIOS === true || /iPad|iPhone|iPod/.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var MIC_OK_ONCE = false;     // мікрофон уже відповідав на цій сторінці (дозвіл є)
   var MIC_HANGS = 0;           // скільки разів поспіль мікрофон не відповів
+  // (v10) ?mic=1 — журнал мікрофона й збереження на екрані (для перевірки на справжньому телефоні)
+  var MIC_DEBUG = /[?&]mic=1\b/.test(window.location.search || '');
+  var MIC_LOG = [], MIC_T0 = Date.now(), MIC_PANEL = null;
+  function micLog(s){
+    if (!MIC_DEBUG) return;
+    const line = ((Date.now() - MIC_T0) / 1000).toFixed(2) + 's  ' + s;
+    MIC_LOG.push(line);
+    if (!MIC_PANEL){
+      MIC_PANEL = document.createElement('div');
+      MIC_PANEL.id = 'micDebug';
+      MIC_PANEL.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:9999;max-height:34vh;background:#0d1117;color:#e6edf3;font:12px/1.35 Menlo,Consolas,monospace;border-top:2px solid #f0883e;display:flex;flex-direction:column';
+      MIC_PANEL.innerHTML = '<div style="display:flex;gap:6px;padding:4px 8px;background:#161b22"><button type="button" id="micDebugCopy" style="font-size:13px;padding:4px 8px">📋 Скопіювати журнал</button><button type="button" id="micDebugClear" style="font-size:13px;padding:4px 8px">Очистити</button><span style="margin-left:auto;color:#8b949e">v10 · ?mic=1</span></div><pre id="micDebugLog" style="margin:0;padding:6px 8px;overflow:auto;white-space:pre-wrap;word-break:break-word;flex:1"></pre>';
+      document.body.appendChild(MIC_PANEL);
+      document.body.style.paddingBottom = '36vh';
+      MIC_PANEL.querySelector('#micDebugClear').addEventListener('click', () => { MIC_LOG = []; MIC_PANEL.querySelector('#micDebugLog').textContent = ''; });
+      MIC_PANEL.querySelector('#micDebugCopy').addEventListener('click', () => {
+        const text = 'Мінікурс 1 v10 · ' + new Date().toISOString() + '\n' + navigator.userAgent + '\n' + MIC_LOG.join('\n');
+        const fallback = () => { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} document.body.removeChild(ta); micLog('журнал скопійовано'); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => micLog('журнал скопійовано'), fallback); else fallback();
+      });
+    }
+    const pre = MIC_PANEL.querySelector('#micDebugLog');
+    pre.textContent += line + '\n'; pre.scrollTop = pre.scrollHeight;
+  }
+  window.__micLog = micLog;
+  micLog('сторінка v10 · iOS: ' + IS_IOS + ' · SpeechRecognition: ' + (!!SpeechRecognitionAPI) + ' · speechSynthesis: ' + ('speechSynthesis' in window) + ' · ' + (navigator.userAgent || '').slice(0, 110));
   function readTranscript(ev){
     let text = '', fin = false;
     try {
@@ -3324,7 +3353,7 @@ document.addEventListener('DOMContentLoaded', () => {
     forgetClosing();
     const c = { rec: rec, ended: false, t: Date.now() };
     CLOSING = c;
-    const done = () => { c.ended = true; if (CLOSING === c) CLOSING = null; };
+    const done = () => { micLog('попередня сесія закрилась (через ' + (Date.now() - c.t) + ' мс)'); c.ended = true; if (CLOSING === c) CLOSING = null; };
     try { rec.onresult = rec.onnomatch = rec.onspeechstart = rec.onaudiostart = rec.onerror = null; rec.onend = done; } catch (e) {}
     return c;
   }
@@ -3334,6 +3363,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (REC === st) REC = null;
     clearTimeout(st.timer); clearTimeout(st.quiet); clearTimeout(st.cap); clearTimeout(st.wait); clearTimeout(st.fin);
     if (st.btn){ st.btn.classList.remove('is-recording'); st.btn.textContent = st.idleLabel; }
+    micLog('відв\'язано (' + how + ')' + (st.started ? '' : ', сесія не стартувала'));
     if (!st.started || how === 'ended') return;
     const c = trackClosing(st.rec);
     if (IS_IOS) return;
@@ -3349,11 +3379,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function deliverRecording(st, how){
     const text = (st.text || '').trim();
     releaseRecording(st, how);
+    micLog(text ? 'ПОЧУТО → оцінка: «' + text + '»' : 'НЕ ПОЧУТО → «Не почув»');
     if (text){ MIC_HANGS = 0; st.onResult(text); } else st.onError(MIC_RETRY);
   }
   function stopRecording(message){
     const st = REC;
     if (!st) return;
+    micLog('запис зупинено ззовні' + (message ? ': ' + message : ''));
     releaseRecording(st, 'abort');
     if (message && st.onError) st.onError(message);
   }
@@ -3361,6 +3393,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearTimeout(st.timer);
     st.timer = setTimeout(() => {
       if (REC !== st) return;
+      micLog('тайм-аут ' + ms / 1000 + ' с (почуто: «' + (st.text || '') + '», мова: ' + st.heardSpeech + ', аудіо: ' + !!st.audio + ')');
       if (st.text) { deliverRecording(st, 'stop'); return; }
       if (st.heardSpeech){ releaseRecording(st, 'abort'); st.onError(MIC_RETRY); return; }
       MIC_HANGS++;
@@ -3376,12 +3409,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!IS_IOS){ try { CLOSING.rec.abort(); } catch (e) {} }   // на iPhone не обриваємо ніколи
       forgetClosing();
     }
-    try { st.rec.start(); st.started = true; }
-    catch (err){ releaseRecording(st, 'abort'); st.onError('Мікрофон зайнятий. Натисніть 🎤 ще раз.'); }
+    try { st.rec.start(); st.started = true; micLog('start()' + (st.delayed ? ' (відкладений, через ' + (Date.now() - st.t0) + ' мс)' : ' (у дотику)')); }
+    catch (err){ micLog('start() кинув виняток: ' + err); releaseRecording(st, 'abort'); st.onError('Мікрофон зайнятий. Натисніть 🎤 ще раз.'); }
   }
   // iPhone: попередня сесія ще відкрита — не обриваємо її, а просимо зачекати й натиснути ще раз
   function iosWaitClosing(btn, idleLabel){
     const t0 = Date.now();
+    micLog('⏳ Зачекайте… (попередня сесія ще відкрита)');
     btn.disabled = true; btn.textContent = '⏳ Зачекайте…';
     const tick = () => {
       if (closingOpen() && Date.now() - t0 < REC_IOS_CLOSE_WAIT){ setTimeout(tick, 50); return; }
@@ -3411,6 +3445,7 @@ document.addEventListener('DOMContentLoaded', () => {
         onError('Запис зупинено. Натисніть 🎤, щоб сказати ще раз.');
         return;
       }
+      micLog('--- тап 🎤 «' + idleLabel + '» · інший запис: ' + !!REC + ' · попередня сесія відкрита: ' + closingOpen() + ' · озвучка говорить: ' + (('speechSynthesis' in window) && (window.speechSynthesis.speaking || window.speechSynthesis.pending)));
       stopRecording();                                     // чужий запис тримає мікрофон — звільнити
       if (IS_IOS && closingOpen()){ iosWaitClosing(btn, idleLabel); return; }
       let afterTts = 0;
@@ -3426,6 +3461,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rec.onresult = (ev) => {
         if (REC !== st) return;
         const r = readTranscript(ev);
+        micLog('result ' + (r.fin ? 'фінальний' : 'проміжний') + ': «' + r.text + '»');
         const changed = !!r.text && r.text !== st.text;
         if (r.text) st.text = r.text;
         st.heardSpeech = true; MIC_OK_ONCE = true;
@@ -3438,6 +3474,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rec.onerror = (ev) => {
         if (REC !== st) return;
         const code = ev && ev.error;
+        micLog('ПОМИЛКА розпізнавача: ' + code);
         if (st.text && code !== 'not-allowed' && code !== 'service-not-allowed'){ deliverRecording(st, 'keep'); return; }
         // наші власні abort() відв'язують запис заздалегідь, тож «aborted» тут — від самого браузера
         let msg = code === 'aborted' ? MIC_RETRY : recognizerErrorMessage(code);
@@ -3446,12 +3483,13 @@ document.addEventListener('DOMContentLoaded', () => {
         releaseRecording(st, 'keep');
         onError(msg);
       };
-      rec.onnomatch = () => { if (REC === st) deliverRecording(st, 'keep'); };
-      rec.onaudiostart = () => { MIC_OK_ONCE = true; st.audio = true; };     // мікрофон увімкнувся (дозвіл є), але слів ще немає
-      rec.onspeechstart = () => { if (REC !== st) return; st.heardSpeech = true; MIC_OK_ONCE = true; armRecTimeout(st, REC_TIMEOUT); };
-      rec.onend = () => { if (REC === st) deliverRecording(st, 'ended'); };
+      rec.onnomatch = () => { micLog('nomatch'); if (REC === st) deliverRecording(st, 'keep'); };
+      rec.onaudiostart = () => { micLog('audiostart'); MIC_OK_ONCE = true; st.audio = true; };     // мікрофон увімкнувся (дозвіл є), але слів ще немає
+      rec.onspeechstart = () => { micLog('speechstart'); if (REC !== st) return; st.heardSpeech = true; MIC_OK_ONCE = true; armRecTimeout(st, REC_TIMEOUT); };
+      rec.onend = () => { micLog('end' + (REC === st ? '' : ' (сесія вже відв\'язана)')); if (REC === st) deliverRecording(st, 'ended'); };
       armRecTimeout(st, REC_HANG);
       st.cap = setTimeout(() => { if (REC === st) deliverRecording(st, 'stop'); }, REC_CAP);
+      if (afterTts) micLog('старт відкладено на ' + afterTts + ' мс (озвучка ще говорила)');
       if (afterTts){ st.delayed = true; st.wait = setTimeout(() => launchRecording(st), afterTts); }
       else launchRecording(st);
     });
@@ -3477,6 +3515,7 @@ document.addEventListener('DOMContentLoaded', () => {
       set: (k, v) => { data[k] = v; return save(); },
       hasData: () => Object.keys(data).length > 0,
       ok: () => ok,
+      key: key,
       clear: () => { data = {}; try { window.localStorage.removeItem(key); } catch (e) {} }
     };
   })();
@@ -8381,6 +8420,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const UNLOCK_ALL = /[?&]vse=1\b/.test(window.location.search || '');
   const doneTasks = new Set(STORE.get('tasks') || []);
   const listenAnswers = STORE.get('listen') || {};
+  if (window.__micLog) window.__micLog('сховище: ' + (STORE.ok() ? 'працює' : 'НЕ ПРАЦЮЄ (приватний режим?)') + ' · ключ: ' + STORE.key + ' · збережених завдань: ' + doneTasks.size + ' · ?vse=1: ' + UNLOCK_ALL);
   const headerEl = document.querySelector('.lesson-header');
   const screens = [...document.querySelectorAll('.screen')];
   const progressFill = $id('progressFill');
@@ -8477,7 +8517,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const n = parseInt(id.slice(1), 10);
     if (!COURSE.days[n - 1] || !dayTasks(n).some(t => t.id === id)) return;
     doneTasks.add(id);
-    STORE.set('tasks', [...doneTasks]);
+    const okSave = STORE.set('tasks', [...doneTasks]);
+    if (window.__micLog){ let back = '?'; try { back = (JSON.parse(window.localStorage.getItem(STORE.key) || '{}').tasks || []).length; } catch (e) { back = 'помилка читання'; } window.__micLog('ЗБЕРЕЖЕНО ' + id + ' · запис у localStorage: ' + (okSave ? 'ok' : 'НЕ ВДАЛОСЯ') + ' · у пам\'яті: ' + doneTasks.size + ' · перечитано зі сховища: ' + back); }
     renderAll();
     showSaved(false);
   }
