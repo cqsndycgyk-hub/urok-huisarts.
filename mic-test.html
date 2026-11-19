@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тест мікрофона — Korte lessen</title>
+<style>
+  body{font-family:-apple-system,system-ui,Segoe UI,Roboto,sans-serif;margin:0;padding:14px;background:#f6f7f9;color:#1b1f24;font-size:16px}
+  h1{font-size:20px;margin:0 0 6px}
+  p{margin:6px 0;line-height:1.4}
+  .box{background:#fff;border:1px solid #dde1e6;border-radius:12px;padding:12px;margin:10px 0}
+  label.v{display:block;padding:8px 6px;border-radius:8px}
+  label.v input{margin-right:8px;transform:scale(1.2)}
+  label.v small{display:block;color:#5b6470;margin-left:26px}
+  button{font-size:17px;padding:12px 14px;border-radius:10px;border:1px solid #c9ced6;background:#fff;margin:4px 4px 4px 0}
+  #mic{background:#1f6feb;color:#fff;border-color:#1f6feb;min-width:220px}
+  #mic.rec{background:#d1242f;border-color:#d1242f}
+  #mic:disabled{opacity:.6}
+  #stat{font-weight:600;margin:8px 0}
+  #log{font-family:Menlo,Consolas,monospace;font-size:12.5px;white-space:pre-wrap;background:#0d1117;color:#e6edf3;border-radius:10px;padding:10px;max-height:40vh;overflow:auto;line-height:1.35}
+  .ok{color:#2da44e}.bad{color:#ff7b72}.ua{color:#8b949e;font-size:12px;word-break:break-all}
+</style>
+</head>
+<body>
+<h1>Тест мікрофона (iPhone / Android)</h1>
+<p>Це не урок — лише перевірка, як браузер телефона поводиться з мікрофоном. Відкрити треба за адресою <b>https://…</b> (з GitHub Pages), не як файл.</p>
+
+<div class="box">
+  <b>1. Виберіть варіант двигуна</b>
+  <label class="v"><input type="radio" name="v" value="A" checked>A — як у мінікурсі v9<small>сесію не обриваємо, проміжні результати, нова сесія на кожен дотик</small></label>
+  <label class="v"><input type="radio" name="v" value="B">B — як у v8 (стара)<small>без проміжних результатів, abort() попередньої перед стартом</small></label>
+  <label class="v"><input type="radio" name="v" value="C">C — старт одразу після короткої озвучки<small>перед кожним записом браузер каже «Zeg maar», мікрофон стартує на її кінці</small></label>
+  <label class="v"><input type="radio" name="v" value="D">D — як A, але без проміжних результатів</label>
+</div>
+
+<div class="box">
+  <b>2. Натисніть 🎤 і скажіть нідерландською одне речення</b> (напр. «Goedemorgen, met Olena Pavlenko»). Повторіть 5 разів; між спробами натискайте 🔊, щоб було як у рольовій грі.
+  <div style="margin-top:8px">
+    <button id="mic">🎤 Говоріть</button>
+    <button id="tts">🔊 Озвучка</button>
+  </div>
+  <div id="stat">Почуто 0 з 0 спроб</div>
+  <div id="heard" style="min-height:22px"></div>
+</div>
+
+<div class="box">
+  <b>3. Журнал</b> — натисніть «Скопіювати журнал» і вставте в чат.
+  <div style="margin:6px 0">
+    <button id="copy">📋 Скопіювати журнал</button>
+    <button id="clear">Очистити</button>
+  </div>
+  <div id="log"></div>
+  <div class="ua" id="ua"></div>
+</div>
+
+<script>
+(function(){
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var logEl = document.getElementById('log'), statEl = document.getElementById('stat'), heardEl = document.getElementById('heard');
+  var micBtn = document.getElementById('mic'), ttsBtn = document.getElementById('tts');
+  var lines = [], tries = 0, heard = 0, t0 = 0;
+  document.getElementById('ua').textContent = navigator.userAgent + ' · SpeechRecognition: ' + (SR ? 'є' : 'НЕМАЄ') + ' · speechSynthesis: ' + ('speechSynthesis' in window ? 'є' : 'немає');
+  function now(){ return t0 ? ((Date.now() - t0) / 1000).toFixed(2) + 's' : '0.00s'; }
+  function log(s, cls){
+    var line = now() + '  ' + s;
+    lines.push(line);
+    var d = document.createElement('div'); d.textContent = line; if (cls) d.className = cls;
+    logEl.appendChild(d); logEl.scrollTop = logEl.scrollHeight;
+  }
+  function variant(){ return document.querySelector('input[name=v]:checked').value; }
+  function stat(){ statEl.textContent = 'Почуто ' + heard + ' з ' + tries + ' спроб · варіант ' + variant() + (IS_IOS ? ' · iPhone/iPad' : ''); }
+
+  var prev = null;        // попередній розпізнавач (для B — abort; для A/C/D — лише стежимо за onend)
+  var prevEnded = true;
+  var cur = null, deadTimer = null, quietTimer = null, gotText = '', delivered = false;
+
+  function finish(reason){
+    if (delivered) return;
+    delivered = true;
+    clearTimeout(deadTimer); clearTimeout(quietTimer);
+    micBtn.classList.remove('rec'); micBtn.textContent = '🎤 Говоріть'; micBtn.disabled = false;
+    if (gotText){ heard++; heardEl.textContent = '✓ «' + gotText + '»'; log('ЗАРАХОВАНО (' + reason + '): «' + gotText + '»', 'ok'); }
+    else { heardEl.textContent = '✗ нічого не почуто'; log('НЕ ПОЧУТО (' + reason + ')', 'bad'); }
+    stat();
+  }
+  function startRec(){
+    var v = variant();
+    if (!SR){ log('SpeechRecognition недоступний', 'bad'); return; }
+    tries++; t0 = Date.now(); gotText = ''; delivered = false;
+    log('--- спроба ' + tries + ', варіант ' + v + ' ---');
+    if (prev && !prevEnded){
+      log('попередня сесія ще не закрилась (onend не було)', 'bad');
+      if (v === 'B'){ try { prev.abort(); log('abort() попередньої'); } catch(e){} }
+    }
+    var rec = new SR();
+    rec.lang = 'nl-NL'; rec.continuous = false; rec.maxAlternatives = 1;
+    rec.interimResults = (v === 'A' || v === 'C');
+    cur = rec; prev = rec; prevEnded = false;
+    var evs = ['start','audiostart','soundstart','speechstart','speechend','soundend','audioend','nomatch'];
+    evs.forEach(function(n){ rec.addEventListener(n, function(){ log('подія ' + n); if (n === 'nomatch') finish('nomatch'); }); });
+    rec.onresult = function(ev){
+      var txt = '', fin = true;
+      for (var i = 0; i < ev.results.length; i++){ var r = ev.results[i]; txt += (r[0] && r[0].transcript || ''); if (r.isFinal === false) fin = false; }
+      txt = txt.trim();
+      log('result ' + (fin ? 'ФІНАЛЬНИЙ' : 'проміжний') + ': «' + txt + '»');
+      if (txt) gotText = txt;
+      if (fin) finish('фінальний результат');
+      else { clearTimeout(quietTimer); quietTimer = setTimeout(function(){ finish('2 с без нових слів'); }, 2000); }
+    };
+    rec.onerror = function(ev){ log('ПОМИЛКА: ' + (ev && ev.error), 'bad'); finish('помилка ' + (ev && ev.error)); };
+    rec.onend = function(){ prevEnded = true; log('подія end'); finish('end'); };
+    deadTimer = setTimeout(function(){ if (!delivered){ log('8 с — ані слова, ані помилки: мікрофон «глухий»', 'bad'); finish('тайм-аут 8 с'); } }, 8000);
+    micBtn.classList.add('rec'); micBtn.textContent = '🎙️ Слухаю…'; micBtn.disabled = true;
+    try { rec.start(); log('start() викликано' + (v === 'C' ? ' (після озвучки)' : ' (у дотику)')); }
+    catch(e){ log('start() кинув виняток: ' + e, 'bad'); finish('виняток'); }
+  }
+  micBtn.addEventListener('click', function(){
+    if (micBtn.disabled) return;
+    var v = variant();
+    if (v === 'C' && 'speechSynthesis' in window){
+      t0 = Date.now(); log('озвучка «Zeg maar» перед стартом');
+      var u = new SpeechSynthesisUtterance('Zeg maar.'); u.lang = 'nl-NL';
+      var started = false;
+      u.onend = function(){ if (!started){ started = true; startRec(); } };
+      u.onerror = function(e){ log('озвучка: помилка ' + (e && e.error), 'bad'); if (!started){ started = true; startRec(); } };
+      setTimeout(function(){ if (!started){ started = true; log('озвучка не закінчилась за 4 с — стартуємо так'); startRec(); } }, 4000);
+      window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+      return;
+    }
+    startRec();
+  });
+  ttsBtn.addEventListener('click', function(){
+    if (!('speechSynthesis' in window)){ log('speechSynthesis немає', 'bad'); return; }
+    var u = new SpeechSynthesisUtterance('Goedemorgen, huisartsenpraktijk De Linde, met Anouk.'); u.lang = 'nl-NL';
+    t0 = t0 || Date.now();
+    u.onstart = function(){ log('🔊 озвучка почалась' + (prev && !prevEnded ? ' (сесія мікрофона ще відкрита!)' : '')); };
+    u.onend = function(){ log('🔊 озвучка закінчилась'); };
+    u.onerror = function(e){ log('🔊 помилка озвучки: ' + (e && e.error), 'bad'); };
+    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+  });
+  document.getElementById('copy').addEventListener('click', function(){
+    var text = 'Тест мікрофона · ' + new Date().toISOString() + '\n' + navigator.userAgent + '\n' + statEl.textContent + '\n' + lines.join('\n');
+    var done = function(){ log('журнал скопійовано'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){ fallback(text); });
+    else fallback(text);
+    function fallback(t){ var ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch(e){ log('не вдалося скопіювати — зробіть знімок екрана', 'bad'); } document.body.removeChild(ta); }
+  });
+  document.getElementById('clear').addEventListener('click', function(){ lines = []; logEl.textContent = ''; tries = 0; heard = 0; heardEl.textContent = ''; stat(); });
+  stat();
+})();
+</script>
+</body>
+</html>
