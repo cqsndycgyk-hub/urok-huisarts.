@@ -853,6 +853,13 @@ button{ touch-action: manipulation; } /* v4: подвійний дотик не 
 /* v3: iPhone — поле з шрифтом < 16 px змушує Safari масштабувати сторінку; зручніша зона натискання в архіві */
 input.blank-input, textarea.blank-input{ font-size: 16px; }
 .archive-item summary{ padding: 8px 0; }
+/* v8 */
+.btn-row[hidden], .note-box[hidden]{ display: none; }
+.rp-label{ display: block; margin-top: 6px; font-size: 16px; color: var(--color-ink); }
+.sound-tip{ margin: 10px 0 0; font-size: 14px; color: var(--color-ink-soft); }\n.sound-tip p{ margin: 0; font-size: inherit; }\n.sound-tip summary{ cursor: pointer; padding: 8px 0; color: var(--color-accent-dark); text-decoration: underline; text-underline-offset: 3px; }
+.sound-tip strong{ color: var(--color-ink); }
+.speech-toast{ display: none; position: fixed; left: 12px; right: 12px; bottom: 16px; z-index: 50; max-width: 560px; margin: 0 auto; background: var(--color-ink); color: #fff; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 14.5px; }
+.speech-toast.is-visible{ display: block; }
 </style>
 </head>
 <body>
@@ -873,6 +880,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 </header>
 
 <main class="lesson-wrapper">
+<div class="note-box" id="noSpeechNote" hidden><strong>Немає озвучки</strong>Озвучка в цьому браузері не працює. Відкрийте сторінку в Safari або Chrome: якщо ви перейшли з Instagram чи Telegram, натисніть ⋯ угорі й виберіть «Відкрити в браузері».</div>
 <div class="screen" id="screen-home">
   <section class="section-card" data-animate>
     <div class="welcome-card">
@@ -884,7 +892,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     <div class="btn-row" style="margin-top:16px;"><button type="button" class="btn btn-primary" id="continueBtn" data-go="day1">Почати: день 1 →</button></div>
     <div class="note-box">
       <strong>Як проходити курс</strong>
-      7 днів по 20–25 хвилин. Щодня — одне вміння: спершу слухаєте, потім кажете самі. Наступний день відкривається, коли пройдено попередній, — не за календарем, тож ідіть у своєму темпі. Прогрес зберігається в цьому браузері. Потрібен звук; мікрофон — за бажанням: кожну вправу можна зробити текстом.
+      7 днів по 20–25 хвилин. Щодня — одне вміння: спершу слухаєте, потім кажете самі. Наступний день відкривається, коли пройдено попередній, — не за календарем, тож ідіть у своєму темпі. Прогрес зберігається в цьому браузері. Потрібен звук — перевірте, що телефон не в беззвучному режимі. Мікрофон — за бажанням: кожну вправу можна зробити й текстом.
     </div>
     <div class="note-box is-safety">
       <strong>Важливо про безпеку</strong>
@@ -938,7 +946,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day1" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="home">← Усі дні</button></div>
-    <span class="section-eyebrow">День 1 з 7 · ≈ 20–25 хвилин</span>
+    <span class="section-eyebrow">День 1 / 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Додзвонитися й сказати, чого хочу</h2>
     <p class="section-sub">Уміння дня: Пройти голосове меню і сказати перше речення.</p>
     <button type="button" class="link-btn" id="d1Resume" hidden></button>
@@ -993,6 +1001,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     <p class="section-sub">Це дзвінок, який ви зможете зробити самі наприкінці курсу. Розуміти все зараз не треба — до дня 6 ви зрозумієте кожне слово.</p>
     <div class="btn-row player"><button type="button" class="btn btn-primary" data-speak-all="d1">▶ Прослухати весь діалог</button><button type="button" class="btn btn-secondary" data-play-pause hidden>⏸ Пауза</button><button type="button" class="btn btn-secondary" data-play-slow aria-pressed="false">🐢 Повільніше</button></div><p class="play-status" aria-live="polite"></p>
     <p class="hint-words">Одна озвучка читає обидві ролі: A — асистентка, B — Олена (це ви). Під кнопкою видно, хто зараз говорить. Зашвидко — увімкніть «🐢 Повільніше».</p>
+    <div class="sound-tip" id="d1EtalonSoundTip"><p><strong>Нічого не чути?</strong> Додайте гучність, коли діалог уже звучить, і вимкніть беззвучний режим. Або під'єднайте навушники.</p><details><summary>Як вимкнути беззвучний режим на iPhone</summary><p>Збоку над кнопками гучності є перемикач: видно помаранчеву смужку — звук вимкнено, пересуньте його. Так на всіх iPhone з кнопкою «Додому» і на більшості інших. Якщо замість перемикача кнопка (iPhone 15 Pro, 16 і новіші) — натисніть і потримайте її секунду. Або відкрийте Центр керування (проведіть пальцем униз від правого верхнього кута) і натисніть дзвоник.</p></details></div>
     <div class="dialogue-list" id="d1EtalonList"></div>
     <div class="btn-row">
       <button class="btn btn-outline" id="d1EtalonToggleBtn">Показати переклад</button>
@@ -1033,7 +1042,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
           <button class="sound-btn" data-speak="de koorts" aria-label="Прослухати">🔊</button>
         </div>
         <div class="vocab-translation">висока температура, жар</div>
-        <div class="vocab-example">Ik heb ook koorts. — У мене ще й температура. <em>(вимова: «кортс»)</em></div>
+        <div class="vocab-example">Ik heb ook koorts. — У мене ще й температура. <em>(вимова: «коортс»)</em></div>
       </div></div>
   </section>
 
@@ -1225,7 +1234,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day2" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day1">← День 1</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 2 з 7 · ≈ 20–25 хвилин</span>
+    <span class="section-eyebrow">День 2 / 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Хто дзвонить</h2>
     <p class="section-sub">Уміння дня: Назвати ім'я, дату народження і сказати, для кого прийом.</p>
     <button type="button" class="link-btn" id="d2Resume" hidden></button>
@@ -1374,6 +1383,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     </div>
     <div class="exercise-block" id="d2TranslateBlock">
       <h3 style="font-size:17px;">2. Перекладіть українською → нідерландською</h3>
+      <p class="exercise-instruction" style="color:var(--color-ink);"><strong>У вправах і рольових іграх ви граєте Олену Павленко (народилася 14 березня 1989) — так сторінка може перевірити відповідь. Свої дані скажете у справжньому дзвінку: вони вже у вашій шпаргалці.</strong></p>
       <p class="exercise-instruction">Скажіть переклад уголос (кнопка з мікрофоном) або напишіть його в поле й натисніть «Перевірити». Якщо є кілька правильних варіантів — ми їх зарахуємо і покажемо.</p>
       <div class="task-counter" id="d2TranslateCounter"></div>
       <p class="fill-blank-text" id="d2TranslateText"></p>
@@ -1394,7 +1404,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
   <section class="section-card" data-animate id="d2RoleplayCard">
     <span class="section-eyebrow">Скажіть уголос</span>
     <h2 class="section-title">Скажіть уголос: назвіться</h2>
-    <p class="section-sub">У рольових іграх ви — Олена Павленко (14 березня 1989), прийом для себе: так сторінка може перевірити відповідь. Не виходить двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
+    <p class="section-sub">Ви — Олена Павленко, прийом для себе. Не виходить двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
     <div class="roleplay-card">
       <div class="btn-row" id="d2RoleplayPicker" style="margin-top:0;"></div>
       <div style="margin-top:20px;">
@@ -1425,7 +1435,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
   <section class="section-card" data-animate id="d2CallCard">
     <span class="section-eyebrow">Увесь дзвінок</span>
     <h2 class="section-title">Увесь дзвінок: першу репліку — самі</h2>
-    <p class="section-sub">Той самий дзвінок, що й у попередні дні. Першу репліку ви вже вчили — скажіть її самі, без тексту. Решта написана на екрані: прочитайте вголос у мікрофон або повторіть за 🔊. Не виходить без тексту двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
+    <p class="section-sub">Той самий дзвінок, що й у дні 1. Першу репліку ви вже вчили — скажіть її самі, без тексту. Решта написана на екрані: прочитайте вголос у мікрофон або повторіть за 🔊. Не виходить без тексту двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
     <div class="roleplay-card">
       <div class="btn-row" id="d2CallPicker" style="margin-top:0;"></div>
       <div style="margin-top:20px;">
@@ -1474,7 +1484,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day3" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day2">← День 2</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 3 з 7 · ≈ 20–25 хвилин</span>
+    <span class="section-eyebrow">День 3 / 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Що болить і відколи</h2>
     <p class="section-sub">Уміння дня: Описати симптом і тривалість двома реченнями.</p>
     <button type="button" class="link-btn" id="d3Resume" hidden></button>
@@ -1524,7 +1534,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
           <button class="sound-btn" data-speak="de koorts" aria-label="Прослухати">🔊</button>
         </div>
         <div class="vocab-translation">висока температура, жар</div>
-        <div class="vocab-example">Ik heb koorts. — У мене температура. Ik heb geen koorts. — Температури немає. <em>(вимова: «кортс»)</em></div>
+        <div class="vocab-example">Ik heb koorts. — У мене температура. Ik heb geen koorts. — Температури немає. <em>(вимова: «коортс»)</em></div>
       </div>
 <div class="vocab-card" tabindex="0" role="button" data-speak="hoesten">
         <div class="vocab-card-top">
@@ -1604,6 +1614,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     </div>
     <div class="exercise-block" id="d3TranslateBlock">
       <h3 style="font-size:17px;">3. Перекладіть українською → нідерландською</h3>
+      
       <p class="exercise-instruction">Скажіть переклад уголос (кнопка з мікрофоном) або напишіть його в поле й натисніть «Перевірити». Якщо є кілька правильних варіантів — ми їх зарахуємо і покажемо.</p>
       <div class="task-counter" id="d3TranslateCounter"></div>
       <p class="fill-blank-text" id="d3TranslateText"></p>
@@ -1624,7 +1635,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
   <section class="section-card" data-animate id="d3RoleplayCard">
     <span class="section-eyebrow">Скажіть уголос</span>
     <h2 class="section-title">Скажіть уголос: що болить</h2>
-    <p class="section-sub">Ситуація: у вас від учора болить горло і є температура. Відповідайте на три питання асистентки. Не виходить двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
+    <p class="section-sub">Ситуація: у вас від учора болить горло і є температура 38,5. Відповідайте на три питання асистентки. Не виходить двічі — відкрийте підказку, повторіть за зразком і йдіть далі.</p>
     <div class="roleplay-card">
       <div class="btn-row" id="d3RoleplayPicker" style="margin-top:0;"></div>
       <div style="margin-top:20px;">
@@ -1703,7 +1714,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day4" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day3">← День 3</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 4 з 7 · ≈ 20–25 хвилин</span>
+    <span class="section-eyebrow">День 4 / 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Питання асистентки</h2>
     <p class="section-sub">Уміння дня: Упізнати на слух стандартні питання й коротко відповісти.</p>
     <button type="button" class="link-btn" id="d4Resume" hidden></button>
@@ -1929,7 +1940,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day5" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day4">← День 4</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 5 з 7 · ≈ 20–25 хвилин</span>
+    <span class="section-eyebrow">День 5 / 7 · ≈ 20–25 хвилин</span>
     <h2 class="section-title">Час і «повторіть, будь ласка»</h2>
     <p class="section-sub">Уміння дня: Зрозуміти запропонований час, підтвердити, відмовитися або перепитати.</p>
     <button type="button" class="link-btn" id="d5Resume" hidden></button>
@@ -2060,6 +2071,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
     </div>
     <div class="exercise-block" id="d5TranslateBlock">
       <h3 style="font-size:17px;">2. Перекладіть українською → нідерландською</h3>
+      
       <p class="exercise-instruction">Скажіть переклад уголос (кнопка з мікрофоном) або напишіть його в поле й натисніть «Перевірити». Якщо є кілька правильних варіантів — ми їх зарахуємо і покажемо.</p>
       <div class="task-counter" id="d5TranslateCounter"></div>
       <p class="fill-blank-text" id="d5TranslateText"></p>
@@ -2160,7 +2172,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day6" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day5">← День 5</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 6 з 7 · ≈ 15–20 хвилин</span>
+    <span class="section-eyebrow">День 6 / 7 · ≈ 15–20 хвилин</span>
     <h2 class="section-title">Увесь дзвінок</h2>
     <p class="section-sub">Уміння дня: Провести дзвінок від привітання до прощання без підказки.</p>
     <button type="button" class="link-btn" id="d6Resume" hidden></button>
@@ -2318,7 +2330,7 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 <div class="screen" id="screen-day7" hidden>
   <section class="section-card" data-animate>
     <div class="back-row"><button type="button" class="link-btn" data-go="day6">← День 6</button><button type="button" class="link-btn" data-go="home">Усі дні</button></div>
-    <span class="section-eyebrow">День 7 з 7 · ≈ 30 хвилин, можна за 2 рази</span>
+    <span class="section-eyebrow">День 7 / 7 · ≈ 30 хвилин, можна за 2 рази</span>
     <h2 class="section-title">Іспит і ваш дзвінок</h2>
     <p class="section-sub">Уміння дня: Перевірити себе й підготувати власний дзвінок.</p>
     <button type="button" class="link-btn" id="d7Resume" hidden></button>
@@ -2922,9 +2934,24 @@ input.blank-input, textarea.blank-input{ font-size: 16px; }
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------- УТИЛІТИ: озвучка, розпізнавання, порівняння ---------------- */
-  function speakDutch(text){
-    if (!text || !('speechSynthesis' in window)) return;
+  const NO_SPEECH_TEXT = 'Озвучка в цьому браузері не працює. Відкрийте сторінку в Safari або Chrome.';
+  function hasSpeech(){ return ('speechSynthesis' in window) && typeof window.SpeechSynthesisUtterance === 'function'; }
+  let noSpeechTimer = null;
+  function noSpeechToast(){
+    let t = document.getElementById('speechToast');
+    if (!t){ t = document.createElement('div'); t.id = 'speechToast'; t.className = 'speech-toast'; t.setAttribute('role', 'status'); t.textContent = NO_SPEECH_TEXT; document.body.appendChild(t); }
+    t.classList.add('is-visible');
+    clearTimeout(noSpeechTimer); noSpeechTimer = setTimeout(() => t.classList.remove('is-visible'), 6000);
+  }
+  function speakDutch(text, waited){
+    if (!text || !hasSpeech()) return;
+    if (waited && REC) return;   // v9: поки чекали, учениця вже ввімкнула мікрофон — не перебивати
     stopRecording();
+    // v9: iPhone — не говорити поверх ще відкритої сесії мікрофона (чекаємо її кінця, щонайбільше 1,5 с)
+    if (IS_IOS && closingOpen() && (waited || 0) < 1500){
+      if (!waited){ try { playerStop(); window.speechSynthesis.cancel(); } catch (e) {} }
+      setTimeout(() => speakDutch(text, (waited || 0) + 50), 50); return;
+    }
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = 'nl-NL';
     utter.rate = 0.92;
@@ -2948,6 +2975,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const el = e.target.closest('[data-speak]');
     if (!el) return;
     e.stopPropagation();
+    if (!hasSpeech()) noSpeechToast();
     speakDutch(el.getAttribute('data-speak'));
   });
 
@@ -2999,6 +3027,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function normalizeForCompare(text){
     let s = (text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     s = typedNumbersToSpoken(s);
+    s = s.replace(/\b(een|twee|drie|vier|vijf|zes|zeven|acht|negen) en (twintig|dertig|veertig|vijftig|zestig|zeventig|tachtig|negentig)\b/g, '$1en$2')
+         .replace(/\b(hoofd|keel|buik|oor|kies|tand|rug|maag) pijn\b/g, '$1pijn').replace(/\b(ja|nee) hoor\b/g, '$1');
     s = s.replace(/(\d)[\/.:,](?=\d)/g, '$1 ').replace(/-/g, ' ').replace(/\d+/g, m => nlNumberWords(m));
     return s.replace(/[.,!?;:"'’«»]/g, '').replace(/\bkomma\b/g, ' ').replace(/\s+/g, ' ').replace(/\bniks\b/g, 'niets').replace(/\bmijn zelf\b/g, 'mijzelf').replace(/\bgoe(de|ie|den) ?(morgen|middag|avond)\b/g, (m, a, b) => 'goede' + (b === 'avond' ? 'navond' : b)).replace(/\bvanochtend\b/g, 'vanmorgen').trim();
   }
@@ -3076,7 +3106,8 @@ document.addEventListener('DOMContentLoaded', () => {
       out.push(t);
     });
     flushNum(); flushRun(); flushLetters();
-    return out.join(' ');
+    // v8: рік двома цифрами після місяця — «14 maart 89» = 1989, «2 mei 19» = 2019
+    return out.join(' ').replace(new RegExp('\\b(' + NL_MONTHS.join('|') + ') (\\d\\d)(?= |$)', 'g'), (m, mo, y) => mo + ' ' + (+y > 26 ? '19' : '20') + y);
   }
   // v2: слова, які не можна «добрати відсотком»: місяць, день тижня, для кого прийом
   const KEY_WORDS = new Set(NL_MONTHS.concat(['maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag']));
@@ -3086,54 +3117,92 @@ document.addEventListener('DOMContentLoaded', () => {
   const DAY_WORDS = ['vandaag','morgen','gisteren','vanmorgen','vanmiddag','vanavond','morgenochtend','morgenmiddag','morgenavond','overmorgen','eergisteren'];
   const VERB_WORDS = ['maken','afzeggen','verzetten'], NAME_WORDS = ['olena','sofia'];
   const GUARD_LABEL = { time: 'час', dur: 'тривалість', day: 'день', verb: 'дія', name: 'ім\'я' };
+  // v8: числа й час у причинах — так, як у зразку (38,5; drie dagen; half tien), а не у внутрішньому вигляді
+  const prettyNum = (t) => String(t).replace(/\d+/g, m => m.length <= 2 ? nlNumberWords(m) : m);
+  function showNums(text, miss){
+    const hits = (String(text).match(/\d+(?:[.,]\d+)?/g) || []).filter(x => miss.includes(canonicalForCompare(normalizeForCompare(x))));
+    return hits.length ? hits.join(', ') : miss.map(prettyNum).join(', ');
+  }
+  const isBare = (can) => !!can && can.split(' ').every(w => w === 'ja' || w === 'nee');
+  const SHE_WORDS = ['ze','zij','dochter','kind','zoon','hij','haar'], GREET_WORDS = ['goedemorgen','goedemiddag','goedenavond'];
+  const TOPIC_WORDS = ['koorts','klachten','klacht','medicijnen','medicijn','gebruik','recept','thermometer','afspraak'];
+  const isSymptom = (w) => isPain(w) || ['koorts','hoest','hoesten','verkouden','benauwd'].includes(w);
   function guardBits(can){
-    const g = { time: new Set(), dur: new Set(), day: new Set(), verb: new Set(), name: new Set() };
+    const g = { time: new Set(), dur: new Set(), day: new Set(), verb: new Set(), name: new Set(), num: new Set() };
     let s = ' ' + can + ' ';
     s = s.replace(/ (half|kwart over|kwart voor) (\d+|een)(?= )/g, (m, a, b) => { g.time.add(a + ' ' + b); return ' |'; });
     s = s.replace(/ (\d+|een) uur(?= )/g, (m, a) => { g.time.add(a + ' uur'); return ' |'; });
     s = s.replace(/ om (\d+|een)(?= )/g, (m, a) => { g.time.add(a + ' uur'); return ' |'; });
     s.replace(/ (\d+|een|paar) (dag|dagen|week|weken|maand|maanden|jaar)(?= )/g, (m, a, b) => { g.dur.add(a + ' ' + b); return m; });
-    can.split(' ').forEach(w => { if (DAY_WORDS.includes(w)) g.day.add(w); if (VERB_WORDS.includes(w)) g.verb.add(w); if (NAME_WORDS.includes(w)) g.name.add(w); });
+    can.split(' ').forEach(w => { if (DAY_WORDS.includes(w)) g.day.add(w); if (VERB_WORDS.includes(w)) g.verb.add(w); if (NAME_WORDS.includes(w)) g.name.add(w); if (/^\d+$/.test(w)) g.num.add(w); });
     return g;
   }
-  function guardConflict(heardCan, sources){
-    const h = guardBits(heardCan), u = { time: new Set(), dur: new Set(), day: new Set(), verb: new Set(), name: new Set() };
+  function guardConflict(heardCan, sources, numSources){
+    const h = guardBits(heardCan), u = { time: new Set(), dur: new Set(), day: new Set(), verb: new Set(), name: new Set(), num: new Set() };
     sources.forEach(t => { const g = guardBits(canonicalForCompare(normalizeForCompare(t))); Object.keys(u).forEach(k => g[k].forEach(x => u[k].add(x))); });
+    (numSources || []).forEach(t => guardBits(canonicalForCompare(normalizeForCompare(t))).num.forEach(x => u.num.add(x))); // v8: числа з інших реплік ситуації
+    if (!u.dur.size && h.dur.size && sources.some(t => /\bsinds\b/.test(normalizeForCompare(t)))) return 'тривалість не така, як у ситуації';
     if ([...u.day].some(w => w.startsWith('morgen'))) u.day.add('morgen');
     if ([...u.day].some(w => w.startsWith('van'))) u.day.add('vandaag');
     for (const k of Object.keys(u)){
       if (!u[k].size) continue; // зразок про це мовчить — зайва подробиця не помилка
       const bad = [...h[k]].filter(x => !u[k].has(x));
-      if (bad.length) return `${GUARD_LABEL[k]} не збігається: у вас «${bad.join(', ')}», а має бути «${[...u[k]].join(' / ')}»`;
+      if (bad.length && k === 'num') return 'число не таке, як у ситуації';
+      if (bad.length) return `${GUARD_LABEL[k]} не збігається: у вас «${bad.map(prettyNum).join(', ')}», а має бути «${[...u[k]].map(prettyNum).join(' / ')}»`;
     }
     return null;
   }
-  function compareSpokenAnswer(heard, expectedList, context){
+  function compareSpokenAnswer(heard, expectedList, context, situationTexts){
     const list = Array.isArray(expectedList) ? expectedList : [expectedList];
     const heardNorm = normalizeForCompare(heard);
     const heardCan = canonicalForCompare(heardNorm);
     const rank = { correct: 2, partial: 1, wrong: 0 };
     let best = null;
-    const guardReason = guardConflict(heardCan, list.concat(context || []));
+    const guardReason = guardConflict(heardCan, list.concat(context || []), situationTexts);
     const pol = (t) => { const w = normalizeForCompare(t).split(' '); return { ja: w.includes('ja'), nee: w.includes('nee') }; };
     const hp = pol(heard), lp = list.map(pol), listJa = lp.some(x => x.ja), listNee = lp.some(x => x.nee);
+    // v8 (B1): особа, привітання, окреме ja/nee
+    const canWords = (t) => canonicalForCompare(normalizeForCompare(t)).split(' ');
+    const listW = list.map(canWords), hW = heardCan.split(' ');
+    const listIk = listW.some(w => w.includes('ik')), listShe = listW.some(w => w.some(x => SHE_WORDS.includes(x)));
+    const hIk = hW.includes('ik') || /\bmijn naam\b/.test(heardCan), hShe = hW.some(x => SHE_WORDS.includes(x));
+    const ctxLast = (context && context.length) ? canWords(context[context.length - 1]) : [];
+    const ctxShe = ctxLast.some(x => SHE_WORDS.includes(x)), ctxYou = !ctxShe && ctxLast.some(x => x === 'u' || x === 'uw');
+    const anyChild = listShe || ctxShe || (context || []).some(t => canWords(t).some(x => SHE_WORDS.includes(x)));
+    const listNoChild = listW.some(w => !w.some(x => CHILD_RE.test(x))) && ctxShe; // асистентка вже назвала дитину — повторювати не обов'язково
+    // симптом «є в ситуації», якщо десь у її репліках він названий без «geen»
+    const sitNorm = list.concat(context || [], situationTexts || []).map(t => canonicalForCompare(normalizeForCompare(t)));
+    const symInSituation = (w) => sitNorm.some(t => t.split(' ').includes(w) && !t.includes('geen ' + w));
+    const allW = listW.concat((context || []).map(canWords));
+    const offTopic = hW.filter(w => TOPIC_WORDS.includes(w) && !allW.some(l => l.includes(w)) && !(isSymptom(w) && symInSituation(w)));
+    const topicReason = offTopic.length ? `у вас «${offTopic[0]}», а асистентка питає про інше` : null;
+    const benReason = (/\bben\b/.test(heardCan) && hW.some(w => isPain(w) || w === 'koorts') && !listW.some(l => l.includes('ben'))) ? 'біль і температура — з «ik heb», а не «ik ben»' : null;
+    const isBoy = (w) => w.includes('zoon') || w.includes('hij'), isGirl = (w) => w.includes('dochter') || w.includes('ze') || w.includes('zij');
+    let whoReason = null;
+    if (hIk && !hShe && !listIk && listShe) whoReason = 'у ситуації йдеться про дитину (ze heeft …), а ви кажете про себе (ik …)';
+    else if (hShe && !hIk && !listShe && (listIk || ctxYou)) whoReason = 'у ситуації йдеться про вас (ik …), а ви кажете про когось іншого';
+    else if (isBoy(hW) && !listW.some(isBoy) && listW.some(isGirl)) whoReason = 'у ситуації — донька (dochter, ze), а у вас — син (zoon, hij)';
+    const lastCtx = (context && context.length) ? normalizeForCompare(context[context.length - 1]).split(' ').filter(w => GREET_WORDS.includes(w)) : [];
+    const badGreet = hW.filter(w => GREET_WORDS.includes(w) && !lastCtx.includes(w) && !listW.some(l => l.includes(w)));
+    const greetReason = (lastCtx.length && badGreet.length) ? `асистентка сказала «${lastCtx[0]}» — привітайтеся так само, а не «${badGreet[0]}»` : null;
     const polReason = (hp.ja && !hp.nee && listNee && !listJa) ? 'у вас «ja», а в зразку «nee»' : ((hp.nee && !hp.ja && listJa && !listNee) ? 'у вас «nee», а в зразку «ja»' : null);
     list.forEach(expected => {
       const expectedNorm = normalizeForCompare(expected);
       const expectedCan = canonicalForCompare(expectedNorm);
       let cand;
-      if (heardCan === expectedCan) cand = { verdict: 'correct', ratio: 1, expected };
+      if (isBare(expectedCan) && heardCan !== expectedCan) cand = { verdict: 'wrong', ratio: -1, expected };
+      else if (heardCan === expectedCan) cand = { verdict: 'correct', ratio: 1, expected };
       else {
-        const expectedWords = expectedCan.split(' ').filter(w => w.length > 1 || /\d/.test(w));
+        const expectedWords = expectedCan.split(' ').filter(w => (w.length > 1 || /\d/.test(w)) && w !== 'ja' && w !== 'nee');
         const heardWords = new Set(heardCan.split(' '));
         const matched = expectedWords.filter(w => heardWords.has(w)).length;
         const ratio = expectedWords.length ? matched / expectedWords.length : 0;
         cand = { verdict: ratio >= 0.75 ? 'correct' : (ratio >= 0.4 ? 'partial' : 'wrong'), ratio, expected };
         const reason = negationMismatch(heardNorm, expectedNorm);
-        if (reason){ cand.reason = reason; if (cand.verdict === 'correct') cand.verdict = 'wrong'; }
+        if (reason){ cand.reason = reason; cand.verdict = 'wrong'; } // v8: інше заперечення — це інший зміст, не «частково»
         // числа (індекс, номер будинку, kenmerk, дата, час) мають збігатися всі
         const missingNum = expectedWords.filter(w => /\d/.test(w) && !heardWords.has(w));
-        if (missingNum.length && cand.verdict === 'correct'){ cand.verdict = 'partial'; if (!cand.reason) cand.reason = `число не збігається: у зразку «${missingNum.join(', ')}»`; }
+        if (missingNum.length && cand.verdict === 'correct'){ cand.verdict = 'partial'; if (!cand.reason) cand.reason = `число не збігається: у зразку «${showNums(expected, missingNum)}»`; }
         const down = (why) => { if (cand.verdict === 'correct'){ cand.verdict = 'partial'; if (!cand.reason) cand.reason = why; } };
         const hw = [...heardWords];
         const missingKey = expectedWords.filter(w => KEY_WORDS.has(w) && !heardWords.has(w));
@@ -3142,20 +3211,38 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (extraKey.length) down(`у вашій відповіді є «${extraKey.join(', ')}», а в зразку цього немає`);
         if (SELF_RE.test(expectedCan) && !SELF_ANY.test(heardCan)) down('у зразку — «для себе» (voor mijzelf), а у вашій відповіді цього немає');
         const eChild = expectedWords.some(w => CHILD_RE.test(w)), hChild = hw.some(w => CHILD_RE.test(w));
-        if (eChild && !hChild) down('у зразку йдеться про дитину (kind / dochter), а у вашій відповіді цього немає');
-        if (!eChild && hChild) down('у вашій відповіді йдеться про дитину, а в зразку — ні');
+        if (eChild && !hChild && !listNoChild) down('у зразку йдеться про дитину (kind / dochter), а у вашій відповіді цього немає');
+        if (!eChild && hChild && !anyChild) down('у вашій відповіді йдеться про дитину, а в ситуації — ні');
         const ePain = expectedWords.filter(isPain), hPain = hw.filter(isPain);
-        if (ePain.some(w => !heardWords.has(w)) || hPain.some(w => !expectedWords.includes(w))) down(`симптом не збігається: у зразку «${ePain.join(', ') || 'без …pijn'}»`);
+        const eSymAll = expectedWords.filter(isSymptom), hSymAll = hw.filter(isSymptom);
+        const symMiss = eSymAll.filter(w => !heardWords.has(w)), symExtra = hSymAll.filter(w => !expectedWords.includes(w) && !symInSituation(w));
+        if (ePain.some(w => !heardWords.has(w)) || hPain.some(w => !expectedWords.includes(w))) down(ePain.length ? `симптом не збігається: у зразку «${ePain.join(', ')}»` : `у вас «${hPain.join(', ')}», а в цій репліці про біль не йдеться`);
+        else if (symMiss.length) down(`назвіть і «${symMiss.join(', ')}» — це теж є в ситуації`);
+        else if (symExtra.length) down(`у вас «${symExtra.join(', ')}», а в ситуації цього немає`);
+        if (benReason) down(benReason);
+        if (topicReason) down(topicReason);
         if (guardReason) down(guardReason);
+        if (whoReason) down(whoReason);
+        if (greetReason) down(greetReason);
+        // v8 (A14): симптоми названо, але без «ik heb» чи тривалості — «Частково» з причиною, а не «✗» без пояснення
+        const eSym = expectedWords.filter(isSymptom);
+        const symUp = cand.verdict === 'wrong' && !cand.reason && !guardReason && !polReason && !whoReason && eSym.length > 0 && eSym.every(w => heardWords.has(w)) && !hw.some(w => isSymptom(w) && !expectedWords.includes(w));
+        if (symUp) cand.verdict = 'partial';
+        if (cand.verdict !== 'correct' && !cand.reason && (guardReason || whoReason || topicReason)) cand.reason = guardReason || whoReason || topicReason; // v8: «✗» і «Частково» теж із причиною
         if (polReason && cand.verdict === 'correct'){ cand.verdict = 'wrong'; if (!cand.reason) cand.reason = polReason; }
         // v6: «Частково» без причини збивало — пояснюємо, чого бракує (тривалість або число)
         if (cand.verdict === 'partial' && !cand.reason){
-          if (guardBits(expectedCan).dur.size && !guardBits(heardCan).dur.size) cand.reason = 'додайте, скільки це триває: al … dagen або sinds …';
+          if (guardBits(expectedCan).dur.size && !guardBits(heardCan).dur.size) cand.reason = /\bsinds\b/.test(heardCan) ? 'тривалість не така, як у ситуації' : 'додайте, скільки це триває: al … dagen або sinds …';
           else if (expectedWords.some(w => /\d/.test(w) && !heardWords.has(w))) cand.reason = /\d/.test(heardCan) ? 'число не таке, як у ситуації' : 'назвіть також число (дату, температуру або час)';
         }
+        if (symUp && !cand.reason) cand.reason = 'скажіть повним реченням: Ik heb … (про дитину — Ze heeft …)';
       }
       if (!best || rank[cand.verdict] > rank[best.verdict] || (rank[cand.verdict] === rank[best.verdict] && cand.ratio > best.ratio)) best = cand;
     });
+    if (isBare(heardCan) && (!best || best.verdict !== 'correct')){
+      if (polReason) return { verdict: 'wrong', ratio: 0, expected: list[0], reason: polReason };
+      if (lp.some(x => hp.ja ? x.ja : x.nee)) return { verdict: 'partial', ratio: 0, expected: list[0], reason: `у дзвінку коротке «${hW[0]}» зрозуміють, але тут тренуємо повну відповідь` };
+    }
     return best || { verdict: 'wrong', ratio: 0, expected: list[0] };
   }
   // Словник уроку: усі нідерландські слова сторінки (озвучка, діалоги, рольові ігри, варіанти перекладу) + спільний список серії
@@ -3183,7 +3270,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!SpeechRecognitionAPI) return null;
     const rec = new SpeechRecognitionAPI();
     rec.lang = 'nl-NL';
-    rec.interimResults = false;
+    rec.continuous = false;
+    rec.interimResults = true;   // v9: iPhone часто не віддає фінального результату
     rec.maxAlternatives = 1;
     return rec;
   }
@@ -3194,64 +3282,181 @@ document.addEventListener('DOMContentLoaded', () => {
     if (code === 'audio-capture') return 'Мікрофон не знайдено на цьому пристрої.';
     return 'Не вдалося розпізнати мовлення. Спробуйте ще раз.';
   }
-  // Універсальний запис (v4): один активний розпізнавач на сторінку; кнопка відновлюється завжди
+  // Універсальний запис (v9): на iPhone (Safari і Chrome — обидва на WebKit) розпізнавач «глухне», якщо сесію обривати
+  // abort()/stop() або вмикати мікрофон під час озвучки (WebKit bug 321436). Тому на iPhone сесію НІКОЛИ не обриваємо:
+  // лише відв'язуємо від кнопки й чекаємо, поки вона закриється сама; поки не закрилась — кнопка «⏳ Зачекайте…».
+  // На Android сесію, що не закрилась сама, м'яко зупиняємо. Проміжний текст іде в оцінку, якщо фінального не було.
   // var, а не let: speakDutch стоїть у коді вище й теж зупиняє запис (з let був би TDZ)
-  var REC = null;              // { rec, btn, idleLabel, onError, timer }
-  var REC_TIMEOUT = 10000;     // стільки чекаємо на результат, потім звільняємо мікрофон
+  var REC = null;              // активний запис { rec, btn, idleLabel, onResult, onError, timer, quiet, cap, wait, text, started, heardSpeech, delayed, finishing }
+  var CLOSING = null;          // попередній розпізнавач, від якого ще чекаємо onend { rec, ended, t }
+  var REC_TIMEOUT = 10000;     // після початку мовлення: стільки чекаємо на результат
+  var REC_HANG = 8000;         // від розпізнавача немає жодного слова — вважаємо, що мікрофон не відповів
+  var REC_CAP = 15000;         // абсолютна межа одного запису
+  var REC_QUIET = 2000;        // iPhone: тиша після останнього почутого слова — запис завершуємо самі
+  var REC_CLOSE_WAIT = 1000;   // Android: щонайбільше чекаємо, поки закриється попередня сесія
+  var REC_IOS_CLOSE_WAIT = 3000; // iPhone: щонайбільше тримаємо «Зачекайте…»
+  var REC_AFTER_TTS = 400;     // пауза між озвучкою і мікрофоном
   var MIC_RETRY = 'Не почув. Натисніть 🎤 ще раз або напишіть відповідь у поле.';
+  var MIC_HUNG = 'Мікрофон не відповів. Натисніть 🎤 ще раз або напишіть відповідь у поле.';
+  var MIC_HUNG_AGAIN = 'Мікрофон зараз не відповідає. Напишіть відповідь у поле або спробуйте 🎤 ще раз за хвилину.';
+  var IS_IOS = window.__forceIOS === true || /iPad|iPhone|iPod/.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var MIC_OK_ONCE = false;     // мікрофон уже відповідав на цій сторінці (дозвіл є)
+  var MIC_HANGS = 0;           // скільки разів поспіль мікрофон не відповів
+  function readTranscript(ev){
+    let text = '', fin = false;
+    try {
+      const rs = ev.results;
+      fin = rs.length > 0;
+      for (let i = 0; i < rs.length; i++){
+        const r = rs[i], t = ((r && r[0] && r[0].transcript) || '').trim();
+        if (t){
+          if (text && t.toLowerCase().indexOf(text.toLowerCase()) === 0) text = t;   // частина повторює вже почуте — замінити, не дописувати
+          else text += (text ? ' ' : '') + t;
+        }
+        if (r && r.isFinal === false) fin = false;
+      }
+    } catch (e) {}
+    return { text: text.replace(/\s+/g, ' ').trim(), fin: fin };
+  }
+  function closingOpen(){ return !!(CLOSING && !CLOSING.ended); }
+  function forgetClosing(){ if (CLOSING){ CLOSING.ended = true; CLOSING = null; } }
+  function trackClosing(rec){
+    forgetClosing();
+    const c = { rec: rec, ended: false, t: Date.now() };
+    CLOSING = c;
+    const done = () => { c.ended = true; if (CLOSING === c) CLOSING = null; };
+    try { rec.onresult = rec.onnomatch = rec.onspeechstart = rec.onaudiostart = rec.onerror = null; rec.onend = done; } catch (e) {}
+    return c;
+  }
+  // відв'язати запис від кнопки. how: 'ended' — сесія вже закрилася; 'keep' — закриється сама;
+  // 'stop' — м'яко зупинити; 'abort' — обірвати. На iPhone 'stop' і 'abort' не обривають (див. вище).
+  function releaseRecording(st, how){
+    if (REC === st) REC = null;
+    clearTimeout(st.timer); clearTimeout(st.quiet); clearTimeout(st.cap); clearTimeout(st.wait); clearTimeout(st.fin);
+    if (st.btn){ st.btn.classList.remove('is-recording'); st.btn.textContent = st.idleLabel; }
+    if (!st.started || how === 'ended') return;
+    const c = trackClosing(st.rec);
+    if (IS_IOS) return;
+    if (how === 'keep'){
+      setTimeout(() => {
+        if (c.ended) return;
+        try { st.rec.stop(); } catch (e) {}
+        setTimeout(() => { if (c.ended) return; try { st.rec.abort(); } catch (e) {} c.ended = true; if (CLOSING === c) CLOSING = null; }, REC_CLOSE_WAIT);
+      }, 1500);
+    } else if (how === 'stop'){ try { st.rec.stop(); } catch (e) {} }
+    else { try { st.rec.abort(); } catch (e) {} }
+  }
+  function deliverRecording(st, how){
+    const text = (st.text || '').trim();
+    releaseRecording(st, how);
+    if (text){ MIC_HANGS = 0; st.onResult(text); } else st.onError(MIC_RETRY);
+  }
   function stopRecording(message){
     const st = REC;
     if (!st) return;
-    REC = null;
-    if (st.timer) clearTimeout(st.timer);
-    if (st.btn){ st.btn.classList.remove('is-recording'); st.btn.textContent = st.idleLabel; }
-    try { st.rec.onresult = st.rec.onerror = st.rec.onnomatch = st.rec.onend = st.rec.onspeechstart = st.rec.onaudiostart = null; } catch (e) {}
-    try { st.rec.abort(); } catch (e) {}
-    try { if (st.rec.stop) st.rec.stop(); } catch (e) {}
+    releaseRecording(st, 'abort');
     if (message && st.onError) st.onError(message);
+  }
+  function armRecTimeout(st, ms){
+    clearTimeout(st.timer);
+    st.timer = setTimeout(() => {
+      if (REC !== st) return;
+      if (st.text) { deliverRecording(st, 'stop'); return; }
+      if (st.heardSpeech){ releaseRecording(st, 'abort'); st.onError(MIC_RETRY); return; }
+      MIC_HANGS++;
+      releaseRecording(st, 'abort');
+      if (!st.audio) forgetClosing();                       // мікрофон так і не ввімкнувся — onend від нього не чекаємо
+      st.onError(MIC_HANGS >= 2 ? MIC_HUNG_AGAIN : MIC_HUNG);
+    }, ms);
+  }
+  function launchRecording(st){
+    if (REC !== st) return;
+    if (closingOpen()){
+      if (Date.now() - CLOSING.t < REC_CLOSE_WAIT){ st.delayed = true; st.wait = setTimeout(() => launchRecording(st), 50); return; }
+      if (!IS_IOS){ try { CLOSING.rec.abort(); } catch (e) {} }   // на iPhone не обриваємо ніколи
+      forgetClosing();
+    }
+    try { st.rec.start(); st.started = true; }
+    catch (err){ releaseRecording(st, 'abort'); st.onError('Мікрофон зайнятий. Натисніть 🎤 ще раз.'); }
+  }
+  // iPhone: попередня сесія ще відкрита — не обриваємо її, а просимо зачекати й натиснути ще раз
+  function iosWaitClosing(btn, idleLabel){
+    const t0 = Date.now();
+    btn.disabled = true; btn.textContent = '⏳ Зачекайте…';
+    const tick = () => {
+      if (closingOpen() && Date.now() - t0 < REC_IOS_CLOSE_WAIT){ setTimeout(tick, 50); return; }
+      if (closingOpen()) forgetClosing();
+      btn.disabled = false; btn.textContent = idleLabel;
+    };
+    setTimeout(tick, 50);
   }
   function bindRecordButton(btn, idleLabel, onResult, onError){
     if (!btn) return;
     if (!SpeechRecognitionAPI){ btn.style.display = 'none'; return; }
     btn.addEventListener('click', () => {
-      // повторне натискання на «Слухаю…» — зупинити запис (подвійний дотик на телефоні не рахуємо)
+      if (btn.disabled) return;
+      // повторне натискання на «Слухаю…»: щось уже почуто — оцінюємо це; ні — зупиняємо (подвійний дотик не рахуємо)
       if (REC && REC.btn === btn){
-        if (Date.now() - REC.t0 < 400) return;
-        stopRecording('Запис зупинено. Натисніть 🎤, щоб сказати ще раз.');
+        const cur = REC;
+        if (Date.now() - cur.t0 < 400 || cur.finishing) return;
+        if ((cur.text || '').trim()){
+          if (IS_IOS){ deliverRecording(cur, 'keep'); return; }
+          // Android: попросити фінальний результат (він точніший за проміжний), чекати щонайбільше 0,8 с
+          cur.finishing = true;
+          try { cur.rec.stop(); } catch (e) {}
+          cur.fin = setTimeout(() => { if (REC === cur) deliverRecording(cur, 'keep'); }, 800);
+          return;
+        }
+        releaseRecording(cur, 'stop');
+        onError('Запис зупинено. Натисніть 🎤, щоб сказати ще раз.');
         return;
       }
       stopRecording();                                     // чужий запис тримає мікрофон — звільнити
-      try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
+      if (IS_IOS && closingOpen()){ iosWaitClosing(btn, idleLabel); return; }
+      let afterTts = 0;
+      try { if ('speechSynthesis' in window){ if (window.speechSynthesis.speaking || window.speechSynthesis.pending) afterTts = REC_AFTER_TTS; window.speechSynthesis.cancel(); } } catch (e) {}
+      if (!MIC_OK_ONCE) afterTts = 0;                      // перший запис на сторінці — старт у тому ж дотику (запит дозволу)
       const rec = createRecognizer();
       if (!rec){ onError('Мікрофон недоступний у цьому браузері. Напишіть відповідь у поле.'); return; }
-      const st = { rec: rec, btn: btn, idleLabel: idleLabel, onError: onError, timer: null, t0: Date.now() };
+      const st = { rec: rec, btn: btn, idleLabel: idleLabel, onResult: onResult, onError: onError, timer: null, quiet: null, cap: null, wait: null, fin: null,
+                   t0: Date.now(), text: '', started: false, heardSpeech: false, delayed: false, finishing: false };
       REC = st;
       btn.classList.add('is-recording');
       btn.textContent = '🎙️ Слухаю…';
       rec.onresult = (ev) => {
-        let heard = '';
-        try { heard = ev.results[0][0].transcript || ''; } catch (e) {}
-        stopRecording();
-        if (heard.trim()) onResult(heard); else onError(MIC_RETRY);
+        if (REC !== st) return;
+        const r = readTranscript(ev);
+        const changed = !!r.text && r.text !== st.text;
+        if (r.text) st.text = r.text;
+        st.heardSpeech = true; MIC_OK_ONCE = true;
+        if (r.fin){ deliverRecording(st, 'keep'); return; }
+        if (!changed || st.finishing) return;
+        armRecTimeout(st, REC_TIMEOUT);
+        // iPhone не завжди сам завершує запис: 2 с без нових слів — оцінюємо почуте
+        if (IS_IOS){ clearTimeout(st.quiet); st.quiet = setTimeout(() => { if (REC === st) deliverRecording(st, 'keep'); }, REC_QUIET); }
       };
       rec.onerror = (ev) => {
-        const code = ev && ev.error;
-        stopRecording(code === 'aborted' ? null : recognizerErrorMessage(code));
-      };
-      rec.onnomatch = () => stopRecording(MIC_RETRY);
-      // мовлення почалося — відлік тайм-ауту починаємо заново (щоб не обірвати посеред фрази)
-      rec.onspeechstart = rec.onaudiostart = () => {
         if (REC !== st) return;
-        clearTimeout(st.timer);
-        st.timer = setTimeout(() => { if (REC === st) stopRecording(MIC_RETRY); }, REC_TIMEOUT);
+        const code = ev && ev.error;
+        if (st.text && code !== 'not-allowed' && code !== 'service-not-allowed'){ deliverRecording(st, 'keep'); return; }
+        // наші власні abort() відв'язують запис заздалегідь, тож «aborted» тут — від самого браузера
+        let msg = code === 'aborted' ? MIC_RETRY : recognizerErrorMessage(code);
+        // дозвіл уже був, а старт відкладено (пауза після озвучки) — це не блокування, а втрачений дотик
+        if ((code === 'not-allowed' || code === 'service-not-allowed') && st.delayed && MIC_OK_ONCE) msg = 'Мікрофон не встиг увімкнутися. Натисніть 🎤 ще раз.';
+        releaseRecording(st, 'keep');
+        onError(msg);
       };
-      rec.onend = () => { if (REC === st) stopRecording(MIC_RETRY); };
-      st.timer = setTimeout(() => { if (REC === st) stopRecording(MIC_RETRY); }, REC_TIMEOUT);
-      try { rec.start(); }
-      catch (err){ stopRecording(); onError('Мікрофон зайнятий. Натисніть 🎤 ще раз.'); }
+      rec.onnomatch = () => { if (REC === st) deliverRecording(st, 'keep'); };
+      rec.onaudiostart = () => { MIC_OK_ONCE = true; st.audio = true; };     // мікрофон увімкнувся (дозвіл є), але слів ще немає
+      rec.onspeechstart = () => { if (REC !== st) return; st.heardSpeech = true; MIC_OK_ONCE = true; armRecTimeout(st, REC_TIMEOUT); };
+      rec.onend = () => { if (REC === st) deliverRecording(st, 'ended'); };
+      armRecTimeout(st, REC_HANG);
+      st.cap = setTimeout(() => { if (REC === st) deliverRecording(st, 'stop'); }, REC_CAP);
+      if (afterTts){ st.delayed = true; st.wait = setTimeout(() => launchRecording(st), afterTts); }
+      else launchRecording(st);
     });
   }
-  window.__mic = { stop: stopRecording, active: () => !!REC, timeout: REC_TIMEOUT }; // для смоук-тестів
+  window.__mic = { stop: stopRecording, active: () => !!REC, timeout: REC_TIMEOUT, quiet: REC_QUIET, ios: IS_IOS, closing: closingOpen }; // для смоук-тестів
   function shuffleArray(arr){
     const copy = [...arr];
     for (let i = copy.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; }
@@ -3368,7 +3573,7 @@ document.addEventListener('DOMContentLoaded', () => {
          "o": 4
         },
         {
-         "w": "maken",
+         "w": "maken.",
          "o": 5
         }
        ]
@@ -3482,7 +3687,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, prima.",
           "Ja, morgen om half tien.",
           "Ja, half tien.",
-          "Ja."
+          "Ja, dat lukt.",
+          "Ja, dat lukt. Dank u wel."
          ],
          "hintUa": "Так, підходить. Дякую.",
          "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
@@ -3552,12 +3758,12 @@ document.addEventListener('DOMContentLoaded', () => {
       {
        "question": "Як сказати «Я хотіла б записатися на прийом»?",
        "options": [
-        "Ik wil graag wachten.",
-        "Ik ben de assistente.",
+        "Kunt u even wachten?",
+        "Dank u wel, tot ziens.",
         "Ik wil graag een afspraak maken."
        ],
        "correctIndex": 2,
-       "explanation": "«Ik wil graag een afspraak maken» — ваше перше речення в більшості дзвінків."
+       "explanation": "«Ik wil graag een afspraak maken» — ваше перше речення в більшості дзвінків. «Kunt u even wachten?» — це питання асистентки (можете зачекати?), «Dank u wel, tot ziens» — дякую, до побачення."
       }
      ],
      "listen": [
@@ -3732,7 +3938,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, prima.",
           "Ja, morgen om half tien.",
           "Ja, half tien.",
-          "Ja."
+          "Ja, dat lukt.",
+          "Ja, dat lukt. Dank u wel."
          ],
          "hintUa": "Так, підходить. Дякую.",
          "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
@@ -3864,7 +4071,7 @@ document.addEventListener('DOMContentLoaded', () => {
          "o": 3
         },
         {
-         "w": "hoofdpijn",
+         "w": "hoofdpijn.",
          "o": 4
         }
        ]
@@ -3881,7 +4088,7 @@ document.addEventListener('DOMContentLoaded', () => {
          "o": 2
         },
         {
-         "w": "al twee dagen",
+         "w": "al twee dagen.",
          "o": 3
         }
        ]
@@ -3939,6 +4146,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, ook koorts.",
           "Ja, een beetje koorts.",
           "Ja.",
+          "Ja, een beetje.",
           "Ja, 38,5.",
           "Ja, ik heb ook koorts, 38,5.",
           "Ja, sinds gisteren.",
@@ -4028,7 +4236,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, prima.",
           "Ja, morgen om half tien.",
           "Ja, half tien.",
-          "Ja."
+          "Ja, dat lukt.",
+          "Ja, dat lukt. Dank u wel."
          ],
          "hintUa": "Так, підходить. Дякую.",
          "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
@@ -4242,7 +4451,11 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, ze heeft koorts.",
           "Ja, ze heeft koorts, 38,9.",
           "Ja, ze heeft ook koorts.",
-          "Ja."
+          "Ja, mijn dochter heeft koorts.",
+          "Ja, mijn dochter heeft ook koorts.",
+          "Ja, mijn kind heeft koorts.",
+          "Ja, Sofia heeft koorts.",
+          "Ja, mijn dochter had vanmorgen 38,9."
          ],
          "hintUa": "Так, зранку в неї було 38,9."
         }
@@ -4271,6 +4484,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "Nee, verder niet.",
           "Nee, dat is alles.",
           "Nee.",
+          "Nee, dat was het.",
           "Nee, geen andere klachten.",
           "Nee, niets.",
           "Nee, verder geen klachten.",
@@ -4358,7 +4572,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, prima.",
           "Ja, morgen om half tien.",
           "Ja, half tien.",
-          "Ja."
+          "Ja, dat lukt.",
+          "Ja, dat lukt. Dank u wel."
          ],
          "hintUa": "Так, підходить. Дякую.",
          "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
@@ -4529,11 +4744,11 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ik spreek niet zo goed Nederlands. Kunt u dat herhalen, alstublieft?",
           "Ik spreek niet zo goed Nederlands. Kunt u dat herhalen?",
           "Ik spreek niet zo goed Nederlands. Kunt u iets langzamer praten?",
-          "Morgen om half tien?",
-          "Half tien?",
-          "Om half tien?"
+          "Sorry, ik begrijp het niet. Kunt u dat herhalen?",
+          "Ik versta het niet. Kunt u dat herhalen?"
          ],
-         "hintUa": "Можете повторити, будь ласка?"
+         "hintUa": "Можете повторити, будь ласка?",
+         "label": "Крок 1: попросіть повторити"
         },
         {
          "assistantNl": "Natuurlijk. Morgen om half tien.",
@@ -4543,7 +4758,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Om half tien?",
           "Morgen, half tien?"
          ],
-         "hintUa": "Завтра о пів на десяту? (повторіть час питанням)"
+         "hintUa": "Завтра о пів на десяту? (повторіть час питанням)",
+         "label": "Крок 2: повторіть час питанням"
         },
         {
          "assistantNl": "Ja, klopt. Komt dat goed uit?",
@@ -4553,7 +4769,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, dat is goed.",
           "Ja, dat kan.",
           "Ja, prima.",
-          "Ja.",
+          "Ja, dat lukt.",
           "Ja, dat komt goed uit. Dank u wel.",
           "Ja, dat is goed. Dank u wel.",
           "Prima.",
@@ -4561,7 +4777,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Oké, dat is goed.",
           "Goed."
          ],
-         "hintUa": "Так, підходить."
+         "hintUa": "Так, підходить.",
+         "label": "Крок 3: підтвердьте"
         },
         {
          "assistantNl": "Dan zie ik u morgen.",
@@ -4577,7 +4794,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Dag.",
           "Dank u wel, dag."
          ],
-         "hintUa": "Дякую, до побачення."
+         "hintUa": "Дякую, до побачення.",
+         "label": "Крок 4: подякуйте й попрощайтеся"
         }
        ]
       }
@@ -4657,7 +4875,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, prima.",
           "Ja, morgen om half tien.",
           "Ja, half tien.",
-          "Ja."
+          "Ja, dat lukt.",
+          "Ja, dat lukt. Dank u wel."
          ],
          "hintUa": "Так, підходить. Дякую.",
          "assistantUa": "Можете прийти завтра вранці о пів на десяту?",
@@ -4835,7 +5054,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, prima.",
           "Ja, morgen om half tien.",
           "Ja, half tien.",
-          "Ja."
+          "Ja, dat lukt.",
+          "Ja, dat lukt. Dank u wel."
          ],
          "hintUa": "Так, підходить. Дякую."
         }
@@ -4891,7 +5111,11 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, ze heeft koorts.",
           "Ja, ze heeft koorts, 38,9.",
           "Ja, ze heeft ook koorts.",
-          "Ja."
+          "Ja, mijn dochter heeft koorts.",
+          "Ja, mijn dochter heeft ook koorts.",
+          "Ja, mijn kind heeft koorts.",
+          "Ja, Sofia heeft koorts.",
+          "Ja, mijn dochter had vanmorgen 38,9."
          ],
          "hintUa": "Так, зранку в неї було 38,9."
         },
@@ -4911,7 +5135,8 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, dat is goed. Dank u wel.",
           "Ja, kwart over twee.",
           "Ja, vanmiddag om kwart over twee.",
-          "Ja."
+          "Ja, dat lukt.",
+          "Ja, tot vanmiddag."
          ],
          "hintUa": "Чверть на третю? Так, підходить."
         },
@@ -4994,7 +5219,9 @@ document.addEventListener('DOMContentLoaded', () => {
           "Het gaat om mijn dochter.",
           "Goedemorgen. Het gaat om mijn dochter.",
           "Het is voor mijn dochter.",
-          "Goedemorgen. Het is voor mijn dochter."
+          "Goedemorgen. Het is voor mijn dochter.",
+          "Ik bel voor mijn dochter.",
+          "Goedemorgen. Ik bel voor mijn dochter."
          ],
          "hintUa": "Доброго ранку. Я хотіла б записатися на прийом. Це для моєї доньки."
         },
@@ -5027,7 +5254,11 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ze heeft sinds gisteren oorpijn, geen koorts.",
           "Oorpijn, sinds gisteren.",
           "Ze heeft oorpijn.",
-          "Oorpijn."
+          "Oorpijn.",
+          "Mijn dochter heeft oorpijn.",
+          "Mijn kind heeft oorpijn.",
+          "Ze heeft oorpijn, geen koorts.",
+          "Ze heeft oorpijn, maar geen koorts."
          ],
          "hintUa": "У неї болить вухо, від учора."
         },
@@ -5037,6 +5268,10 @@ document.addEventListener('DOMContentLoaded', () => {
          "accepted": [
           "Nee, geen koorts.",
           "Nee.",
+          "Nee, geen.",
+          "Nee, mijn dochter heeft geen koorts.",
+          "Nee, mijn kind heeft geen koorts.",
+          "Nee, ze heeft geen koorts, alleen oorpijn.",
           "Geen koorts.",
           "Nee, ze heeft geen koorts gehad.",
           "Nee, niet.",
@@ -5065,7 +5300,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "Ja, prima.",
           "Ja, vandaag om kwart voor vier.",
           "Ja, kwart voor vier.",
-          "Ja.",
+          "Ja, dat lukt.",
           "Ja, dat is goed. Tot vanmiddag.",
           "Ja, tot vanmiddag.",
           "Dank u wel, tot vanmiddag."
@@ -6405,8 +6640,8 @@ document.addEventListener('DOMContentLoaded', () => {
      "q": {
       "question": "Коли Олені треба передзвонити?",
       "options": [
-       "завтра зранку",
-       "через тиждень",
+       "якщо кашель триватиме ще чотири дні",
+       "завтра, щоб записатися на прийом",
        "якщо з'явиться температура або стане важко дихати"
       ],
       "correctIndex": 2,
@@ -6720,12 +6955,12 @@ document.addEventListener('DOMContentLoaded', () => {
      "q": {
       "question": "Який прийом пропонує асистентка?",
       "options": [
-       "подвійний, щоб було більше часу",
-       "телефонний",
-       "терміновий, сьогодні"
+       "подвійний, щоб лікар мав більше часу",
+       "два прийоми в різні дні",
+       "короткий, на п'ять хвилин"
       ],
       "correctIndex": 0,
-      "explanation": "«Een dubbele afspraak, dan heeft de dokter meer tijd». Якщо питань багато, можна й самій попросити: «Mag ik een dubbele afspraak?»"
+      "explanation": "«Ik plan een dubbele afspraak in, dan heeft de dokter meer tijd» — подвійний прийом, щоб лікар мав більше часу. Якщо питань багато, можна й самій попросити: «Mag ik een dubbele afspraak?»"
      },
      "hints": [],
      "cards": [
@@ -6969,11 +7204,11 @@ document.addEventListener('DOMContentLoaded', () => {
      "question": "Як сказати «Я хотіла б записатися на прийом»?",
      "options": [
       "Ik wil graag een afspraak maken.",
-      "Ik ben de huisarts.",
-      "Wat is uw naam?"
+      "Ik wil mijn afspraak afzeggen.",
+      "Kan ik mijn afspraak verzetten?"
      ],
      "correctIndex": 0,
-     "explanation": "«Ik wil graag een afspraak maken» — ваше перше речення після привітання."
+     "explanation": "«Een afspraak maken» — записатися на прийом. «Afzeggen» — скасувати, «verzetten» — перенести: це коли запис у вас уже є."
     },
     {
      "question": "Асистентка питає: «Wat is uw geboortedatum?» Що вона хоче знати?",
@@ -6988,12 +7223,12 @@ document.addEventListener('DOMContentLoaded', () => {
     {
      "question": "Як сказати «У мене вже три дні болить голова»?",
      "options": [
-      "Ik ga drie dagen weg.",
-      "Ik wil drie afspraken.",
+      "Ik ben al drie dagen hoofdpijn.",
+      "Ik heb al drie dagen keelpijn.",
       "Ik heb al drie dagen hoofdpijn."
      ],
      "correctIndex": 2,
-     "explanation": "«Al» (вже) + кількість днів + «hoofdpijn». Біль — завжди з «ik heb»."
+     "explanation": "Біль — завжди з «ik heb», не «ik ben». «Hoofdpijn» — болить голова; «keelpijn» — горло."
     },
     {
      "question": "Асистентка питає: «Gebruikt u medicijnen?» Що вона хоче знати?",
@@ -7040,10 +7275,10 @@ document.addEventListener('DOMContentLoaded', () => {
      "options": [
       "Het is voor mijn kind.",
       "Het is voor mijzelf.",
-      "Het is voor de assistente."
+      "Mijn kind heet Sofia."
      ],
      "correctIndex": 0,
-     "explanation": "«Voor mijn kind» — для моєї дитини. Скажіть це на початку дзвінка. «Voor mijzelf» — для себе."
+     "explanation": "«Voor mijn kind» — для моєї дитини. Скажіть це на початку дзвінка. «Voor mijzelf» — для себе; «Mijn kind heet Sofia» — мою дитину звати Софія."
     },
     {
      "question": "Асистентка каже: «Ik kan u inplannen voor morgen om tien uur. Komt dat goed uit?» Що вона питає?",
@@ -7260,7 +7495,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "o": 3
        },
        {
-        "w": "geboortedatum",
+        "w": "geboortedatum?",
         "o": 4
        }
       ]
@@ -7281,7 +7516,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "o": 3
        },
        {
-        "w": "afzeggen",
+        "w": "afzeggen.",
         "o": 4
        }
       ]
@@ -7298,7 +7533,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "o": 2
        },
        {
-        "w": "krijgen",
+        "w": "krijgen?",
         "o": 3
        }
       ]
@@ -7572,7 +7807,8 @@ document.addEventListener('DOMContentLoaded', () => {
          "Ja, prima.",
          "Ja, morgen om half tien.",
          "Ja, half tien.",
-         "Ja."
+         "Ja, dat lukt.",
+         "Ja, dat lukt. Dank u wel."
         ],
         "hintUa": "Так, підходить. Дякую."
        }
@@ -7628,7 +7864,11 @@ document.addEventListener('DOMContentLoaded', () => {
          "Ja, ze heeft koorts.",
          "Ja, ze heeft koorts, 38,9.",
          "Ja, ze heeft ook koorts.",
-         "Ja."
+         "Ja, mijn dochter heeft koorts.",
+         "Ja, mijn dochter heeft ook koorts.",
+         "Ja, mijn kind heeft koorts.",
+         "Ja, Sofia heeft koorts.",
+         "Ja, mijn dochter had vanmorgen 38,9."
         ],
         "hintUa": "Так, зранку в неї було 38,9."
        },
@@ -7648,7 +7888,8 @@ document.addEventListener('DOMContentLoaded', () => {
          "Ja, dat is goed. Dank u wel.",
          "Ja, kwart over twee.",
          "Ja, vanmiddag om kwart over twee.",
-         "Ja."
+         "Ja, dat lukt.",
+         "Ja, tot vanmiddag."
         ],
         "hintUa": "Чверть на третю? Так, підходить."
        },
@@ -8334,7 +8575,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('toggle', (e) => { if (player.host && e.target === player.host && !e.target.open) playerStop(true); }, true);
   function playerStart(id, host, from){
     const d = DLG[id];
-    if (!d || !('speechSynthesis' in window)) return;
+    if (!d || !hasSpeech()) return;
     stopRecording(); // v4: плеєр діалогу не говорить одночасно з мікрофоном
     const gen = ++player.gen, last = d.lines.length - 1;
     player.id = id; player.host = host; player.idx = from; player.playing = true;
@@ -8351,7 +8592,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   document.addEventListener('click', (e) => {
     const all = e.target.closest('[data-speak-all]');
-    if (all){ playerStart(all.getAttribute('data-speak-all'), all.closest('.listen-card, .archive-item, .section-card'), 0); return; }
+    if (all){ if (!hasSpeech()) noSpeechToast(); playerStart(all.getAttribute('data-speak-all'), all.closest('.listen-card, .archive-item, .section-card'), 0); return; }
     if (e.target.closest('[data-play-pause]')){
       if (!player.id) return;
       if (player.playing) playerPause();
@@ -8492,7 +8733,7 @@ document.addEventListener('DOMContentLoaded', () => {
       routeSteps.forEach(s => s.classList.remove('is-active'));
       step.classList.add('is-active');
       const text = step.getAttribute('data-step-text') || '';
-      const nl = text.split(' — ')[0];
+      const nl = text.split(' / ').map(x => x.split(' — ')[0]).join(' ');
       routeStepPreview.innerHTML = `${text} <button class="sound-btn" data-speak="${escAttr(nl)}" aria-label="Прослухати">🔊</button>`;
       routeStepPreview.classList.add('is-visible');
     });
@@ -8865,7 +9106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const doneEl = document.getElementById(prefix + 'Done');
     // stepPassed — можна йти далі; stepScored — репліку зараховано (правильно й без підказки); score — зараховано в цій ситуації
     let sit = 0, step = 0, stepPassed = false, stepScored = false, hintUsed = false, score = 0, finished = false, stepGen = 0;
-    const nextOpen = () => { for (let k = 1; k < situations.length; k++){ const i = (sit + k) % situations.length; if (!completed.has(i)) return i; } return -1; };
+    const nextOpen = () => { for (let k = 1; k < situations.length; k++){ const i = (sit + k) % situations.length; if (!(completed.has(i) && completed.get(i) >= needed(situations[i]))) return i; } return -1; }; // v8: і ситуації нижче мети
     const completed = new Map(STORE.get('rp-' + prefix) || []); // індекс ситуації → найкращий рахунок (зберігається)
     const needed = (s) => s.steps.length >= 5 ? 4 : Math.max(1, s.steps.length - 1);
 
@@ -8879,18 +9120,19 @@ document.addEventListener('DOMContentLoaded', () => {
       hintBtn.hidden = true; stepPassed = true; // текст уже на екрані: підказка зайва, а невдалий мікрофон не блокує
     }
     function renderPicker(){
+      pickerEl.hidden = situations.length === 1;
       pickerEl.innerHTML = situations.map((s, i) => `<button class="btn ${i === sit ? 'btn-primary' : 'btn-secondary'}" data-i="${i}">${s.title}${completed.has(i) ? ` ${completed.get(i) >= needed(s) ? '✓ ' : ''}${completed.get(i)}/${s.steps.length}` : ''}</button>`).join('');
       pickerEl.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { sit = parseInt(btn.getAttribute('data-i'), 10); step = 0; score = 0; renderPicker(); renderStep(); }));
     }
     function renderCounter(){
       const s = situations[sit];
-      counterEl.innerHTML = `${s.title} — репліка ${step + 1} з ${s.steps.length}<span class="roleplay-score">· ${anyShow(s) ? 'зараховано' : 'зараховано без підказки'}: ${score}</span>`;
+      counterEl.innerHTML = `${s.title} — репліка ${step + 1} з ${s.steps.length}<span class="roleplay-score">· ${anyShow(s) ? 'зараховано' : 'зараховано без підказки'}: ${score}</span>${situations.length === 1 && completed.has(0) ? `<span class="roleplay-score"> · найкращий результат: ${completed.get(0)} з ${s.steps.length}</span>` : ''}${s.steps[step].label ? `<strong class="rp-label">${s.steps[step].label}</strong>` : ''}`;
     }
     function renderStep(){
       const s = situations[sit];
       const st = s.steps[step];
       stopRecording(); // v4: «Почати ситуацію знову» / «Наступна репліка» не лишають увімкненого мікрофона
-      stepPassed = false; stepScored = false; hintUsed = false; finished = false;
+      stepPassed = false; stepScored = false; hintUsed = false; finished = false; nextBtn.disabled = false;
       renderCounter();
       assistantEl.innerHTML = `${st.assistantNl} <button class="sound-btn" data-speak="${escAttr(st.assistantNl)}" aria-label="Прослухати">🔊</button>`;
       hintEl.textContent = 'Ваша черга. Скажіть репліку в мікрофон або напишіть її в поле й натисніть «Перевірити». Не виходить — «Показати підказку».';
@@ -8906,7 +9148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function evaluate(answer, fromVoice){
       const st = situations[sit].steps[step];
-      let res = compareSpokenAnswer(answer, [st.expectedAnswer].concat(st.accepted || []), situations[sit].steps.slice(0, step + 1).map(x => x.assistantNl));
+      let res = compareSpokenAnswer(answer, [st.expectedAnswer].concat(st.accepted || []), situations[sit].steps.slice(0, step + 1).map(x => x.assistantNl), [].concat(...situations[sit].steps.map(x => [x.expectedAnswer].concat(x.accepted || []))));
       if (!fromVoice && res.verdict !== 'correct'){ const hit = typoHit(answer, [st.expectedAnswer].concat(st.accepted || [])); if (hit) res = { verdict: 'correct', expected: hit, typo: true }; }
       let label, cls;
       if (res.verdict === 'correct'){
@@ -8917,10 +9159,10 @@ document.addEventListener('DOMContentLoaded', () => {
         cls = 'is-correct';
       } else if (res.verdict === 'partial'){
         stepPassed = true;
-        label = '~ Частково. Можна йти далі, але репліку не зараховано' + (res.reason ? ' (' + res.reason + ')' : '') + ' — прослухайте зразок у підказці.';
+        label = '~ Частково. Можна йти далі, але репліку не зараховано' + (res.reason ? ' (' + res.reason + ')' : '') + (st.show ? ' — порівняйте з текстом на екрані.' : ' — прослухайте зразок у підказці.');
         cls = 'is-partial';
       } else {
-        label = '✗ ' + (res.reason ? 'Не зараховано: ' + res.reason + '. ' : '') + 'Спробуйте ще раз або подивіться підказку.';
+        label = '✗ ' + (res.reason ? 'Не зараховано: ' + res.reason + '. ' : '') + (st.show ? 'Спробуйте ще раз: текст відповіді — на екрані.' : 'Спробуйте ще раз або подивіться підказку.');
         cls = 'is-wrong';
       }
       voiceResultEl.innerHTML = `<span class="heard">${fromVoice ? 'Розпізнано' : 'Ви написали'}: «${escHtml(answer)}»</span><span class="verdict ${cls}">${label}</span>`;
@@ -8941,11 +9183,12 @@ document.addEventListener('DOMContentLoaded', () => {
       STORE.set('rp-' + prefix, [...completed]);
       const title = s.title.replace(/^\d+\.\s*/, '');
       const verdict = score >= need ? ` Мету досягнуто (${need} з ${n}) ✓` : ` Мета — ${need} з ${n}. Спробуйте ще раз без підказки: «Почати ситуацію знову».`;
-      doneEl.textContent = `✓ Ситуацію «${title}» пройдено. ${anyShow(s) ? 'Зараховано' : 'Зараховано без підказки'}: ${score} з ${n}.` + verdict + (completed.size < situations.length ? ' Далі — кнопка «Наступна ситуація →».' : ' Усі ситуації пройдено!');
+      doneEl.textContent = `✓ Ситуацію «${title}» пройдено. ${anyShow(s) ? 'Зараховано' : 'Зараховано без підказки'}: ${score} з ${n}.` + verdict + (nextOpen() !== -1 ? ' Далі — кнопка «Наступна ситуація →».' : (situations.length > 1 && score >= need ? ' Усі ситуації пройдено!' : ''));
       doneEl.classList.add('is-visible');
       renderPicker();
       if (taskId && completed.size === situations.length) markTaskDone(taskId);
       if (nextOpen() !== -1){ finished = true; nextBtn.textContent = 'Наступна ситуація →'; }
+      else { nextBtn.disabled = true; nextBtn.textContent = (situations.length > 1 && score >= need) ? '✓ Усі ситуації пройдено' : '✓ Завершено'; } // v8 (B2)
     });
     restartBtn.addEventListener('click', () => { step = 0; score = 0; renderStep(); });
     if (checkBtn && inputEl){
@@ -9121,6 +9364,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
+  if (!hasSpeech()) $id('noSpeechNote').hidden = false; // v8 (A5)
   renderSitPicker();
   checkListenTasks();
   renderAll();
